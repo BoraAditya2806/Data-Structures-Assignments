@@ -64,7 +64,7 @@ int main() {
 }
 ```
 
-## Sample Output
+##  Output
 ```
 Enter first string: hello
 Enter second string: world
@@ -109,10 +109,4 @@ Concatenated string: helloworld
 | 3 | reverse("hello") | "olleh" |
 | 4 | concat("hello", "world") | "helloworld" |
 
-**Final Output:**
-```
-Length = 5
-Copied = hello
-Reversed = olleh
-Concatenated = helloworld
-```
+
