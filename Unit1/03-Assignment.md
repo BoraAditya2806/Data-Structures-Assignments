@@ -1,29 +1,53 @@
 # Assignment 3: Matrix Multiplication – Row-Major vs Column-Major 
 
+## Pseudocode
+1. **Input n**
+   - Read order of matrix.
+
+2. **Dynamically allocate memory**
+   - Allocate 2D arrays A, B, C using `malloc`.
+   - If any allocation fails, print error and exit.
+
+3. **Input matrices**
+   - Take user input for A and B.
+
+4. **Row-Major Multiplication**
+   - Use `C[i][j] += A[i][k] * B[k][j]`.
+
+5. **Column-Major Multiplication**
+   - Use `C[i][j] += A[i][k] * B[j][k]`.
+
+6. **Display results**
+   - Print both matrices.
+
+7. **Free memory**
+   - Use `free()` to deallocate A, B, and C.
+     
+
+
 ## Code (C++)
 ```cpp
 #include <iostream>
 using namespace std;
 
-// Multiply using Row-Major order
+
 void multiplyRowMajor_agb(int **A, int **B, int **C, int n) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             C[i][j] = 0;
             for (int k = 0; k < n; k++) {
-                C[i][j] += A[i][k] * B[k][j]; // Row-wise access
+                C[i][j] += A[i][k] * B[k][j]; 
             }
         }
     }
 }
 
-// Multiply using Column-Major order
 void multiplyColumnMajor_agb(int **A, int **B, int **C, int n) {
     for (int j = 0; j < n; j++) {
         for (int i = 0; i < n; i++) {
             C[i][j] = 0;
             for (int k = 0; k < n; k++) {
-                C[i][j] += A[i][k] * B[j][k]; // Column-wise access
+                C[i][j] += A[i][k] * B[j][k]; 
             }
         }
     }
@@ -34,7 +58,7 @@ int main() {
     cout << "Enter order of matrix (n x n): ";
     cin >> n;
 
-    // Dynamic allocation of matrices
+    
     int **A = (int **)malloc(n * sizeof(int *));
     int **B = (int **)malloc(n * sizeof(int *));
     int **C = (int **)malloc(n * sizeof(int *));
@@ -54,7 +78,7 @@ int main() {
         }
     }
 
-    // Input matrices
+
     cout << "Enter elements of first matrix (A):" << endl;
     for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
@@ -65,7 +89,7 @@ int main() {
         for (int j = 0; j < n; j++)
             cin >> B[i][j];
 
-    // Row-Major Multiplication
+   
     multiplyRowMajor_agb(A, B, C, n);
     cout << "\nResult using Row-Major access:\n";
     for (int i = 0; i < n; i++) {
@@ -74,7 +98,6 @@ int main() {
         cout << endl;
     }
 
-    // Column-Major Multiplication
     multiplyColumnMajor_agb(A, B, C, n);
     cout << "\nResult using Column-Major access:\n";
     for (int i = 0; i < n; i++) {
@@ -83,9 +106,6 @@ int main() {
         cout << endl;
     }
 
-    cout << "\nObservation: Row-major access is faster because data is stored row-wise in memory.\n";
-
-    // Free dynamically allocated memory
     for (int i = 0; i < n; i++) {
         free(A[i]);
         free(B[i]);
@@ -110,7 +130,7 @@ Enter elements of second matrix (B):
 7 8
 ```
 
-## Sample Output
+## Output
 ```
 Result using Row-Major access:
 19 22
@@ -120,37 +140,8 @@ Result using Column-Major access:
 17 23
 39 55
 
-Observation: Row-major access is faster because data is stored row-wise in memory.
 ```
 
-## Pseudocode
-1. **Input n**
-   - Read order of matrix.
-
-2. **Dynamically allocate memory**
-   - Allocate 2D arrays A, B, C using `malloc`.
-   - If any allocation fails, print error and exit.
-
-3. **Input matrices**
-   - Take user input for A and B.
-
-4. **Row-Major Multiplication**
-   - Use `C[i][j] += A[i][k] * B[k][j]`.
-
-5. **Column-Major Multiplication**
-   - Use `C[i][j] += A[i][k] * B[j][k]`.
-
-6. **Display results**
-   - Print both matrices.
-
-7. **Free memory**
-   - Use `free()` to deallocate A, B, and C.
-
-## Expected Output
-```
-Row-Major and Column-Major give correct results,
-but Row-Major executes faster in C++ due to memory layout.
-```
 
 ## Dry Run
 **Input:**
@@ -174,6 +165,20 @@ C[1][1] = 3*6 + 4*8 = 50
 ```
 19 22
 43 50
+```
+
+**Column-Major Calculation:**
+```
+C[0][0] = 1*5 + 2*6 = 17
+C[0][1] = 1*7 + 2*8 = 23
+C[1][0] = 3*5 + 4*6 = 39
+C[1][1] = 3*7 + 4*8 = 55
+```
+
+**Result (Column-Major):**
+```
+17 23
+39 55
 ```
 
 **Conclusion:**
