@@ -1,22 +1,40 @@
 # Assignment 2: Magic Square of Order 'n' (Even & Odd) 
 
+## Pseudocode
+1. **Input n**
+   - Read order of magic square.
+
+2. **Dynamically allocate memory**
+   - Use `malloc()` to allocate 2D array of size `n x n`.
+   - If allocation fails, display an error and exit.
+
+3. **Check order type**
+   - If n is **odd** → use `magicSquareOdd_agb()`
+   - If n % 4 == 0 → use `magicSquareDoublyEven_agb()`
+   - If n % 4 == 2 → use `magicSquareSinglyEven_agb()`
+
+4. **Generate and Print Magic Square**
+   - Display matrix with rows, columns, and diagonals having the same sum.
+
+5. **Free Memory**
+   - Use `free()` for all dynamically allocated arrays.
+
+   
 ## Code (C++)
 ```cpp
 #include <iostream>
 #include <iomanip>
 using namespace std;
 
-// Function to generate magic square for odd order
 void magicSquareOdd_agb(int n, int **square) {
     int num = 1;
-    int i = 0, j = n / 2; // start position
-
+    int i = 0, j = n / 2;
     while (num <= n * n) {
         square[i][j] = num++;
         i--;
         j++;
 
-        if (num % n == 1) { // next row start
+        if (num % n == 1) { 
             i += 2;
             j--;
         } else {
@@ -28,7 +46,6 @@ void magicSquareOdd_agb(int n, int **square) {
     }
 }
 
-// Function to generate magic square for doubly even order (n % 4 == 0)
 void magicSquareDoublyEven_agb(int n, int **square) {
     int num = 1;
     for (int i = 0; i < n; i++)
@@ -44,7 +61,7 @@ void magicSquareDoublyEven_agb(int n, int **square) {
     }
 }
 
-// Function to generate magic square for singly even order (n % 4 == 2)
+
 void magicSquareSinglyEven_agb(int n, int **square) {
     int half = n / 2;
     int subSquareSize = half * half;
@@ -76,13 +93,11 @@ void magicSquareSinglyEven_agb(int n, int **square) {
         }
     }
 
-    // Free temp
     for (int i = 0; i < half; i++)
         free(temp[i]);
     free(temp);
 }
 
-// Function to print magic square
 void printSquare_agb(int n, int **square) {
     int magicConstant = n * (n * n + 1) / 2;
     cout << "\nMagic Square of order " << n << " (Sum = " << magicConstant << "):\n";
@@ -103,7 +118,6 @@ int main() {
         return 0;
     }
 
-    // Dynamic memory allocation for magic square
     int **square = (int **)malloc(n * sizeof(int *));
     if (square == NULL) {
         cout << "Memory allocation failed! Exiting program.\n";
@@ -118,7 +132,6 @@ int main() {
         }
     }
 
-    // Generate magic square
     if (n % 2 == 1)
         magicSquareOdd_agb(n, square);
     else if (n % 4 == 0)
@@ -126,10 +139,10 @@ int main() {
     else
         magicSquareSinglyEven_agb(n, square);
 
-    // Print the square
+   
     printSquare_agb(n, square);
 
-    // Free allocated memory
+   
     for (int i = 0; i < n; i++)
         free(square[i]);
     free(square);
@@ -143,7 +156,7 @@ int main() {
 Enter order of magic square (n): 3
 ```
 
-## Sample Output
+## Output
 ```
 Magic Square of order 3 (Sum = 15):
    8   1   6
@@ -151,49 +164,32 @@ Magic Square of order 3 (Sum = 15):
    4   9   2
 ```
 
-## Pseudocode
-1. **Input n**
-   - Read order of magic square.
-
-2. **Dynamically allocate memory**
-   - Use `malloc()` to allocate 2D array of size `n x n`.
-   - If allocation fails, display an error and exit.
-
-3. **Check order type**
-   - If n is **odd** → use `magicSquareOdd_agb()`
-   - If n % 4 == 0 → use `magicSquareDoublyEven_agb()`
-   - If n % 4 == 2 → use `magicSquareSinglyEven_agb()`
-
-4. **Generate and Print Magic Square**
-   - Display matrix with rows, columns, and diagonals having the same sum.
-
-5. **Free Memory**
-   - Use `free()` for all dynamically allocated arrays.
-
-## Expected Output
-```
-Magic Square of order 4 (Sum = 34):
- 16   2   3  13
-  5  11  10   8
-  9   7   6  12
-  4  14  15   1
-```
 
 ## Dry Run
 **Input:**
 ```
 n = 3
 ```
+| Step | Number | Current Row | Current Col                                       | Action / Rule Used        | New Row | New Col | Matrix after placement (nonzero = placed so far) |
+| ---- | ------ | ----------- | ------------------------------------------------- | ------------------------- | ------- | ------- | ------------------------------------------------ |
+| 1    | 1      | 0           | 1                                                 | Start at top middle       | 0       | 1       | 0 1 0<br>0 0 0<br>0 0 0                          |
+| 2    | 2      | -1          | 2 → Wrap to (2,2)                                 | Move up-right (wrap)      | 2       | 2       | 0 1 0<br>0 0 0<br>0 0 2                          |
+| 3    | 3      | 1           | 0                                                 | Move up-right             | 1       | 0       | 0 1 0<br>3 0 0<br>0 0 2                          |
+| 4    | 4      | 0           | 1 (occupied) → Move down from prev (1,0) to (2,0) | Cell occupied → move down | 2       | 0       | 0 1 0<br>3 0 0<br>4 0 2                          |
+| 5    | 5      | 1           | 1                                                 | Move up-right             | 1       | 1       | 0 1 0<br>3 5 0<br>4 0 2                          |
+| 6    | 6      | 0           | 2                                                 | Move up-right             | 0       | 2       | 0 1 6<br>3 5 0<br>4 0 2                          |
+| 7    | 7      | -1          | 3 → Wrap to (2,0) (occupied) → Move down → (1,2)  | Cell occupied → move down | 1       | 2       | 0 1 6<br>3 5 7<br>4 0 2                          |
+| 8    | 8      | 0           | 0                                                 | Move up-right             | 0       | 0       | 8 1 6<br>3 5 7<br>4 0 2                          |
+| 9    | 9      | -1          | 1 → Wrap to (2,1)                                 | Move up-right (wrap)      | 2       | 1       | 8 1 6<br>3 5 7<br>4 9 2                          |
 
-**Step 1:** Start at top-middle → place 1.
-**Step 2:** Move up-right → wrap around.
-**Step 3:** Continue filling using rule.
+
 
 **Final Matrix:**
 | 8 | 1 | 6 |
 |---|---|---|
 | 3 | 5 | 7 |
 | 4 | 9 | 2 |
+
 
  **Conclusion:**
 Dynamic allocation allows flexible square size.
