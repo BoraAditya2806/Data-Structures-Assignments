@@ -1,27 +1,47 @@
 # Assignment 4: Sparse Matrix Representation and Simple Transpose 
 
+## Pseudocode
+1. **Input rows and cols**
+
+2. **Allocate matrix using malloc()**
+   - If memory fails → exit.
+
+3. **Input matrix elements**
+
+4. **Count non-zero elements**
+
+5. **Create sparse compact form [row, col, value]**
+
+6. **Display compact form**
+
+7. **Generate transpose by swapping row & column**
+
+8. **Display transpose**
+
+9. **Free all allocated memory**
+
+
+
 ## Code (C++)
 ```cpp
 #include <iostream>
 using namespace std;
 
-// Structure for sparse matrix representation
+
 struct Sparse_agb {
-    int **data; // compact form [row, col, value]
+    int **data;
     int rows, cols, nonZero;
 };
 
-// Function to create compact representation
+
 Sparse_agb *createSparse_agb(int **matrix, int rows, int cols) {
     int count = 0;
 
-    // Count non-zero elements
     for (int i = 0; i < rows; i++)
         for (int j = 0; j < cols; j++)
             if (matrix[i][j] != 0)
                 count++;
 
-    // Allocate memory for Sparse matrix
     Sparse_agb *s = (Sparse_agb *)malloc(sizeof(Sparse_agb));
     if (s == NULL) {
         cout << "Memory allocation failed! Exiting program." << endl;
@@ -32,7 +52,7 @@ Sparse_agb *createSparse_agb(int **matrix, int rows, int cols) {
     s->cols = cols;
     s->nonZero = count;
 
-    s->data = (int **)malloc((count + 1) * sizeof(int *)); // +1 for header
+    s->data = (int **)malloc((count + 1) * sizeof(int *));
     if (s->data == NULL) {
         cout << "Memory allocation failed! Exiting program." << endl;
         exit(1);
@@ -46,7 +66,6 @@ Sparse_agb *createSparse_agb(int **matrix, int rows, int cols) {
         }
     }
 
-    // Header row
     s->data[0][0] = rows;
     s->data[0][1] = cols;
     s->data[0][2] = count;
@@ -66,7 +85,7 @@ Sparse_agb *createSparse_agb(int **matrix, int rows, int cols) {
     return s;
 }
 
-// Function to display sparse matrix
+
 void displaySparse_agb(Sparse_agb *s) {
     cout << "\nCompact Sparse Matrix Representation:\n";
     cout << "Row\tCol\tValue\n";
@@ -75,7 +94,6 @@ void displaySparse_agb(Sparse_agb *s) {
     }
 }
 
-// Function to compute simple transpose
 Sparse_agb *simpleTranspose_agb(Sparse_agb *s) {
     Sparse_agb *t = (Sparse_agb *)malloc(sizeof(Sparse_agb));
     if (t == NULL) {
@@ -101,7 +119,6 @@ Sparse_agb *simpleTranspose_agb(Sparse_agb *s) {
         }
     }
 
-    // Header
     t->data[0][0] = s->cols;
     t->data[0][1] = s->rows;
     t->data[0][2] = s->nonZero;
@@ -126,7 +143,6 @@ int main() {
     cout << "Enter number of rows and columns: ";
     cin >> rows >> cols;
 
-    // Dynamic matrix creation
     int **matrix = (int **)malloc(rows * sizeof(int *));
     if (matrix == NULL) {
         cout << "Memory allocation failed! Exiting program." << endl;
@@ -152,7 +168,6 @@ int main() {
     cout << "\nTranspose of Sparse Matrix:\n";
     displaySparse_agb(transpose);
 
-    // Free memory
     for (int i = 0; i < rows; i++)
         free(matrix[i]);
     free(matrix);
@@ -180,7 +195,7 @@ Enter elements of matrix:
 9 0 0
 ```
 
-## Sample Output
+## Output
 ```
 Compact Sparse Matrix Representation:
 Row     Col     Value
@@ -195,32 +210,6 @@ Row     Col     Value
 0       2       9
 1       1       8
 2       0       5
-```
-
-## Pseudocode
-1. **Input rows and cols**
-
-2. **Allocate matrix using malloc()**
-   - If memory fails → exit.
-
-3. **Input matrix elements**
-
-4. **Count non-zero elements**
-
-5. **Create sparse compact form [row, col, value]**
-
-6. **Display compact form**
-
-7. **Generate transpose by swapping row & column**
-
-8. **Display transpose**
-
-9. **Free all allocated memory**
-
-## Expected Output
-```
-Original Sparse Representation and Transpose both stored in compact form.
-Memory-efficient representation achieved.
 ```
 
 ## Dry Run
