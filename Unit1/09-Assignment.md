@@ -196,7 +196,7 @@ Total number of swaps performed by Bubble Sort: 5
 ```
 
 **Pass 1:** swaps move higher marks left → partial ordering  
-**Pass 2..k:** continue until fully sorted  
+**Pass 2 to k:** continue until fully sorted  
 **Final:** [(Carol,90,1), (Alice,89,2), (Eve,85,3), (John,78,4), (Dave,65,5), (Bob,56,6)]
 
  **Conclusion:**  
