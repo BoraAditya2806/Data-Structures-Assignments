@@ -1,4 +1,4 @@
-# Assignment 7
+# Assignment 6
 
 ## Problem Statement
 Write a C++ program to implement a **Set using a Generalized Linked List (GLL)**.  
