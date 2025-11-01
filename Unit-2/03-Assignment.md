@@ -1,4 +1,4 @@
-# Assignment 4
+# Assignment 3
 
 ## Problem Statement
 Develop a C++ program to store and manage an **appointment schedule** for a single day using a **linked list**. Appointments should be scheduled randomly. The system must define the **start time**, **end time**, and specify the **minimum and maximum duration** allowed for each appointment slot.
