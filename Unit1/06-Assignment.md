@@ -1,15 +1,33 @@
-# Assignment 6: Student Identification Using Searching Methods
+# Assignment 6
 
 ## Problem Statement
 In the Computer Engineering Department of VIT, there are **S.Y., T.Y., and B.Tech. students** on the ground for a function.  
 We need to identify a **student of S.Y. Division (X)** whose **name is "XYZ"** and **roll number is 17**.  
 An appropriate **searching method** should be applied to identify the required student.
 
+
+## Pseudocode
+
+1. **Input n** → total number of students.  
+
+2. **Allocate memory dynamically** for storing student records. 
+
+3. **Input details** → Roll No, Name, Division, Year.  
+
+4. **Set search criteria**: Roll No = 17, Name = “XYZ”, Division = “X”, Year = “SY”. 
+
+5. **Apply Linear Search**:  
+   - Compare each record’s roll no, name, division, and year.  
+   - If all match → student found.  
+   - Else → continue searching.  
+6. **Display result** accordingly.  
+
+7. **Free allocated memory.**
+
+
 ## Code (C++)
 ```cpp
 #include <iostream>
-#include <cstdlib>
-#include <cstring>
 using namespace std;
 
 struct Student_agb {
@@ -19,17 +37,17 @@ struct Student_agb {
     char year[10];
 };
 
-// Linear Search Function
+
 int linearSearch_agb(Student_agb *students, int n, int rollNo, const char *name, const char *division, const char *year) {
     for (int i = 0; i < n; i++) {
         if (students[i].rollNo == rollNo &&
             strcmp(students[i].name, name) == 0 &&
             strcmp(students[i].division, division) == 0 &&
             strcmp(students[i].year, year) == 0) {
-            return i; // Found
+            return i; 
         }
     }
-    return -1; // Not found
+    return -1; 
 }
 
 int main() {
@@ -37,14 +55,14 @@ int main() {
     cout << "Enter number of students: ";
     cin >> n;
 
-    // Dynamic memory allocation for student records
+
     Student_agb *students = (Student_agb *)malloc(n * sizeof(Student_agb));
     if (students == NULL) {
         cout << "Memory allocation failed! Exiting program." << endl;
         exit(1);
     }
 
-    // Input student data
+    
     cout << "\nEnter student details (RollNo Name Division Year):\n";
     for (int i = 0; i < n; i++) {
         cin >> students[i].rollNo >> students[i].name >> students[i].division >> students[i].year;
@@ -83,34 +101,7 @@ Enter student details (RollNo Name Division Year):
 40 LMN X TY
 ```
 
-## Sample Output
-```
-Student Found!
-Roll No: 17
-Name: XYZ
-Division: X
-Year: SY
-```
-
-## Pseudocode
-
-1. **Input n** → total number of students.  
-
-2. **Allocate memory dynamically** for storing student records. 
-
-3. **Input details** → Roll No, Name, Division, Year.  
-
-4. **Set search criteria**: Roll No = 17, Name = “XYZ”, Division = “X”, Year = “SY”. 
-
-5. **Apply Linear Search**:  
-   - Compare each record’s roll no, name, division, and year.  
-   - If all match → student found.  
-   - Else → continue searching.  
-6. **Display result** accordingly.  
-
-7. **Free allocated memory.**
-
-## Expected Output
+## Output
 ```
 Student Found!
 Roll No: 17
