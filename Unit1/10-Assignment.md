@@ -1,8 +1,30 @@
-# Assignment 10: Sort Employees by Average of Height and Weight (Merge vs Selection Sort)
+# Assignment 10: 
 
 ## Problem Statement
 Write a program to arrange the list of employees as per the **average of their height and weight** using **Merge Sort** and **Selection Sort** methods.  
 Analyze their **time complexities** and conclude which algorithm takes less time to sort the list.
+
+
+
+## Pseudocode
+1. **Input n** → number of employees.  
+
+2. **Dynamically allocate memory** for employee list.  
+
+3. **Input name, height, weight**, and compute average = (height + weight) / 2.  
+
+4. **Selection Sort**:  
+   - Find minimum average in remaining list and swap.  
+   - Repeat for each pass and display after each.  
+
+5. **Merge Sort**:  
+   - Recursively divide list into halves.  
+   - Merge sorted halves based on average.  
+   - Display list after each merge.  
+
+6. **Display final sorted lists** from both algorithms.  
+
+7. **Analyze time complexity** and conclude efficiency.
 
 ## Code (C++)
 ```cpp
@@ -14,10 +36,10 @@ struct Employee_agb {
     char name[50];
     float height;
     float weight;
-    float avg; // average of height and weight
+    float avg; 
 };
 
-// Function to display employee list
+
 void display_agb(Employee_agb *emp, int n) {
     cout << "\nName\tHeight\tWeight\tAverage\n";
     for (int i = 0; i < n; i++) {
@@ -25,7 +47,7 @@ void display_agb(Employee_agb *emp, int n) {
     }
 }
 
-// Selection Sort based on avg
+
 void selectionSort_agb(Employee_agb *emp, int n) {
     for (int i = 0; i < n - 1; i++) {
         int minIndex = i;
@@ -43,7 +65,6 @@ void selectionSort_agb(Employee_agb *emp, int n) {
     }
 }
 
-// Merge function
 void merge_agb(Employee_agb *emp, int left, int mid, int right) {
     int n1 = mid - left + 1;
     int n2 = right - mid;
@@ -72,7 +93,6 @@ void merge_agb(Employee_agb *emp, int left, int mid, int right) {
     free(R);
 }
 
-// Merge Sort function
 void mergeSort_agb(Employee_agb *emp, int left, int right, int pass = 1) {
     if (left < right) {
         int mid = (left + right) / 2;
@@ -107,13 +127,11 @@ int main() {
     cout << "\nOriginal List:";
     display_agb(employees, n);
 
-    // Apply Selection Sort
     cout << "\n===== Selection Sort Analysis =====\n";
     selectionSort_agb(employees, n);
     cout << "\nFinal Sorted List (Selection Sort):";
     display_agb(employees, n);
 
-    // Apply Merge Sort
     cout << "\n===== Merge Sort Analysis =====\n";
     mergeSort_agb(copyEmp, 0, n - 1);
     cout << "\nFinal Sorted List (Merge Sort):";
@@ -182,32 +200,6 @@ Merge Sort: O(n log n) — faster and more efficient.
 Hence, Merge Sort takes less time than Selection Sort for large n.
 ```
 
-## Pseudocode
-1. **Input n** → number of employees.  
-
-2. **Dynamically allocate memory** for employee list.  
-
-3. **Input name, height, weight**, and compute average = (height + weight) / 2.  
-
-4. **Selection Sort**:  
-   - Find minimum average in remaining list and swap.  
-   - Repeat for each pass and display after each.  
-
-5. **Merge Sort**:  
-   - Recursively divide list into halves.  
-   - Merge sorted halves based on average.  
-   - Display list after each merge.  
-
-6. **Display final sorted lists** from both algorithms.  
-
-7. **Analyze time complexity** and conclude efficiency.
-
-## Expected Output
-```
-Both methods produce same sorted result.
-Merge Sort performs faster for large datasets due to O(n log n) complexity.
-Selection Sort is simpler but slower with O(n²) complexity.
-```
 
 ## Dry Run
 **Input:**
