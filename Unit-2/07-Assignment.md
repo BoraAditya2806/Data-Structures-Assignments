@@ -1,4 +1,4 @@
-# Assignment 8
+# Assignment 7
 
 ## Problem Statement
 Write a C++ program to represent and perform **addition of two polynomials** using **Singly Linked List**.  
