@@ -1,7 +1,7 @@
 # Assignment 1
 
 ## Problem Statement
-Topic: **Implementation of Singly Linked List to Manage ‘Vertex Club’ Membership Records.**  
+**Implementation of Singly Linked List to Manage ‘Vertex Club’ Membership Records.**  
 The Department of Computer Engineering has a student club named ‘Vertex Club’ for second, third, and final year students. The first member is the President and the last member is the Secretary. Write a C++ program to:  
 - Add/delete members (including President/Secretary)  
 - Count members  
