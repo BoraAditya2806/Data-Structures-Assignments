@@ -1,27 +1,40 @@
 # Assignment 5: Fast Transpose of a Sparse Matrix 
 
+## Pseudocode
+1. **Input matrix size and elements**
+
+2. **Count non-zero elements**
+
+3. **Store in compact triplet form [row, col, value]**
+
+4. **Initialize row_terms[] and starting_pos[]**
+   - `row_terms[j]` → number of elements in column *j*
+   - `starting_pos[j]` → position to place next element in transposed matrix
+
+5. **For each non-zero element:**
+   - Place `(col, row, value)` at correct transposed position.
+
+6. **Display transposed compact form.**
+
+7. **Free all allocated memory.**
 ## Code (C++)
 ```cpp
 #include <iostream>
 using namespace std;
 
-// Structure for sparse matrix representation
 struct Sparse_agb {
-    int **data; // compact form [row, col, value]
+    int **data; 
     int rows, cols, nonZero;
 };
 
-// Function to create compact representation
 Sparse_agb *createSparse_agb(int **matrix, int rows, int cols) {
     int count = 0;
 
-    // Count non-zero elements
     for (int i = 0; i < rows; i++)
         for (int j = 0; j < cols; j++)
             if (matrix[i][j] != 0)
                 count++;
 
-    // Allocate memory for Sparse matrix
     Sparse_agb *s = (Sparse_agb *)malloc(sizeof(Sparse_agb));
     if (s == NULL) {
         cout << "Memory allocation failed! Exiting program." << endl;
@@ -32,7 +45,7 @@ Sparse_agb *createSparse_agb(int **matrix, int rows, int cols) {
     s->cols = cols;
     s->nonZero = count;
 
-    s->data = (int **)malloc((count + 1) * sizeof(int *)); // +1 for header
+    s->data = (int **)malloc((count + 1) * sizeof(int *));
     if (s->data == NULL) {
         cout << "Memory allocation failed! Exiting program." << endl;
         exit(1);
@@ -46,7 +59,6 @@ Sparse_agb *createSparse_agb(int **matrix, int rows, int cols) {
         }
     }
 
-    // Header row
     s->data[0][0] = rows;
     s->data[0][1] = cols;
     s->data[0][2] = count;
@@ -66,7 +78,6 @@ Sparse_agb *createSparse_agb(int **matrix, int rows, int cols) {
     return s;
 }
 
-// Function to display sparse matrix
 void displaySparse_agb(Sparse_agb *s) {
     cout << "\nCompact Sparse Matrix Representation:\n";
     cout << "Row\tCol\tValue\n";
@@ -75,7 +86,6 @@ void displaySparse_agb(Sparse_agb *s) {
     }
 }
 
-// Function for fast transpose
 Sparse_agb *fastTranspose_agb(Sparse_agb *s) {
     Sparse_agb *t = (Sparse_agb *)malloc(sizeof(Sparse_agb));
     if (t == NULL) {
@@ -101,7 +111,7 @@ Sparse_agb *fastTranspose_agb(Sparse_agb *s) {
         }
     }
 
-    // Header
+    
     t->data[0][0] = s->cols;
     t->data[0][1] = s->rows;
     t->data[0][2] = s->nonZero;
@@ -114,16 +124,13 @@ Sparse_agb *fastTranspose_agb(Sparse_agb *s) {
         exit(1);
     }
 
-    // Step 1: Count number of elements in each column
     for (int i = 1; i <= s->nonZero; i++)
         row_terms[s->data[i][1]]++;
 
-    // Step 2: Find starting position of each column in transposed matrix
     starting_pos[0] = 1;
     for (int i = 1; i < s->cols; i++)
         starting_pos[i] = starting_pos[i - 1] + row_terms[i - 1];
 
-    // Step 3: Place elements in correct position
     for (int i = 1; i <= s->nonZero; i++) {
         int col = s->data[i][1];
         int pos = starting_pos[col];
@@ -170,7 +177,7 @@ int main() {
     cout << "\nFast Transpose of Sparse Matrix:\n";
     displaySparse_agb(transpose);
 
-    // Free memory
+    
     for (int i = 0; i < rows; i++)
         free(matrix[i]);
     free(matrix);
@@ -198,7 +205,7 @@ Enter elements of matrix:
 9 0 0
 ```
 
-## Sample Output
+## Output
 ```
 Compact Sparse Matrix Representation:
 Row     Col     Value
@@ -215,29 +222,8 @@ Row     Col     Value
 2       0       5
 ```
 
-## Pseudocode
-1. **Input matrix size and elements**
 
-2. **Count non-zero elements**
 
-3. **Store in compact triplet form [row, col, value]**
-
-4. **Initialize row_terms[] and starting_pos[]**
-   - `row_terms[j]` → number of elements in column *j*
-   - `starting_pos[j]` → position to place next element in transposed matrix
-
-5. **For each non-zero element:**
-   - Place `(col, row, value)` at correct transposed position.
-
-6. **Display transposed compact form.**
-
-7. **Free all allocated memory.**
-
-## Expected Output
-```
-Fast transpose achieved efficiently using column position calculation.
-Time complexity reduced compared to simple transpose.
-```
 
 ## Dry Run
 **Input:**
