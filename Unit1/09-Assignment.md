@@ -1,9 +1,26 @@
-# Assignment 9: Assign Roll Numbers Using Bubble Sort (Pass-by-Pass Analysis)
+# Assignment 9
 
 ## Problem Statement
 Write a program using the **Bubble Sort** algorithm to assign roll numbers to students of your class based on their **previous year's results** (higher marks → better rank).  
 The **topper** should receive **roll no. 1**, 2nd gets roll no. 2, and so on.  
 Analyze the sorting algorithm **pass by pass** (show the list after each pass) and count swaps.
+
+## Pseudocode
+1. **Input n** → number of students. 
+
+2. **Dynamically allocate** array of student structures.  
+
+3. **Input** each student's `Name` and `PrevMarks`. Initialize `rollNo` = 0.  
+
+4. **Bubble Sort** (descending by `prevMarks`):  
+   - For each pass, compare adjacent elements and swap if left < right.  
+   - Print array state after each pass.  
+   - If a pass has 0 swaps → break early (array sorted).  
+5. **Assign roll numbers** in sorted order (index+1).  
+
+6. **Display final list and total swaps.**  
+
+7. **Free memory.**
 
 ## Code (C++)
 ```cpp
@@ -18,7 +35,6 @@ struct Student_agb {
     int rollNo;
 };
 
-// Function to display student list
 void display_agb(Student_agb *arr, int n) {
     cout << "\nName\tMarks\tRollNo\n";
     for (int i = 0; i < n; i++) {
@@ -26,8 +42,7 @@ void display_agb(Student_agb *arr, int n) {
     }
 }
 
-// Bubble Sort in descending order of prevMarks (higher marks first)
-// Also prints state after each pass and returns total swap count
+
 int bubbleSortAssign_agb(Student_agb *arr, int n) {
     int totalSwaps = 0;
     for (int pass = 1; pass <= n - 1; pass++) {
@@ -42,13 +57,12 @@ int bubbleSortAssign_agb(Student_agb *arr, int n) {
                 totalSwaps++;
             }
         }
-        // Print state after this pass
+       
         cout << "\nAfter Pass " << pass << ":\n";
         cout << "Name\tMarks\n";
         for (int k = 0; k < n; k++) {
             cout << arr[k].name << "\t" << arr[k].prevMarks << endl;
         }
-        // If no swaps in this pass, array is sorted
         if (swapsThisPass == 0) {
             cout << "\nNo swaps in pass " << pass << ". Array is sorted early.\n";
             break;
@@ -62,7 +76,7 @@ int main() {
     cout << "Enter number of students: ";
     cin >> n;
 
-    // Dynamic allocation for students
+
     Student_agb *students = (Student_agb *)malloc(n * sizeof(Student_agb));
     if (students == NULL) {
         cout << "Memory allocation failed! Exiting program." << endl;
@@ -78,10 +92,8 @@ int main() {
     cout << "\nOriginal List:";
     display_agb(students, n);
 
-    // Perform bubble sort (descending by marks) and show passes
     int swaps = bubbleSortAssign_agb(students, n);
 
-    // Assign roll numbers: topper gets 1, next 2, ...
     for (int i = 0; i < n; i++) {
         students[i].rollNo = i + 1;
     }
@@ -108,7 +120,7 @@ Dave 65
 Eve 85
 ```
 
-## Sample Output
+## Output
 ```
 Original List:
 Name    Marks   RollNo
@@ -176,29 +188,6 @@ Bob     56      6
 Total number of swaps performed by Bubble Sort: 5
 ```
 
-## Pseudocode
-1. **Input n** → number of students. 
-
-2. **Dynamically allocate** array of student structures.  
-
-3. **Input** each student's `Name` and `PrevMarks`. Initialize `rollNo` = 0.  
-
-4. **Bubble Sort** (descending by `prevMarks`):  
-   - For each pass, compare adjacent elements and swap if left < right.  
-   - Print array state after each pass.  
-   - If a pass has 0 swaps → break early (array sorted).  
-5. **Assign roll numbers** in sorted order (index+1).  
-
-6. **Display final list and total swaps.**  
-
-7. **Free memory.**
-
-## Expected Output
-```
-Students sorted in descending order of previous marks.
-Topper receives roll no. 1.
-Pass-by-pass states displayed; swap count reported.
-```
 
 ## Dry Run
 **Input:**
