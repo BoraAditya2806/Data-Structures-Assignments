@@ -1,4 +1,4 @@
-# Assignment 6
+# Assignment 5
 
 ## Problem Statement
 Write a C++ program to store a binary number using a **doubly linked list**. Implement the following functions:  
