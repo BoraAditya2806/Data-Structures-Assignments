@@ -1,4 +1,4 @@
-# Assignment 5 - Problem 4: Balanced Parentheses Checker
+# Assignment 4
 
 ## Problem Statement
 
@@ -64,16 +64,13 @@ MAIN:
 ## C++ Code
 
 ```cpp
-
-
 #include <iostream>
 #include <stack>
 #include <string>
 using namespace std;
 
-class ParenthesesChecker_agb { // Class name is also modified for consistency
+class ParenthesesChecker_agb {
 private:
-    // Check if two brackets are matching pair
     bool isMatchingPair_agb(char opening, char closing) {
         if (opening == '(' && closing == ')')
             return true;
@@ -84,36 +81,29 @@ private:
         return false;
     }
 
-    // Check if character is opening bracket
     bool isOpeningBracket_agb(char ch) {
         return (ch == '(' || ch == '{' || ch == '[');
     }
 
-    // Check if character is closing bracket
     bool isClosingBracket_agb(char ch) {
         return (ch == ')' || ch == '}' || ch == ']');
     }
 
 public:
-    // Check if expression is balanced
     bool isBalanced_agb(string expr) {
         stack<char> st;
 
         for (int i = 0; i < expr.length(); i++) {
             char ch = expr[i];
 
-            // If opening bracket, push to stack
             if (isOpeningBracket_agb(ch)) {
                 st.push(ch);
             }
-            // If closing bracket
             else if (isClosingBracket_agb(ch)) {
-                // If stack is empty, no matching opening bracket
                 if (st.empty()) {
                     return false;
                 }
 
-                // Pop and check if it matches
                 char top = st.top();
                 st.pop();
 
@@ -121,21 +111,18 @@ public:
                     return false;
                 }
             }
-            // Ignore other characters (if any)
         }
 
-        // If stack is empty, all brackets are balanced
         return st.empty();
     }
 
-    // Check and display result with step-by-step process
     bool isBalancedWithSteps_agb(string expr) {
         stack<char> st;
         bool balanced = true;
 
         cout << "\n--- Step-by-Step Analysis ---" << endl;
         cout << "Expression: " << expr << endl;
-        cout << "\nStep | Character | Action          | Stack State" << endl;
+        cout << "\nStep | Character | Action           | Stack State" << endl;
         cout << "-----+-----------+------------------+-------------" << endl;
 
         for (int i = 0; i < expr.length(); i++) {
@@ -174,17 +161,17 @@ public:
         }
 
         cout << "\nFinal Stack: ";
-        if (st.empty()) {
+        if (st.empty() && balanced) {
             cout << "Empty" << endl;
+            return true;
+        } else if (balanced && !st.empty()) {
+             displayStack_agb(st);
+             return false;
         } else {
-            displayStack_agb(st);
-            balanced = false;
+             return false;
         }
-
-        return balanced && st.empty();
     }
 
-    // Helper function to display stack
     void displayStack_agb(stack<char> st) {
         if (st.empty()) {
             cout << "Empty" << endl;
