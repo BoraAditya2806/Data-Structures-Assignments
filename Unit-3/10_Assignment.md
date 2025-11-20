@@ -104,7 +104,7 @@ MAIN:
 #include <iomanip>
 using namespace std;
 
-class Call { // Class name is NOT modified
+class Call {
 public:
     int callID;
     string customerName;
@@ -112,7 +112,7 @@ public:
     string issue;
     string priority;
 
-    Call_agb() { // Constructor name modified
+    Call_agb() {
         callID = 0;
         customerName = "";
         phoneNumber = "";
@@ -120,7 +120,7 @@ public:
         priority = "Normal";
     }
 
-    Call_agb(int id, string name, string phone, string iss, string pri = "Normal") { // Constructor name modified
+    Call_agb(int id, string name, string phone, string iss, string pri = "Normal") {
         callID = id;
         customerName = name;
         phoneNumber = phone;
@@ -128,7 +128,7 @@ public:
         priority = pri;
     }
 
-    void display_agb() { // Method name modified
+    void display_agb() {
         cout << setw(8) << callID
              << setw(20) << customerName
              << setw(15) << phoneNumber
@@ -137,18 +137,18 @@ public:
     }
 };
 
-class Node { // Class name is NOT modified
+class Node {
 public:
     Call data;
     Node* next;
 
-    Node_agb(Call c) { // Constructor name modified
+    Node_agb(Call c) {
         data = c;
         next = NULL;
     }
 };
 
-class CallCenterQueue { // Class name is NOT modified
+class CallCenterQueue {
 private:
     Node* front;
     Node* rear;
@@ -156,7 +156,7 @@ private:
     int servedCalls;
 
 public:
-    CallCenterQueue_agb() { // Constructor name modified
+    CallCenterQueue_agb() {
         front = NULL;
         rear = NULL;
         totalCalls = 0;
@@ -165,16 +165,14 @@ public:
         cout << "Call Center Queue System initialized!" << endl;
     }
 
-    // Check if queue is empty
-    bool isEmpty_agb() { // Method name modified
+    bool isEmpty_agb() {
         return front == NULL;
     }
 
-    // Add incoming call to queue
-    void enqueueCall_agb(Call call) { // Method name modified
-        Node* newNode = new Node_agb(call); // Calling postfixed constructor
+    void enqueueCall_agb(Call call) {
+        Node* newNode = new Node_agb(call);
 
-        if (isEmpty_agb()) { // Calling postfixed method
+        if (isEmpty_agb()) {
             front = rear = newNode;
         } else {
             rear->next = newNode;
@@ -187,14 +185,13 @@ public:
              << "' (Call ID: " << call.callID << ")" << endl;
         cout << "Issue: " << call.issue << endl;
         cout << "Priority: " << call.priority << endl;
-        cout << "Position in queue: " << getWaitingCount_agb() << endl; // Calling postfixed method
+        cout << "Position in queue: " << getWaitingCount_agb() << endl;
     }
 
-    // Answer and remove call from queue
-    Call dequeueCall_agb() { // Method name modified
-        if (isEmpty_agb()) { // Calling postfixed method
+    Call dequeueCall_agb() {
+        if (isEmpty_agb()) {
             cout << "\n✓ No calls waiting. System is idle." << endl;
-            return Call_agb(); // Calling postfixed constructor
+            return Call_agb();
         }
 
         Node* temp = front;
@@ -213,14 +210,13 @@ public:
         cout << "Phone: " << call.phoneNumber << endl;
         cout << "Issue: " << call.issue << endl;
         cout << "Priority: " << call.priority << endl;
-        cout << "Remaining calls in queue: " << getWaitingCount_agb() << endl; // Calling postfixed method
+        cout << "Remaining calls in queue: " << getWaitingCount_agb() << endl;
 
         return call;
     }
 
-    // Display next call without answering
-    void displayNextCall_agb() { // Method name modified
-        if (isEmpty_agb()) { // Calling postfixed method
+    void displayNextCall_agb() {
+        if (isEmpty_agb()) {
             cout << "\nNo calls waiting!" << endl;
             return;
         }
@@ -233,9 +229,8 @@ public:
         cout << "Priority: " << front->data.priority << endl;
     }
 
-    // Display all waiting calls
-    void displayWaitingCalls_agb() { // Method name modified
-        if (isEmpty_agb()) { // Calling postfixed method
+    void displayWaitingCalls_agb() {
+        if (isEmpty_agb()) {
             cout << "\n✓ No calls waiting. All clear!" << endl;
             return;
         }
@@ -253,17 +248,16 @@ public:
 
         while (current != NULL) {
             cout << "Queue #" << position << ": ";
-            current->data.display_agb(); // Calling postfixed method
+            current->data.display_agb();
             current = current->next;
             position++;
         }
 
         cout << string(80, '=') << endl;
-        cout << "Total waiting calls: " << getWaitingCount_agb() << endl; // Calling postfixed method
+        cout << "Total waiting calls: " << getWaitingCount_agb() << endl;
     }
 
-    // Get count of waiting calls
-    int getWaitingCount_agb() { // Method name modified
+    int getWaitingCount_agb() {
         int count = 0;
         Node* current = front;
 
@@ -275,12 +269,11 @@ public:
         return count;
     }
 
-    // Display statistics
-    void displayStats_agb() { // Method name modified
+    void displayStats_agb() {
         cout << "\n===== Call Center Statistics =====" << endl;
         cout << "Total calls received: " << totalCalls << endl;
         cout << "Calls served: " << servedCalls << endl;
-        cout << "Calls waiting: " << getWaitingCount_agb() << endl; // Calling postfixed method
+        cout << "Calls waiting: " << getWaitingCount_agb() << endl;
 
         if (totalCalls > 0) {
             float efficiency = ((float)servedCalls / totalCalls) * 100;
@@ -288,26 +281,28 @@ public:
                  << efficiency << "%" << endl;
         }
 
-        if (isEmpty_agb()) { // Calling postfixed method
+        if (isEmpty_agb()) {
             cout << "Status: ALL CLEAR (No waiting calls)" << endl;
         } else {
-            cout << "Status: ACTIVE (" << getWaitingCount_agb() // Calling postfixed method
+            cout << "Status: ACTIVE (" << getWaitingCount_agb()
                  << " calls waiting)" << endl;
         }
     }
 
-    // Destructor
-    ~CallCenterQueue_agb() { // Destructor name modified (following pattern)
-        while (!isEmpty_agb()) { // Calling postfixed method
-            dequeueCall_agb(); // Calling postfixed method
+    ~CallCenterQueue_agb() {
+        while (!isEmpty_agb()) {
+            Node* temp = front;
+            front = front->next;
+            delete temp;
         }
+        rear = NULL;
     }
 };
 
-int main_agb() { // Function name modified
-    CallCenterQueue_agb callCenter_agb; // Variable name and constructor call modified
+int main_agb() {
+    CallCenterQueue_agb callCenter_agb;
     int choice;
-    int callIDCounter_agb = 1001; // Variable name modified
+    int callIDCounter_agb = 1001;
 
     do {
         cout << "\n===== Call Center Queue System =====" << endl;
@@ -335,33 +330,33 @@ int main_agb() { // Function name modified
                 cout << "Enter priority (Low/Normal/High/Urgent): ";
                 getline(cin, priority);
 
-                Call call(callIDCounter_agb++, name, phone, issue, priority); // Variable name modified
-                callCenter_agb.enqueueCall_agb(call); // Calling postfixed method
+                Call call(callIDCounter_agb++, name, phone, issue, priority);
+                callCenter_agb.enqueueCall_agb(call);
                 break;
             }
 
             case 2:
-                callCenter_agb.dequeueCall_agb(); // Calling postfixed method
+                callCenter_agb.dequeueCall_agb();
                 break;
 
             case 3:
-                callCenter_agb.displayNextCall_agb(); // Calling postfixed method
+                callCenter_agb.displayNextCall_agb();
                 break;
 
             case 4:
-                callCenter_agb.displayWaitingCalls_agb(); // Calling postfixed method
+                callCenter_agb.displayWaitingCalls_agb();
                 break;
 
             case 5:
-                callCenter_agb.displayStats_agb(); // Calling postfixed method
+                callCenter_agb.displayStats_agb();
                 break;
 
             case 6:
                 cout << "\n===== Closing Call Center =====" << endl;
-                callCenter_agb.displayStats_agb(); // Calling postfixed method
+                callCenter_agb.displayStats_agb();
 
-                if (callCenter_agb.getWaitingCount_agb() > 0) { // Calling postfixed method
-                    cout << "\nWarning: " << callCenter_agb.getWaitingCount_agb() // Calling postfixed method
+                if (callCenter_agb.getWaitingCount_agb() > 0) {
+                    cout << "\nWarning: " << callCenter_agb.getWaitingCount_agb()
                          << " calls still waiting!" << endl;
                 }
 
