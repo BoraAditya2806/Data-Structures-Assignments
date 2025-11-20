@@ -63,64 +63,61 @@ MAIN:
 
 ## C++ Code
 
-```cpp#include <iostream>
+```cpp
+#include <iostream>
 #include <climits>
 using namespace std;
 
-class Node { // Class name is NOT modified
+class Node {
 public:
     int data;
     Node* left;
     Node* right;
 
-    Node_agb(int value) { // Constructor name modified
+    Node_agb(int value) {
         data = value;
         left = NULL;
         right = NULL;
     }
 };
 
-class BST { // Class name is NOT modified
+class BST {
 private:
     Node* root;
 
-    // Recursive insert
-    Node* insertRecursive_agb(Node* node, int value) { // Method name modified
+    Node* insertRecursive_agb(Node* node, int value) {
         if (node == NULL) {
-            return new Node_agb(value); // Calling postfixed constructor
+            return new Node_agb(value);
         }
 
         if (value < node->data) {
-            node->left = insertRecursive_agb(node->left, value); // Calling postfixed method
+            node->left = insertRecursive_agb(node->left, value);
         } else if (value > node->data) {
-            node->right = insertRecursive_agb(node->right, value); // Calling postfixed method
+            node->right = insertRecursive_agb(node->right, value);
         }
 
         return node;
     }
 
-    // Inorder traversal
-    void inorderHelper_agb(Node* node) { // Method name modified
+    void inorderHelper_agb(Node* node) {
         if (node != NULL) {
-            inorderHelper_agb(node->left); // Calling postfixed method
+            inorderHelper_agb(node->left);
             cout << node->data << " ";
-            inorderHelper_agb(node->right); // Calling postfixed method
+            inorderHelper_agb(node->right);
         }
     }
 
 public:
-    BST_agb() { // Constructor name modified
+    BST_agb() {
         root = NULL;
     }
 
-    // Insert value
-    void insert_agb(int value) { // Method name modified
-        root = insertRecursive_agb(root, value); // Calling postfixed method
+    void insert_agb(int value) {
+        root = insertRecursive_agb(root, value);
         cout << "✓ Inserted " << value << endl;
     }
 
-    // Find minimum using iterative approach
-    Node* findMinIterative_agb() { // Method name modified
+    Node* findMinIterative_agb() {
         if (root == NULL) {
             cout << "Tree is empty!" << endl;
             return NULL;
@@ -134,8 +131,7 @@ public:
         return current;
     }
 
-    // Find maximum using iterative approach
-    Node* findMaxIterative_agb() { // Method name modified
+    Node* findMaxIterative_agb() {
         if (root == NULL) {
             cout << "Tree is empty!" << endl;
             return NULL;
@@ -149,8 +145,7 @@ public:
         return current;
     }
 
-    // Find minimum using recursive approach
-    Node* findMinRecursive_agb(Node* node) { // Method name modified
+    Node* findMinRecursive_agb(Node* node) {
         if (node == NULL) {
             return NULL;
         }
@@ -159,11 +154,10 @@ public:
             return node;
         }
 
-        return findMinRecursive_agb(node->left); // Calling postfixed method
+        return findMinRecursive_agb(node->left);
     }
 
-    // Find maximum using recursive approach
-    Node* findMaxRecursive_agb(Node* node) { // Method name modified
+    Node* findMaxRecursive_agb(Node* node) {
         if (node == NULL) {
             return NULL;
         }
@@ -172,61 +166,58 @@ public:
             return node;
         }
 
-        return findMaxRecursive_agb(node->right); // Calling postfixed method
+        return findMaxRecursive_agb(node->right);
     }
 
-    // Wrapper functions for easier use
-    int getMinIterative_agb() { // Method name modified
-        Node* minNode_agb = findMinIterative_agb(); // Variable name and postfixed method call modified
-        if (minNode_agb != NULL) { // Variable name modified
-            return minNode_agb->data; // Variable name modified
+    int getMinIterative_agb() {
+        Node* minNode_agb = findMinIterative_agb();
+        if (minNode_agb != NULL) {
+            return minNode_agb->data;
         }
-        return INT_MIN; // Error value
+        return INT_MIN;
     }
 
-    int getMaxIterative_agb() { // Method name modified
-        Node* maxNode_agb = findMaxIterative_agb(); // Variable name and postfixed method call modified
-        if (maxNode_agb != NULL) { // Variable name modified
-            return maxNode_agb->data; // Variable name modified
+    int getMaxIterative_agb() {
+        Node* maxNode_agb = findMaxIterative_agb();
+        if (maxNode_agb != NULL) {
+            return maxNode_agb->data;
         }
-        return INT_MAX; // Error value
+        return INT_MAX;
     }
 
-    int getMinRecursive_agb() { // Method name modified
-        Node* minNode_agb = findMinRecursive_agb(root); // Variable name and postfixed method call modified
-        if (minNode_agb != NULL) { // Variable name modified
-            return minNode_agb->data; // Variable name modified
+    int getMinRecursive_agb() {
+        Node* minNode_agb = findMinRecursive_agb(root);
+        if (minNode_agb != NULL) {
+            return minNode_agb->data;
         }
-        return INT_MIN; // Error value
+        return INT_MIN;
     }
 
-    int getMaxRecursive_agb() { // Method name modified
-        Node* maxNode_agb = findMaxRecursive_agb(root); // Variable name and postfixed method call modified
-        if (maxNode_agb != NULL) { // Variable name modified
-            return maxNode_agb->data; // Variable name modified
+    int getMaxRecursive_agb() {
+        Node* maxNode_agb = findMaxRecursive_agb(root);
+        if (maxNode_agb != NULL) {
+            return maxNode_agb->data;
         }
-        return INT_MAX; // Error value
+        return INT_MAX;
     }
 
-    // Inorder traversal
-    void inorder_agb() { // Method name modified
+    void inorder_agb() {
         cout << "Inorder (sorted): ";
-        inorderHelper_agb(root); // Calling postfixed method
+        inorderHelper_agb(root);
         cout << endl;
     }
 
-    // Display tree structure
-    void displayTree_agb() { // Method name modified
+    void displayTree_agb() {
         if (root == NULL) {
             cout << "Tree is empty!" << endl;
             return;
         }
 
         cout << "\nBST Structure:" << endl;
-        displayTreeHelper_agb(root, "", false); // Calling postfixed method
+        displayTreeHelper_agb(root, "", false);
     }
 
-    void displayTreeHelper_agb(Node* node, string prefix, bool isLeft) { // Method name modified
+    void displayTreeHelper_agb(Node* node, string prefix, bool isLeft) {
         if (node == NULL) return;
 
         cout << prefix;
@@ -235,21 +226,20 @@ public:
 
         if (node->left != NULL || node->right != NULL) {
             if (node->left != NULL) {
-                displayTreeHelper_agb(node->left, prefix + (isLeft ? "│   " : "    "), true); // Calling postfixed method
+                displayTreeHelper_agb(node->left, prefix + (isLeft ? "│   " : "    "), true);
             } else if (node->right != NULL) {
                 cout << prefix << (isLeft ? "│   " : "    ") << "├──NULL" << endl;
             }
 
             if (node->right != NULL) {
-                displayTreeHelper_agb(node->right, prefix + (isLeft ? "│   " : "    "), false); // Calling postfixed method
+                displayTreeHelper_agb(node->right, prefix + (isLeft ? "│   " : "    "), false);
             } else if (node->left != NULL) {
                 cout << prefix << (isLeft ? "│   " : "    ") << "└──NULL" << endl;
             }
         }
     }
 
-    // Search for a value
-    bool search_agb(int value) { // Method name modified
+    bool search_agb(int value) {
         Node* current = root;
         while (current != NULL) {
             if (value == current->data) {
@@ -264,8 +254,8 @@ public:
     }
 };
 
-int main_agb() { // Function name modified
-    BST_agb tree_agb; // Variable name and constructor call modified
+int main_agb() {
+    BST_agb tree_agb;
     int choice, value;
 
     do {
@@ -287,53 +277,53 @@ int main_agb() { // Function name modified
             case 1:
                 cout << "Enter value to insert: ";
                 cin >> value;
-                tree_agb.insert_agb(value); // Calling postfixed method
+                tree_agb.insert_agb(value);
                 break;
 
             case 2: {
-                Node* minNode_agb = tree_agb.findMinIterative_agb(); // Variable name and postfixed method call modified
-                if (minNode_agb != NULL) { // Variable name modified
-                    cout << "\nMinimum value (Iterative): " << minNode_agb->data << endl; // Variable name modified
+                Node* minNode_agb = tree_agb.findMinIterative_agb();
+                if (minNode_agb != NULL) {
+                    cout << "\nMinimum value (Iterative): " << minNode_agb->data << endl;
                 }
                 break;
             }
 
             case 3: {
-                Node* maxNode_agb = tree_agb.findMaxIterative_agb(); // Variable name and postfixed method call modified
-                if (maxNode_agb != NULL) { // Variable name modified
-                    cout << "\nMaximum value (Iterative): " << maxNode_agb->data << endl; // Variable name modified
+                Node* maxNode_agb = tree_agb.findMaxIterative_agb();
+                if (maxNode_agb != NULL) {
+                    cout << "\nMaximum value (Iterative): " << maxNode_agb->data << endl;
                 }
                 break;
             }
 
             case 4: {
-                Node* minNode_agb = tree_agb.findMinRecursive_agb(tree_agb.root); // Variable name and postfixed method call modified (note: accessing private member 'root' is usually bad practice, but maintained for literal code preservation)
-                if (minNode_agb != NULL) { // Variable name modified
-                    cout << "\nMinimum value (Recursive): " << minNode_agb->data << endl; // Variable name modified
+                Node* minNode_agb = tree_agb.findMinRecursive_agb(tree_agb.root);
+                if (minNode_agb != NULL) {
+                    cout << "\nMinimum value (Recursive): " << minNode_agb->data << endl;
                 }
                 break;
             }
 
             case 5: {
-                Node* maxNode_agb = tree_agb.findMaxRecursive_agb(tree_agb.root); // Variable name and postfixed method call modified
-                if (maxNode_agb != NULL) { // Variable name modified
-                    cout << "\nMaximum value (Recursive): " << maxNode_agb->data << endl; // Variable name modified
+                Node* maxNode_agb = tree_agb.findMaxRecursive_agb(tree_agb.root);
+                if (maxNode_agb != NULL) {
+                    cout << "\nMaximum value (Recursive): " << maxNode_agb->data << endl;
                 }
                 break;
             }
 
             case 6:
-                tree_agb.displayTree_agb(); // Calling postfixed method
+                tree_agb.displayTree_agb();
                 break;
 
             case 7:
-                tree_agb.inorder_agb(); // Calling postfixed method
+                tree_agb.inorder_agb();
                 break;
 
             case 8:
                 cout << "Enter value to search: ";
                 cin >> value;
-                if (tree_agb.search_agb(value)) { // Calling postfixed method
+                if (tree_agb.search_agb(value)) {
                     cout << "✓ Value " << value << " found in tree!" << endl;
                 } else {
                     cout << "✗ Value " << value << " not found!" << endl;
@@ -341,15 +331,15 @@ int main_agb() { // Function name modified
                 break;
 
             case 9: {
-                int values_agb[] = {50, 30, 70, 20, 40, 60, 80, 10, 25, 35, 45}; // Variable name modified
+                int values_agb[] = {50, 30, 70, 20, 40, 60, 80, 10, 25, 35, 45};
                 cout << "Creating sample tree with values: ";
                 for (int i = 0; i < 11; i++) {
-                    cout << values_agb[i] << " "; // Variable name modified
+                    cout << values_agb[i] << " ";
                 }
                 cout << endl;
 
                 for (int i = 0; i < 11; i++) {
-                    tree_agb.insert_agb(values_agb[i]); // Variable name and postfixed method call modified
+                    tree_agb.insert_agb(values_agb[i]);
                 }
                 break;
             }
