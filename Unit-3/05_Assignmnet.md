@@ -77,15 +77,13 @@ MAIN:
 #include <cmath>
 using namespace std;
 
-class PostfixEvaluator { // Class name is NOT modified
+class PostfixEvaluator {
 private:
-    // Check if character is an operator
-    bool isOperator_agb(char ch) { // Method name is modified
+    bool isOperator_agb(char ch) {
         return (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^');
     }
 
-    // Perform arithmetic operation
-    double performOperation_agb(double operand1, double operand2, char op) { // Method name is modified
+    double performOperation_agb(double operand1, double operand2, char op) {
         switch (op) {
             case '+':
                 return operand1 + operand2;
@@ -107,23 +105,19 @@ private:
     }
 
 public:
-    // Evaluate postfix expression
-    double evaluate_agb(string expr) { // Method name is modified
+    double evaluate_agb(string expr) {
         stack<double> st;
 
         for (int i = 0; i < expr.length(); i++) {
             char ch = expr[i];
 
-            // Skip spaces
             if (ch == ' ')
                 continue;
 
-            // If operand (digit), push to stack
             if (isdigit(ch)) {
-                st.push(ch - '0');  // Convert char to int
+                st.push(ch - '0');
             }
-            // If operator, pop two operands and compute
-            else if (isOperator_agb(ch)) { // Calling postfixed method
+            else if (isOperator_agb(ch)) {
                 if (st.size() < 2) {
                     cout << "Error: Invalid expression (insufficient operands)" << endl;
                     return 0;
@@ -134,7 +128,7 @@ public:
                 double operand1 = st.top();
                 st.pop();
 
-                double result = performOperation_agb(operand1, operand2, ch); // Calling postfixed method
+                double result = performOperation_agb(operand1, operand2, ch);
                 st.push(result);
             }
             else {
@@ -143,7 +137,6 @@ public:
             }
         }
 
-        // Final result should be the only element in stack
         if (st.size() != 1) {
             cout << "Error: Invalid expression (multiple values remaining)" << endl;
             return 0;
@@ -152,8 +145,7 @@ public:
         return st.top();
     }
 
-    // Evaluate with step-by-step display
-    double evaluateWithSteps_agb(string expr) { // Method name is modified
+    double evaluateWithSteps_agb(string expr) {
         stack<double> st;
 
         cout << "\n--- Step-by-Step Evaluation ---" << endl;
@@ -173,12 +165,12 @@ public:
 
             if (isdigit(ch)) {
                 st.push(ch - '0');
-                cout << "Push " << (ch - '0') << "             | ";
-                displayStack_agb(st); // Calling postfixed method
+                cout << "Push " << (ch - '0') << "            | ";
+                displayStack_agb(st);
             }
-            else if (isOperator_agb(ch)) { // Calling postfixed method
+            else if (isOperator_agb(ch)) {
                 if (st.size() < 2) {
-                    cout << "ERROR               | Insufficient operands" << endl;
+                    cout << "ERROR                | Insufficient operands" << endl;
                     return 0;
                 }
 
@@ -187,13 +179,17 @@ public:
                 double op1 = st.top();
                 st.pop();
 
-                double result = performOperation_agb(op1, op2, ch); // Calling postfixed method
+                double result = performOperation_agb(op1, op2, ch);
 
                 cout << op1 << " " << ch << " " << op2 << " = " << result;
                 cout << "     | ";
 
                 st.push(result);
-                displayStack_agb(st); // Calling postfixed method
+                displayStack_agb(st);
+            }
+            else {
+                cout << "ERROR                | Invalid character" << endl;
+                return 0;
             }
         }
 
@@ -207,8 +203,7 @@ public:
         }
     }
 
-    // Display stack contents
-    void displayStack_agb(stack<double> st) { // Method name is modified
+    void displayStack_agb(stack<double> st) {
         if (st.empty()) {
             cout << "Empty" << endl;
             return;
@@ -230,8 +225,8 @@ public:
     }
 };
 
-int main_agb() { // Function name is modified
-    PostfixEvaluator evaluator_agb; // Variable name is modified
+int main_agb() {
+    PostfixEvaluator evaluator_agb;
     string expression;
     int choice;
 
@@ -250,7 +245,7 @@ int main_agb() { // Function name is modified
                 cout << "Enter postfix expression: ";
                 getline(cin, expression);
                 {
-                    double result = evaluator_agb.evaluate_agb(expression); // Calling postfixed method
+                    double result = evaluator_agb.evaluate_agb(expression);
                     cout << "Result: " << result << endl;
                 }
                 break;
@@ -258,26 +253,26 @@ int main_agb() { // Function name is modified
             case 2:
                 cout << "Enter postfix expression: ";
                 getline(cin, expression);
-                evaluator_agb.evaluateWithSteps_agb(expression); // Calling postfixed method
+                evaluator_agb.evaluateWithSteps_agb(expression);
                 break;
 
             case 3:
                 {
                     string examples[] = {
-                        "23+",            // 2+3 = 5
-                        "23*5+",          // 2*3+5 = 11
-                        "231*+9-",        // 2+3*1-9 = -4
-                        "53+82-*",        // (5+3)*(8-2) = 48
-                        "62/3-42*+",      // 6/2-3+4*2 = 8
-                        "93/32/+",        // 9/3+3/2 = 4.5
-                        "23^",            // 2^3 = 8
-                        "524*+36/-"       // (5+2*4)/(3-6) = -4.33
+                        "23+",
+                        "23*5+",
+                        "231*+9-",
+                        "53+82-*",
+                        "62/3-42*+",
+                        "93/32/+",
+                        "23^",
+                        "524*+36/-"
                     };
 
                     cout << "\n--- Testing Predefined Examples ---" << endl;
                     for (int i = 0; i < 8; i++) {
                         cout << "\n" << (i+1) << ". Expression: " << examples[i] << endl;
-                        double result = evaluator_agb.evaluate_agb(examples[i]); // Calling postfixed method
+                        double result = evaluator_agb.evaluate_agb(examples[i]);
                         cout << "    Result: " << result << endl;
                     }
                 }
