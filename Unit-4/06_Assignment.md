@@ -70,7 +70,7 @@ MAIN:
 #include <iomanip>
 using namespace std;
 
-class Student { // Class name is NOT modified
+class Student {
 public:
     string name;
     int rollNumber;
@@ -78,138 +78,120 @@ public:
     Student* left;
     Student* right;
 
-    Student_agb(string n_agb, float marks_agb) { // Constructor name and parameter names modified
-        name = n_agb; // Variable name modified
+    Student_agb(string n_agb, float marks_agb) {
+        name = n_agb;
         rollNumber = 0;
-        previousYearMarks = marks_agb; // Variable name modified
+        previousYearMarks = marks_agb;
         left = NULL;
         right = NULL;
     }
 };
 
-class StudentRollAssigner { // Class name is NOT modified
+class StudentRollAssigner {
 private:
     Student* root;
 
-    // Insert student based on marks (higher marks = higher priority)
-    Student* insertRecursive_agb(Student* node, string name_agb, float marks_agb) { // Method name and parameter names modified
+    Student* insertRecursive_agb(Student* node, string name_agb, float marks_agb) {
         if (node == NULL) {
-            return new Student_agb(name_agb, marks_agb); // Calling postfixed constructor with modified variable names
+            return new Student_agb(name_agb, marks_agb);
         }
 
-        // For descending order (topper first), higher marks go to left
-        if (marks_agb > node->previousYearMarks) { // Variable name modified
-            node->left = insertRecursive_agb(node->left, name_agb, marks_agb); // Calling postfixed method with modified variable names
-        } else if (marks_agb < node->previousYearMarks) { // Variable name modified
-            node->right = insertRecursive_agb(node->right, name_agb, marks_agb); // Calling postfixed method with modified variable names
+        if (marks_agb > node->previousYearMarks) {
+            node->left = insertRecursive_agb(node->left, name_agb, marks_agb);
+        } else if (marks_agb < node->previousYearMarks) {
+            node->right = insertRecursive_agb(node->right, name_agb, marks_agb);
         } else {
-            // Handle duplicate marks - insert to right
-            node->right = insertRecursive_agb(node->right, name_agb, marks_agb); // Calling postfixed method with modified variable names
+            node->right = insertRecursive_agb(node->right, name_agb, marks_agb);
         }
 
         return node;
     }
 
-    // Assign roll numbers in descending order of marks
-    int assignRollNumbersRecursive_agb(Student* node, int rollCounter_agb) { // Method name and parameter name modified
+    int assignRollNumbersRecursive_agb(Student* node, int rollCounter_agb) {
         if (node == NULL) {
-            return rollCounter_agb; // Variable name modified
+            return rollCounter_agb;
         }
 
-        // Left subtree first (higher marks)
-        rollCounter_agb = assignRollNumbersRecursive_agb(node->left, rollCounter_agb); // Variable name and postfixed method call modified
+        rollCounter_agb = assignRollNumbersRecursive_agb(node->left, rollCounter_agb);
 
-        // Assign current node
-        node->rollNumber = rollCounter_agb; // Variable name modified
-        rollCounter_agb++; // Variable name modified
+        node->rollNumber = rollCounter_agb;
+        rollCounter_agb++;
 
-        // Right subtree (lower marks)
-        rollCounter_agb = assignRollNumbersRecursive_agb(node->right, rollCounter_agb); // Variable name and postfixed method call modified
+        rollCounter_agb = assignRollNumbersRecursive_agb(node->right, rollCounter_agb);
 
-        return rollCounter_agb; // Variable name modified
+        return rollCounter_agb;
     }
 
-    // Display students in roll number order
-    void displayStudentsRecursive_agb(Student* node) { // Method name modified
+    void displayStudentsRecursive_agb(Student* node) {
         if (node != NULL) {
-            displayStudentsRecursive_agb(node->left); // Calling postfixed method
+            displayStudentsRecursive_agb(node->left);
             cout << setw(15) << node->name
                  << setw(10) << node->rollNumber
                  << setw(15) << fixed << setprecision(2)
                  << node->previousYearMarks << endl;
-            displayStudentsRecursive_agb(node->right); // Calling postfixed method
+            displayStudentsRecursive_agb(node->right);
         }
     }
 
-    // Display students with marks descending order
-    void displayByMarksRecursive_agb(Student* node) { // Method name modified
+    void displayByMarksRecursive_agb(Student* node) {
         if (node != NULL) {
-            // For marks descending: left -> root -> right
-            // wait, in insert, higher marks are on left. So inorder (left->root->right) gives descending marks.
-            // But if we want *descending* marks order, we need right->root->left. Reversing based on insert logic:
-            // High marks on Left. So Inorder (Left, Root, Right) gives high-to-low.
-            displayByMarksRecursive_agb(node->left); // Calling postfixed method
+            displayByMarksRecursive_agb(node->left);
             cout << setw(15) << node->name
                  << setw(15) << fixed << setprecision(2)
                  << node->previousYearMarks
                  << setw(10) << node->rollNumber << endl;
-            displayByMarksRecursive_agb(node->right); // Calling postfixed method
+            displayByMarksRecursive_agb(node->right);
         }
     }
 
-    // Count total students
-    int countStudentsRecursive_agb(Student* node) { // Method name modified
+    int countStudentsRecursive_agb(Student* node) {
         if (node == NULL) {
             return 0;
         }
-        return 1 + countStudentsRecursive_agb(node->left) + countStudentsRecursive_agb(node->right); // Calling postfixed method
+        return 1 + countStudentsRecursive_agb(node->left) + countStudentsRecursive_agb(node->right);
     }
 
-    // Find student by name
-    Student* findStudentRecursive_agb(Student* node, string name_agb) { // Method name and parameter name modified
+    Student* findStudentRecursive_agb(Student* node, string name_agb) {
         if (node == NULL) {
             return NULL;
         }
 
-        if (node->name == name_agb) { // Variable name modified
+        if (node->name == name_agb) {
             return node;
         }
 
-        Student* found_agb = findStudentRecursive_agb(node->left, name_agb); // Variable name and postfixed method call modified
-        if (found_agb != NULL) { // Variable name modified
-            return found_agb; // Variable name modified
+        Student* found_agb = findStudentRecursive_agb(node->left, name_agb);
+        if (found_agb != NULL) {
+            return found_agb;
         }
 
-        return findStudentRecursive_agb(node->right, name_agb); // Calling postfixed method
+        return findStudentRecursive_agb(node->right, name_agb);
     }
 
 public:
-    StudentRollAssigner_agb() { // Constructor name modified
+    StudentRollAssigner_agb() {
         root = NULL;
     }
 
-    // Insert student
-    void insertStudent_agb(string name_agb, float marks_agb) { // Method name and parameter names modified
-        root = insertRecursive_agb(root, name_agb, marks_agb); // Calling postfixed method with modified variable names
-        cout << "✓ Added student '" << name_agb << "' with marks " // Variable name modified
-             << fixed << setprecision(2) << marks_agb << endl; // Variable name modified
+    void insertStudent_agb(string name_agb, float marks_agb) {
+        root = insertRecursive_agb(root, name_agb, marks_agb);
+        cout << "✓ Added student '" << name_agb << "' with marks "
+             << fixed << setprecision(2) << marks_agb << endl;
     }
 
-    // Assign roll numbers
-    void assignRollNumbers_agb() { // Method name modified
+    void assignRollNumbers_agb() {
         if (root == NULL) {
             cout << "No students to assign roll numbers!" << endl;
             return;
         }
 
         cout << "\n--- Assigning Roll Numbers ---" << endl;
-        int rollCounter_agb = 1; // Variable name modified
-        assignRollNumbersRecursive_agb(root, rollCounter_agb); // Calling postfixed method with modified variable name
+        int rollCounter_agb = 1;
+        assignRollNumbersRecursive_agb(root, rollCounter_agb);
         cout << "✓ Roll numbers assigned successfully!" << endl;
     }
 
-    // Display students by roll number
-    void displayByRollNumber_agb() { // Method name modified
+    void displayByRollNumber_agb() {
         if (root == NULL) {
             cout << "No students found!" << endl;
             return;
@@ -221,12 +203,11 @@ public:
              << setw(15) << "Prev Marks" << endl;
         cout << string(40, '-') << endl;
 
-        displayStudentsRecursive_agb(root); // Calling postfixed method
+        displayStudentsRecursive_agb(root);
         cout << string(40, '=') << endl;
     }
 
-    // Display students by marks (descending)
-    void displayByMarks_agb() { // Method name modified
+    void displayByMarks_agb() {
         if (root == NULL) {
             cout << "No students found!" << endl;
             return;
@@ -238,14 +219,13 @@ public:
              << setw(10) << "Roll No" << endl;
         cout << string(40, '-') << endl;
 
-        displayByMarksRecursive_agb(root); // Calling postfixed method
+        displayByMarksRecursive_agb(root);
         cout << string(40, '=') << endl;
     }
 
-    // Display statistics
-    void displayStats_agb() { // Method name modified
+    void displayStats_agb() {
         cout << "\n===== Class Statistics =====" << endl;
-        cout << "Total students: " << countStudentsRecursive_agb(root) << endl; // Calling postfixed method
+        cout << "Total students: " << countStudentsRecursive_agb(root) << endl;
 
         if (root != NULL) {
             cout << "Topper: " << root->name
@@ -255,23 +235,22 @@ public:
         }
     }
 
-    // Find student
-    void findStudent_agb(string name_agb) { // Method name and parameter name modified
-        Student* student_agb = findStudentRecursive_agb(root, name_agb); // Variable name and postfixed method call modified
-        if (student_agb != NULL) { // Variable name modified
+    void findStudent_agb(string name_agb) {
+        Student* student_agb = findStudentRecursive_agb(root, name_agb);
+        if (student_agb != NULL) {
             cout << "\nStudent found:" << endl;
-            cout << "Name: " << student_agb->name << endl; // Variable name modified
-            cout << "Roll Number: " << student_agb->rollNumber << endl; // Variable name modified
+            cout << "Name: " << student_agb->name << endl;
+            cout << "Roll Number: " << student_agb->rollNumber << endl;
             cout << "Previous Year Marks: " << fixed << setprecision(2)
-                 << student_agb->previousYearMarks << endl; // Variable name modified
+                 << student_agb->previousYearMarks << endl;
         } else {
-            cout << "Student '" << name_agb << "' not found!" << endl; // Variable name modified
+            cout << "Student '" << name_agb << "' not found!" << endl;
         }
     }
 };
 
-int main_agb() { // Function name modified
-    StudentRollAssigner_agb assigner_agb; // Variable name and constructor call modified
+int main_agb() {
+    StudentRollAssigner_agb assigner_agb;
     int choice;
 
     do {
@@ -290,16 +269,16 @@ int main_agb() { // Function name modified
 
         switch (choice) {
             case 1: {
-                string name_agb; // Variable name modified
-                float marks_agb; // Variable name modified
+                string name_agb;
+                float marks_agb;
 
                 cout << "Enter student name: ";
-                getline(cin, name_agb); // Variable name modified
+                getline(cin, name_agb);
                 cout << "Enter previous year marks: ";
-                cin >> marks_agb; // Variable name modified
+                cin >> marks_agb;
 
-                if (marks_agb >= 0 && marks_agb <= 100) { // Variable name modified
-                    assigner_agb.insertStudent_agb(name_agb, marks_agb); // Postfixed method call with modified variable names
+                if (marks_agb >= 0 && marks_agb <= 100) {
+                    assigner_agb.insertStudent_agb(name_agb, marks_agb);
                 } else {
                     cout << "Invalid marks! Please enter between 0-100." << endl;
                 }
@@ -307,39 +286,38 @@ int main_agb() { // Function name modified
             }
 
             case 2:
-                assigner_agb.assignRollNumbers_agb(); // Calling postfixed method
+                assigner_agb.assignRollNumbers_agb();
                 break;
 
             case 3:
-                assigner_agb.displayByRollNumber_agb(); // Calling postfixed method
+                assigner_agb.displayByRollNumber_agb();
                 break;
 
             case 4:
-                assigner_agb.displayByMarks_agb(); // Calling postfixed method
+                assigner_agb.displayByMarks_agb();
                 break;
 
             case 5:
-                assigner_agb.displayStats_agb(); // Calling postfixed method
+                assigner_agb.displayStats_agb();
                 break;
 
             case 6: {
-                string name_agb; // Variable name modified
+                string name_agb;
                 cout << "Enter student name to find: ";
-                getline(cin, name_agb); // Variable name modified
-                assigner_agb.findStudent_agb(name_agb); // Postfixed method call with modified variable name
+                getline(cin, name_agb);
+                assigner_agb.findStudent_agb(name_agb);
                 break;
             }
 
             case 7: {
-                // Sample students with different marks
-                string names_agb[] = {"Alice Johnson", "Bob Smith", "Charlie Brown", // Variable name modified
+                string names_agb[] = {"Alice Johnson", "Bob Smith", "Charlie Brown",
                                      "Diana Prince", "Edward Norton", "Fiona Gallagher",
                                      "George Wilson", "Helen Carter", "Ian Malcolm"};
-                float marks_agb[] = {95.5, 87.2, 92.8, 78.5, 89.0, 94.3, 82.1, 96.7, 85.4}; // Variable name modified
+                float marks_agb[] = {95.5, 87.2, 92.8, 78.5, 89.0, 94.3, 82.1, 96.7, 85.4};
 
                 cout << "Adding sample students:" << endl;
                 for (int i = 0; i < 9; i++) {
-                    assigner_agb.insertStudent_agb(names_agb[i], marks_agb[i]); // Postfixed method call with modified variable names
+                    assigner_agb.insertStudent_agb(names_agb[i], marks_agb[i]);
                 }
                 break;
             }
