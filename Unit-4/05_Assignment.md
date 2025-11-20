@@ -70,193 +70,163 @@ MAIN:
 #include <iostream>
 using namespace std;
 
-class Node { // Class name is NOT modified
+class Node {
 public:
     int data;
     Node* left;
     Node* right;
 
-    Node_agb(int value) { // Constructor name modified
+    Node_agb(int value) {
         data = value;
         left = NULL;
         right = NULL;
     }
 };
 
-class BST { // Class name is NOT modified
+class BST {
 private:
     Node* root;
 
-    // Recursive insert
-    Node* insertRecursive_agb(Node* node, int value) { // Method name modified
+    Node* insertRecursive_agb(Node* node, int value) {
         if (node == NULL) {
-            return new Node_agb(value); // Calling postfixed constructor
+            return new Node_agb(value);
         }
 
         if (value < node->data) {
-            node->left = insertRecursive_agb(node->left, value); // Calling postfixed method
+            node->left = insertRecursive_agb(node->left, value);
         } else if (value > node->data) {
-            node->right = insertRecursive_agb(node->right, value); // Calling postfixed method
+            node->right = insertRecursive_agb(node->right, value);
         }
 
         return node;
     }
 
-    // Inorder traversal (Recursive)
-    void inorderRecursive_agb(Node* node) { // Method name modified
+    void inorderRecursive_agb(Node* node) {
         if (node != NULL) {
-            inorderRecursive_agb(node->left); // Calling postfixed method
+            inorderRecursive_agb(node->left);
             cout << node->data << " ";
-            inorderRecursive_agb(node->right); // Calling postfixed method
+            inorderRecursive_agb(node->right);
         }
     }
 
-    // Preorder traversal (Recursive)
-    void preorderRecursive_agb(Node* node) { // Method name modified
+    void preorderRecursive_agb(Node* node) {
         if (node != NULL) {
             cout << node->data << " ";
-            preorderRecursive_agb(node->left); // Calling postfixed method
-            preorderRecursive_agb(node->right); // Calling postfixed method
+            preorderRecursive_agb(node->left);
+            preorderRecursive_agb(node->right);
         }
     }
 
-    // Postorder traversal (Recursive)
-    void postorderRecursive_agb(Node* node) { // Method name modified
+    void postorderRecursive_agb(Node* node) {
         if (node != NULL) {
-            postorderRecursive_agb(node->left); // Calling postfixed method
-            postorderRecursive_agb(node->right); // Calling postfixed method
+            postorderRecursive_agb(node->left);
+            postorderRecursive_agb(node->right);
             cout << node->data << " ";
         }
     }
 
-    // Count leaf nodes (Recursive)
-    int countLeafNodesRecursive_agb(Node* node) { // Method name modified
+    int countLeafNodesRecursive_agb(Node* node) {
         if (node == NULL) {
             return 0;
         }
-
-        // If it's a leaf node
         if (node->left == NULL && node->right == NULL) {
             return 1;
         }
-
-        // Recursively count in left and right subtrees
-        return countLeafNodesRecursive_agb(node->left) + countLeafNodesRecursive_agb(node->right); // Calling postfixed method
+        return countLeafNodesRecursive_agb(node->left) + countLeafNodesRecursive_agb(node->right);
     }
 
-    // Create mirror image (Recursive)
-    void mirrorRecursive_agb(Node* node) { // Method name modified
-        if (node == NULL) {
-            return;
-        }
+    void mirrorRecursive_agb(Node* node) {
+        if (node == NULL) return;
 
-        // Swap left and right children
-        Node* temp_agb = node->left; // Variable name modified
+        Node* temp_agb = node->left;
         node->left = node->right;
-        node->right = temp_agb; // Variable name modified
+        node->right = temp_agb;
 
-        // Recursively mirror subtrees
-        mirrorRecursive_agb(node->left); // Calling postfixed method
-        mirrorRecursive_agb(node->right); // Calling postfixed method
+        mirrorRecursive_agb(node->left);
+        mirrorRecursive_agb(node->right);
     }
 
-    // Count total nodes (Recursive)
-    int countNodesRecursive_agb(Node* node) { // Method name modified
-        if (node == NULL) {
-            return 0;
-        }
-        return 1 + countNodesRecursive_agb(node->left) + countNodesRecursive_agb(node->right); // Calling postfixed method
+    int countNodesRecursive_agb(Node* node) {
+        if (node == NULL) return 0;
+        return 1 + countNodesRecursive_agb(node->left) + countNodesRecursive_agb(node->right);
     }
 
-    // Compute height (Recursive)
-    int heightRecursive_agb(Node* node) { // Method name modified
-        if (node == NULL) {
-            return 0;
-        }
+    int heightRecursive_agb(Node* node) {
+        if (node == NULL) return 0;
 
-        int leftHeight_agb = heightRecursive_agb(node->left); // Variable name and postfixed method call modified
-        int rightHeight_agb = heightRecursive_agb(node->right); // Variable name and postfixed method call modified
+        int leftHeight_agb = heightRecursive_agb(node->left);
+        int rightHeight_agb = heightRecursive_agb(node->right);
 
-        return max(leftHeight_agb, rightHeight_agb) + 1; // Variable names modified
+        return max(leftHeight_agb, rightHeight_agb) + 1;
     }
 
 public:
-    BST_agb() { // Constructor name modified
+    BST_agb() {
         root = NULL;
     }
 
-    // Public insert
-    void insert_agb(int value) { // Method name modified
-        root = insertRecursive_agb(root, value); // Calling postfixed method
+    void insert_agb(int value) {
+        root = insertRecursive_agb(root, value);
         cout << "✓ Inserted " << value << endl;
     }
 
-    // Public inorder traversal
-    void inorder_agb() { // Method name modified
+    void inorder_agb() {
         if (root == NULL) {
             cout << "Tree is empty!" << endl;
             return;
         }
         cout << "Inorder (Recursive): ";
-        inorderRecursive_agb(root); // Calling postfixed method
+        inorderRecursive_agb(root);
         cout << endl;
     }
 
-    // Public preorder traversal
-    void preorder_agb() { // Method name modified
+    void preorder_agb() {
         if (root == NULL) {
             cout << "Tree is empty!" << endl;
             return;
         }
         cout << "Preorder (Recursive): ";
-        preorderRecursive_agb(root); // Calling postfixed method
+        preorderRecursive_agb(root);
         cout << endl;
     }
 
-    // Public postorder traversal
-    void postorder_agb() { // Method name modified
+    void postorder_agb() {
         if (root == NULL) {
             cout << "Tree is empty!" << endl;
             return;
         }
         cout << "Postorder (Recursive): ";
-        postorderRecursive_agb(root); // Calling postfixed method
+        postorderRecursive_agb(root);
         cout << endl;
     }
 
-    // Public leaf node count
-    int countLeafNodes_agb() { // Method name modified
-        return countLeafNodesRecursive_agb(root); // Calling postfixed method
+    int countLeafNodes_agb() {
+        return countLeafNodesRecursive_agb(root);
     }
 
-    // Public mirror
-    void mirror_agb() { // Method name modified
-        mirrorRecursive_agb(root); // Calling postfixed method
+    void mirror_agb() {
+        mirrorRecursive_agb(root);
         cout << "✓ Mirror image created (Recursive)!" << endl;
     }
 
-    // Public node count
-    int countNodes_agb() { // Method name modified
-        return countNodesRecursive_agb(root); // Calling postfixed method
+    int countNodes_agb() {
+        return countNodesRecursive_agb(root);
     }
 
-    // Public height
-    int height_agb() { // Method name modified
-        return heightRecursive_agb(root); // Calling postfixed method
+    int height_agb() {
+        return heightRecursive_agb(root);
     }
 
-    // Display tree structure
-    void displayTree_agb() { // Method name modified
+    void displayTree_agb() {
         if (root == NULL) {
             cout << "Tree is empty!" << endl;
             return;
         }
-
         cout << "\nBST Structure:" << endl;
-        displayTreeHelper_agb(root, "", false); // Calling postfixed method
+        displayTreeHelper_agb(root, "", false);
     }
 
-    void displayTreeHelper_agb(Node* node, string prefix, bool isLeft) { // Method name modified
+    void displayTreeHelper_agb(Node* node, string prefix, bool isLeft) {
         if (node == NULL) return;
 
         cout << prefix;
@@ -265,22 +235,22 @@ public:
 
         if (node->left != NULL || node->right != NULL) {
             if (node->left != NULL) {
-                displayTreeHelper_agb(node->left, prefix + (isLeft ? "│   " : "    "), true); // Calling postfixed method
+                displayTreeHelper_agb(node->left, prefix + (isLeft ? "│   " : "    "), true);
             } else if (node->right != NULL) {
-                cout << prefix << (isLeft ? "│   " : "    ") << "├──NULL" << endl;
+                cout << prefix << (isLeft ? "│   " : "    ") << "├──NULL" << endl;
             }
 
             if (node->right != NULL) {
-                displayTreeHelper_agb(node->right, prefix + (isLeft ? "│   " : "    "), false); // Calling postfixed method
+                displayTreeHelper_agb(node->right, prefix + (isLeft ? "│   " : "    "), false);
             } else if (node->left != NULL) {
-                cout << prefix << (isLeft ? "│   " : "    ") << "└──NULL" << endl;
+                cout << prefix << (isLeft ? "│   " : "    ") << "└──NULL" << endl;
             }
         }
     }
 };
 
-int main_agb() { // Function name modified
-    BST_agb tree_agb; // Variable name and constructor call modified
+int main_agb() {
+    BST_agb tree_agb;
     int choice, value;
 
     do {
@@ -303,51 +273,51 @@ int main_agb() { // Function name modified
             case 1:
                 cout << "Enter value to insert: ";
                 cin >> value;
-                tree_agb.insert_agb(value); // Calling postfixed method
+                tree_agb.insert_agb(value);
                 break;
 
             case 2:
-                tree_agb.inorder_agb(); // Calling postfixed method
+                tree_agb.inorder_agb();
                 break;
 
             case 3:
-                tree_agb.preorder_agb(); // Calling postfixed method
+                tree_agb.preorder_agb();
                 break;
 
             case 4:
-                tree_agb.postorder_agb(); // Calling postfixed method
+                tree_agb.postorder_agb();
                 break;
 
             case 5:
-                cout << "\nNumber of leaf nodes: " << tree_agb.countLeafNodes_agb() << endl; // Calling postfixed method
+                cout << "\nNumber of leaf nodes: " << tree_agb.countLeafNodes_agb() << endl;
                 break;
 
             case 6:
-                cout << "\nTotal number of nodes: " << tree_agb.countNodes_agb() << endl; // Calling postfixed method
+                cout << "\nTotal number of nodes: " << tree_agb.countNodes_agb() << endl;
                 break;
 
             case 7:
-                cout << "\nHeight of tree: " << tree_agb.height_agb() << endl; // Calling postfixed method
+                cout << "\nHeight of tree: " << tree_agb.height_agb() << endl;
                 break;
 
             case 8:
-                tree_agb.mirror_agb(); // Calling postfixed method
+                tree_agb.mirror_agb();
                 break;
 
             case 9:
-                tree_agb.displayTree_agb(); // Calling postfixed method
+                tree_agb.displayTree_agb();
                 break;
 
             case 10: {
-                int values_agb[] = {50, 30, 70, 20, 40, 60, 80, 10, 25, 35, 45}; // Variable name modified
+                int values_agb[] = {50, 30, 70, 20, 40, 60, 80, 10, 25, 35, 45};
                 cout << "Creating sample tree with values: ";
                 for (int i = 0; i < 11; i++) {
-                    cout << values_agb[i] << " "; // Variable name modified
+                    cout << values_agb[i] << " ";
                 }
                 cout << endl;
 
                 for (int i = 0; i < 11; i++) {
-                    tree_agb.insert_agb(values_agb[i]); // Variable name and postfixed method call modified
+                    tree_agb.insert_agb(values_agb[i]);
                 }
                 break;
             }
@@ -363,6 +333,7 @@ int main_agb() { // Function name modified
 
     return 0;
 }
+
 ```
 
 ---
