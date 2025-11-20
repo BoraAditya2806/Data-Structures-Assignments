@@ -1,4 +1,4 @@
-# Assignment 7 - Problem 3: BST Minimum/Maximum Finder
+# Assignment 3
 
 ## Problem Statement
 
