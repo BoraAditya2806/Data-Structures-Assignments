@@ -104,28 +104,28 @@ MAIN:
 #include <iomanip>
 using namespace std;
 
-class Passenger { // Class name is NOT modified
+class Passenger {
 public:
     string name;
     int ticketNumber;
     string destination;
     string seatClass;
 
-    Passenger_agb() { // Constructor name modified
+    Passenger_agb() {
         name = "";
         ticketNumber = 0;
         destination = "";
         seatClass = "Economy";
     }
 
-    Passenger_agb(string n, int tNum, string dest, string sClass = "Economy") { // Constructor name modified
+    Passenger_agb(string n, int tNum, string dest, string sClass = "Economy") {
         name = n;
         ticketNumber = tNum;
         destination = dest;
         seatClass = sClass;
     }
 
-    void display_agb() { // Method name is modified
+    void display_agb() {
         cout << setw(12) << ticketNumber
              << setw(20) << name
              << setw(20) << destination
@@ -133,40 +133,38 @@ public:
     }
 };
 
-class Node { // Class name is NOT modified
+class Node {
 public:
     Passenger data;
     Node* next;
 
-    Node_agb(Passenger p) { // Constructor name modified
+    Node_agb(Passenger p) {
         data = p;
         next = NULL;
     }
 };
 
-class PassengerQueue { // Class name is NOT modified
+class PassengerQueue {
 private:
     Node* front;
     Node* rear;
     int count;
 
 public:
-    PassengerQueue_agb() { // Constructor name modified
+    PassengerQueue_agb() {
         front = NULL;
         rear = NULL;
         count = 0;
     }
 
-    // Check if queue is empty
-    bool isEmpty_agb() { // Method name is modified
+    bool isEmpty_agb() {
         return front == NULL;
     }
 
-    // Add passenger to queue
-    void enqueue_agb(Passenger passenger) { // Method name is modified
-        Node* newNode = new Node_agb(passenger); // Calling postfixed constructor
+    void enqueue_agb(Passenger passenger) {
+        Node* newNode = new Node_agb(passenger);
 
-        if (isEmpty_agb()) { // Calling postfixed method
+        if (isEmpty_agb()) {
             front = rear = newNode;
         } else {
             rear->next = newNode;
@@ -179,11 +177,10 @@ public:
         cout << "Queue position: " << count << endl;
     }
 
-    // Remove and return front passenger
-    Passenger dequeue_agb() { // Method name is modified
-        if (isEmpty_agb()) { // Calling postfixed method
+    Passenger dequeue_agb() {
+        if (isEmpty_agb()) {
             cout << "Queue is empty! No passengers waiting." << endl;
-            return Passenger_agb(); // Calling postfixed constructor
+            return Passenger_agb();
         }
 
         Node* temp = front;
@@ -204,9 +201,8 @@ public:
         return passenger;
     }
 
-    // Display front passenger without removing
-    void displayFront_agb() { // Method name is modified
-        if (isEmpty_agb()) { // Calling postfixed method
+    void displayFront_agb() {
+        if (isEmpty_agb()) {
             cout << "\nNo passengers in queue!" << endl;
             return;
         }
@@ -218,9 +214,8 @@ public:
         cout << "Class: " << front->data.seatClass << endl;
     }
 
-    // Display all passengers in queue
-    void displayAll_agb() { // Method name is modified
-        if (isEmpty_agb()) { // Calling postfixed method
+    void displayAll_agb() {
+        if (isEmpty_agb()) {
             cout << "\nQueue is empty! No passengers waiting." << endl;
             return;
         }
@@ -237,7 +232,7 @@ public:
 
         while (current != NULL) {
             cout << "Position " << position << ": ";
-            current->data.display_agb(); // Calling postfixed method
+            current->data.display_agb();
             current = current->next;
             position++;
         }
@@ -246,23 +241,24 @@ public:
         cout << "Total passengers waiting: " << count << endl;
     }
 
-    // Get count of passengers
-    int getCount_agb() { // Method name is modified
+    int getCount_agb() {
         return count;
     }
 
-    // Destructor
-    ~PassengerQueue_agb() { // Destructor name modified (following pattern)
-        while (!isEmpty_agb()) { // Calling postfixed method
-            dequeue_agb(); // Calling postfixed method
+    ~PassengerQueue_agb() {
+        while (!isEmpty_agb()) {
+            Node* temp = front;
+            front = front->next;
+            delete temp;
         }
+        rear = NULL;
     }
 };
 
-int main_agb() { // Function name is modified
-    PassengerQueue ticketQueue_agb; // Variable name and constructor call modified
+int main_agb() {
+    PassengerQueue ticketQueue_agb;
     int choice;
-    int ticketCounter_agb = 1001; // Variable name modified
+    int ticketCounter_agb = 1001;
 
     do {
         cout << "\n===== Ticket Agent - Passenger Queue System =====" << endl;
@@ -287,31 +283,31 @@ int main_agb() { // Function name is modified
                 cout << "Enter class (Economy/Business/First): ";
                 getline(cin, seatClass);
 
-                Passenger p(name, ticketCounter_agb++, destination, seatClass); // Variable name modified
-                ticketQueue_agb.enqueue_agb(p); // Calling postfixed method
+                Passenger p(name, ticketCounter_agb++, destination, seatClass);
+                ticketQueue_agb.enqueue_agb(p);
                 break;
             }
 
             case 2:
-                ticketQueue_agb.displayFront_agb(); // Calling postfixed method
+                ticketQueue_agb.displayFront_agb();
                 break;
 
             case 3:
-                ticketQueue_agb.dequeue_agb(); // Calling postfixed method
+                ticketQueue_agb.dequeue_agb();
                 break;
 
             case 4:
-                ticketQueue_agb.displayAll_agb(); // Calling postfixed method
+                ticketQueue_agb.displayAll_agb();
                 break;
 
             case 5:
                 cout << "\n===== System Terminating =====" << endl;
                 cout << "Total passengers left in queue: "
-                     << ticketQueue_agb.getCount_agb() << endl; // Calling postfixed method
+                     << ticketQueue_agb.getCount_agb() << endl;
 
-                if (ticketQueue_agb.getCount_agb() > 0) { // Calling postfixed method
+                if (ticketQueue_agb.getCount_agb() > 0) {
                     cout << "\nRemaining passengers:" << endl;
-                    ticketQueue_agb.displayAll_agb(); // Calling postfixed method
+                    ticketQueue_agb.displayAll_agb();
                 }
 
                 cout << "\nThank you for using the system!" << endl;
