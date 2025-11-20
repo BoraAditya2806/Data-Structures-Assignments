@@ -106,92 +106,84 @@ MAIN:
 #include <iomanip>
 using namespace std;
 
-class MultipleQueues { // Class name is NOT modified
+class MultipleQueues {
 private:
     int* arr;
     int MAX_SIZE;
-    int queueSize_agb; // Variable name modified
+    int queueSize_agb;
 
-    // Queue 1 pointers
-    int front1_agb, rear1_agb; // Variable names modified
+    int front1_agb, rear1_agb;
 
-    // Queue 2 pointers
-    int front2_agb, rear2_agb; // Variable names modified
+    int front2_agb, rear2_agb;
 
 public:
-    MultipleQueues_agb(int size) { // Constructor name modified
+    MultipleQueues_agb(int size) {
         MAX_SIZE = size;
-        queueSize_agb = MAX_SIZE / 2; // Variable name modified
+        queueSize_agb = MAX_SIZE / 2;
         arr = new int[MAX_SIZE];
 
-        // Initialize Queue 1 (first half: 0 to queueSize_agb-1)
-        front1_agb = -1; // Variable name modified
-        rear1_agb = -1; // Variable name modified
+        front1_agb = -1;
+        rear1_agb = -1;
 
-        // Initialize Queue 2 (second half: queueSize_agb to MAX_SIZE-1)
-        front2_agb = queueSize_agb; // Variable name modified
-        rear2_agb = queueSize_agb - 1; // Variable name modified
+        front2_agb = queueSize_agb;
+        rear2_agb = queueSize_agb - 1;
 
-        cout << "Two queues created with size " << queueSize_agb << " each." << endl; // Variable name modified
+        cout << "Two queues created with size " << queueSize_agb << " each." << endl;
     }
 
-    // Check if queue is empty
-    bool isEmpty_agb(int queueNum) { // Method name modified
+    bool isEmpty_agb(int queueNum) {
         if (queueNum == 1) {
-            return front1_agb == -1; // Variable name modified
+            return front1_agb == -1;
         } else {
-            return front2_agb == queueSize_agb; // Variable names modified
+            return front2_agb == queueSize_agb;
         }
     }
 
-    // Check if queue is full
-    bool isFull_agb(int queueNum) { // Method name modified
+    bool isFull_agb(int queueNum) {
         if (queueNum == 1) {
-            return rear1_agb >= queueSize_agb - 1; // Variable names modified
+            return rear1_agb >= queueSize_agb - 1;
         } else {
-            return rear2_agb >= MAX_SIZE - 1; // Variable name modified
+            return rear2_agb >= MAX_SIZE - 1;
         }
     }
 
-    // Add element to queue
-    bool enqueue_agb(int queueNum, int value) { // Method name modified
+    bool enqueue_agb(int queueNum, int value) {
         if (queueNum != 1 && queueNum != 2) {
             cout << "Invalid queue number!" << endl;
             return false;
         }
 
-        if (isFull_agb(queueNum)) { // Calling postfixed method
+        if (isFull_agb(queueNum)) {
             cout << "✗ Queue " << queueNum << " OVERFLOW! Cannot add "
                  << value << endl;
             return false;
         }
 
         if (queueNum == 1) {
-            if (front1_agb == -1) { // Variable name modified
-                front1_agb = 0; // Variable name modified
+            if (front1_agb == -1) {
+                front1_agb = 0;
             }
-            rear1_agb++; // Variable name modified
-            arr[rear1_agb] = value; // Variable name modified
+            rear1_agb++;
+            arr[rear1_agb] = value;
         } else {
-            if (front2_agb == queueSize_agb) { // Variable names modified
-                front2_agb = queueSize_agb; // Variable names modified
+            if (front2_agb == queueSize_agb) {
+                front2_agb = queueSize_agb;
             }
-            rear2_agb++; // Variable name modified
-            arr[rear2_agb] = value; // Variable name modified
+            rear2_agb++;
+            arr[rear2_agb] = value;
         }
 
         cout << "✓ Added " << value << " to Queue " << queueNum << endl;
         return true;
     }
 
-    // Remove element from queue
-    int dequeue_agb(int queueNum) { // Method name modified
+    int dequeue_agb(int queueNum) {
         if (queueNum != 1 && queueNum != 2) {
             cout << "Invalid queue number!" << endl;
             return -1;
         }
 
-        if (isEmpty_agb(queueNum)) { // Calling postfixed method
+        if (isEmpty_agb(queueNum)) {
             cout << "✗ Queue " << queueNum << " UNDERFLOW! Queue is empty." << endl;
             return -1;
         }
@@ -199,24 +191,22 @@ public:
         int value = 0;
 
         if (queueNum == 1) {
-            value = arr[front1_agb]; // Variable name modified
+            value = arr[front1_agb];
 
-            if (front1_agb == rear1_agb) { // Variable names modified
-                // Queue becomes empty
-                front1_agb = -1; // Variable name modified
-                rear1_agb = -1; // Variable name modified
+            if (front1_agb == rear1_agb) {
+                front1_agb = -1;
+                rear1_agb = -1;
             } else {
-                front1_agb++; // Variable name modified
+                front1_agb++;
             }
         } else {
-            value = arr[front2_agb]; // Variable name modified
+            value = arr[front2_agb];
 
-            if (front2_agb == rear2_agb) { // Variable names modified
-                // Queue becomes empty
-                front2_agb = queueSize_agb; // Variable names modified
-                rear2_agb = queueSize_agb - 1; // Variable names modified
+            if (front2_agb == rear2_agb) {
+                front2_agb = queueSize_agb;
+                rear2_agb = queueSize_agb - 1;
             } else {
-                front2_agb++; // Variable name modified
+                front2_agb++;
             }
         }
 
@@ -224,14 +214,13 @@ public:
         return value;
     }
 
-    // Display queue contents
-    void display_agb(int queueNum) { // Method name modified
+    void display_agb(int queueNum) {
         if (queueNum != 1 && queueNum != 2) {
             cout << "Invalid queue number!" << endl;
             return;
         }
 
-        if (isEmpty_agb(queueNum)) { // Calling postfixed method
+        if (isEmpty_agb(queueNum)) {
             cout << "\nQueue " << queueNum << " is EMPTY!" << endl;
             return;
         }
@@ -240,34 +229,32 @@ public:
         cout << "Elements (Front to Rear): ";
 
         if (queueNum == 1) {
-            for (int i = front1_agb; i <= rear1_agb; i++) { // Variable names modified
+            for (int i = front1_agb; i <= rear1_agb; i++) {
                 cout << arr[i] << " ";
             }
-            cout << "\nFront: " << arr[front1_agb] // Variable name modified
-                 << ", Rear: " << arr[rear1_agb] << endl; // Variable name modified
-            cout << "Size: " << (rear1_agb - front1_agb + 1) // Variable names modified
-                 << "/" << queueSize_agb << endl; // Variable name modified
+            cout << "\nFront: " << arr[front1_agb]
+                 << ", Rear: " << arr[rear1_agb] << endl;
+            cout << "Size: " << (rear1_agb - front1_agb + 1)
+                 << "/" << queueSize_agb << endl;
         } else {
-            for (int i = front2_agb; i <= rear2_agb; i++) { // Variable names modified
+            for (int i = front2_agb; i <= rear2_agb; i++) {
                 cout << arr[i] << " ";
             }
-            cout << "\nFront: " << arr[front2_agb] // Variable name modified
-                 << ", Rear: " << arr[rear2_agb] << endl; // Variable name modified
-            cout << "Size: " << (rear2_agb - front2_agb + 1) // Variable names modified
-                 << "/" << queueSize_agb << endl; // Variable name modified
+            cout << "\nFront: " << arr[front2_agb]
+                 << ", Rear: " << arr[rear2_agb] << endl;
+            cout << "Size: " << (rear2_agb - front2_agb + 1)
+                 << "/" << queueSize_agb << endl;
         }
     }
 
-    // Display both queues
-    void displayAll_agb() { // Method name modified
+    void displayAll_agb() {
         cout << "\n========== Both Queues ==========" << endl;
-        display_agb(1); // Calling postfixed method
-        display_agb(2); // Calling postfixed method
+        display_agb(1);
+        display_agb(2);
         cout << "================================" << endl;
     }
 
-    // Display array structure
-    void displayArrayStructure_agb() { // Method name modified
+    void displayArrayStructure_agb() {
         cout << "\n--- Array Structure ---" << endl;
         cout << "Index: ";
         for (int i = 0; i < MAX_SIZE; i++) {
@@ -278,13 +265,11 @@ public:
         for (int i = 0; i < MAX_SIZE; i++) {
             bool hasValue = false;
 
-            // Check Queue 1
-            if (i >= front1_agb && i <= rear1_agb && front1_agb != -1) { // Variable names modified
+            if (i >= front1_agb && i <= rear1_agb && front1_agb != -1) {
                 cout << setw(4) << arr[i];
                 hasValue = true;
             }
-            // Check Queue 2
-            else if (i >= front2_agb && i <= rear2_agb && front2_agb != queueSize_agb) { // Variable names modified
+            else if (i >= front2_agb && i <= rear2_agb && front2_agb != queueSize_agb) {
                 cout << setw(4) << arr[i];
                 hasValue = true;
             }
@@ -296,7 +281,7 @@ public:
 
         cout << "\nQueue: ";
         for (int i = 0; i < MAX_SIZE; i++) {
-            if (i < queueSize_agb) { // Variable name modified
+            if (i < queueSize_agb) {
                 cout << setw(4) << "Q1";
             } else {
                 cout << setw(4) << "Q2";
@@ -305,13 +290,12 @@ public:
         cout << endl;
     }
 
-    // Destructor
-    ~MultipleQueues_agb() { // Destructor name modified (following pattern)
+    ~MultipleQueues_agb() {
         delete[] arr;
     }
 };
 
-int main_agb() { // Function name is modified
+int main_agb() {
     int size;
 
     cout << "===== Multiple Queues Using Array =====" << endl;
@@ -323,7 +307,7 @@ int main_agb() { // Function name is modified
         cout << "Adjusted to even size: " << size << endl;
     }
 
-    MultipleQueues_agb mq_agb(size); // Variable name and constructor call modified
+    MultipleQueues_agb mq_agb(size);
     int choice, queueNum, value;
 
     do {
@@ -345,33 +329,33 @@ int main_agb() { // Function name is modified
                 cin >> queueNum;
                 cout << "Enter value to add: ";
                 cin >> value;
-                mq_agb.enqueue_agb(queueNum, value); // Calling postfixed method
+                mq_agb.enqueue_agb(queueNum, value);
                 break;
 
             case 2:
                 cout << "Enter queue number (1 or 2): ";
                 cin >> queueNum;
-                mq_agb.dequeue_agb(queueNum); // Calling postfixed method
+                mq_agb.dequeue_agb(queueNum);
                 break;
 
             case 3:
                 cout << "Enter queue number (1 or 2): ";
                 cin >> queueNum;
-                mq_agb.display_agb(queueNum); // Calling postfixed method
+                mq_agb.display_agb(queueNum);
                 break;
 
             case 4:
-                mq_agb.displayAll_agb(); // Calling postfixed method
+                mq_agb.displayAll_agb();
                 break;
 
             case 5:
-                mq_agb.displayArrayStructure_agb(); // Calling postfixed method
+                mq_agb.displayArrayStructure_agb();
                 break;
 
             case 6:
                 cout << "Enter queue number (1 or 2): ";
                 cin >> queueNum;
-                if (mq_agb.isEmpty_agb(queueNum)) { // Calling postfixed method
+                if (mq_agb.isEmpty_agb(queueNum)) {
                     cout << "Queue " << queueNum << " is EMPTY!" << endl;
                 } else {
                     cout << "Queue " << queueNum << " is NOT empty." << endl;
@@ -381,7 +365,7 @@ int main_agb() { // Function name is modified
             case 7:
                 cout << "Enter queue number (1 or 2): ";
                 cin >> queueNum;
-                if (mq_agb.isFull_agb(queueNum)) { // Calling postfixed method
+                if (mq_agb.isFull_agb(queueNum)) {
                     cout << "Queue " << queueNum << " is FULL!" << endl;
                 } else {
                     cout << "Queue " << queueNum << " is NOT full." << endl;
