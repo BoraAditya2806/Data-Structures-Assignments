@@ -1,4 +1,4 @@
-# Assignment 7 - Problem 4: BST Non-Recursive Operations
+# Assignment 4
 
 ## Problem Statement
 
@@ -111,236 +111,219 @@ MAIN:
 #include <queue>
 using namespace std;
 
-class Node { // Class name is NOT modified
+class Node {
 public:
     int data;
     Node* left;
     Node* right;
 
-    Node_agb(int value) { // Constructor name modified
+    Node_agb(int value) {
         data = value;
         left = NULL;
         right = NULL;
     }
 };
 
-class BST { // Class name is NOT modified
+class BST {
 private:
     Node* root;
 
-    // Recursive insert for building tree
-    Node* insertRecursive_agb(Node* node, int value) { // Method name modified
+    Node* insertRecursive_agb(Node* node, int value) {
         if (node == NULL) {
-            return new Node_agb(value); // Calling postfixed constructor
+            return new Node_agb(value);
         }
 
         if (value < node->data) {
-            node->left = insertRecursive_agb(node->left, value); // Calling postfixed method
+            node->left = insertRecursive_agb(node->left, value);
         } else if (value > node->data) {
-            node->right = insertRecursive_agb(node->right, value); // Calling postfixed method
+            node->right = insertRecursive_agb(node->right, value);
         }
 
         return node;
     }
 
 public:
-    BST_agb() { // Constructor name modified
+    BST_agb() {
         root = NULL;
     }
 
-    // Insert value
-    void insert_agb(int value) { // Method name modified
-        root = insertRecursive_agb(root, value); // Calling postfixed method
+    void insert_agb(int value) {
+        root = insertRecursive_agb(root, value);
         cout << "✓ Inserted " << value << endl;
     }
 
-    // Inorder traversal (Non-recursive using stack)
-    void inorderIterative_agb() { // Method name modified
+    void inorderIterative_agb() {
         if (root == NULL) {
             cout << "Tree is empty!" << endl;
             return;
         }
 
-        stack<Node*> st_agb; // Variable name modified
-        Node* current_agb = root; // Variable name modified
+        stack<Node*> st_agb;
+        Node* current_agb = root;
 
         cout << "Inorder (Non-recursive): ";
 
-        while (current_agb != NULL || !st_agb.empty()) { // Variable names modified
-            // Reach the leftmost node
-            while (current_agb != NULL) { // Variable name modified
-                st_agb.push(current_agb); // Variable name modified
-                current_agb = current_agb->left; // Variable name modified
+        while (current_agb != NULL || !st_agb.empty()) {
+            while (current_agb != NULL) {
+                st_agb.push(current_agb);
+                current_agb = current_agb->left;
             }
 
-            // Current is NULL, pop from stack
-            current_agb = st_agb.top(); // Variable name modified
-            st_agb.pop(); // Variable name modified
-            cout << current_agb->data << " "; // Variable name modified
+            current_agb = st_agb.top();
+            st_agb.pop();
+            cout << current_agb->data << " ";
 
-            // Visit right subtree
-            current_agb = current_agb->right; // Variable name modified
+            current_agb = current_agb->right;
         }
         cout << endl;
     }
 
-    // Preorder traversal (Non-recursive using stack)
-    void preorderIterative_agb() { // Method name modified
+    void preorderIterative_agb() {
         if (root == NULL) {
             cout << "Tree is empty!" << endl;
             return;
         }
 
-        stack<Node*> st_agb; // Variable name modified
-        st_agb.push(root); // Variable name modified
+        stack<Node*> st_agb;
+        st_agb.push(root);
 
         cout << "Preorder (Non-recursive): ";
 
-        while (!st_agb.empty()) { // Variable name modified
-            Node* current_agb = st_agb.top(); // Variable name modified
-            st_agb.pop(); // Variable name modified
+        while (!st_agb.empty()) {
+            Node* current_agb = st_agb.top();
+            st_agb.pop();
 
-            cout << current_agb->data << " "; // Variable name modified
+            cout << current_agb->data << " ";
 
-            // Push right first, then left (stack is LIFO)
-            if (current_agb->right != NULL) { // Variable name modified
-                st_agb.push(current_agb->right); // Variable name modified
+            if (current_agb->right != NULL) {
+                st_agb.push(current_agb->right);
             }
-            if (current_agb->left != NULL) { // Variable name modified
-                st_agb.push(current_agb->left); // Variable name modified
+            if (current_agb->left != NULL) {
+                st_agb.push(current_agb->left);
             }
         }
         cout << endl;
     }
 
-    // Count leaf nodes (Non-recursive using queue - Level Order)
-    int countLeafNodesIterative_agb() { // Method name modified
+    int countLeafNodesIterative_agb() {
         if (root == NULL) {
             return 0;
         }
 
-        queue<Node*> q_agb; // Variable name modified
-        q_agb.push(root); // Variable name modified
-        int leafCount_agb = 0; // Variable name modified
+        queue<Node*> q_agb;
+        q_agb.push(root);
+        int leafCount_agb = 0;
 
-        while (!q_agb.empty()) { // Variable name modified
-            Node* current_agb = q_agb.front(); // Variable name modified
-            q_agb.pop(); // Variable name modified
+        while (!q_agb.empty()) {
+            Node* current_agb = q_agb.front();
+            q_agb.pop();
 
-            // Check if it's a leaf node
-            if (current_agb->left == NULL && current_agb->right == NULL) { // Variable name modified
-                leafCount_agb++; // Variable name modified
+            if (current_agb->left == NULL && current_agb->right == NULL) {
+                leafCount_agb++;
             }
 
-            // Add children to queue
-            if (current_agb->left != NULL) { // Variable name modified
-                q_agb.push(current_agb->left); // Variable name modified
+            if (current_agb->left != NULL) {
+                q_agb.push(current_agb->left);
             }
-            if (current_agb->right != NULL) { // Variable name modified
-                q_agb.push(current_agb->right); // Variable name modified
+            if (current_agb->right != NULL) {
+                q_agb.push(current_agb->right);
             }
         }
 
-        return leafCount_agb; // Variable name modified
+        return leafCount_agb;
     }
 
-    // Create mirror image (Non-recursive using queue - Level Order)
-    void mirrorIterative_agb() { // Method name modified
+    void mirrorIterative_agb() {
         if (root == NULL) {
             cout << "Tree is empty!" << endl;
             return;
         }
 
-        queue<Node*> q_agb; // Variable name modified
-        q_agb.push(root); // Variable name modified
+        queue<Node*> q_agb;
+        q_agb.push(root);
 
         cout << "✓ Mirror image created (Non-recursive)!" << endl;
 
-        while (!q_agb.empty()) { // Variable name modified
-            Node* current_agb = q_agb.front(); // Variable name modified
-            q_agb.pop(); // Variable name modified
+        while (!q_agb.empty()) {
+            Node* current_agb = q_agb.front();
+            q_agb.pop();
 
-            // Swap left and right children
-            Node* temp_agb = current_agb->left; // Variable name modified
+            Node* temp_agb = current_agb->left;
             current_agb->left = current_agb->right;
-            current_agb->right = temp_agb; // Variable name modified
+            current_agb->right = temp_agb;
 
-            // Add children to queue
-            if (current_agb->left != NULL) { // Variable name modified
-                q_agb.push(current_agb->left); // Variable name modified
+            if (current_agb->left != NULL) {
+                q_agb.push(current_agb->left);
             }
-            if (current_agb->right != NULL) { // Variable name modified
-                q_agb.push(current_agb->right); // Variable name modified
+            if (current_agb->right != NULL) {
+                q_agb.push(current_agb->right);
             }
         }
     }
 
-    // Level order traversal (Non-recursive using queue)
-    void levelOrderIterative_agb() { // Method name modified
+    void levelOrderIterative_agb() {
         if (root == NULL) {
             cout << "Tree is empty!" << endl;
             return;
         }
 
-        queue<Node*> q_agb; // Variable name modified
-        q_agb.push(root); // Variable name modified
+        queue<Node*> q_agb;
+        q_agb.push(root);
 
         cout << "Level Order (Non-recursive): ";
 
-        while (!q_agb.empty()) { // Variable name modified
-            Node* current_agb = q_agb.front(); // Variable name modified
-            q_agb.pop(); // Variable name modified
+        while (!q_agb.empty()) {
+            Node* current_agb = q_agb.front();
+            q_agb.pop();
 
-            cout << current_agb->data << " "; // Variable name modified
+            cout << current_agb->data << " ";
 
-            if (current_agb->left != NULL) { // Variable name modified
-                q_agb.push(current_agb->left); // Variable name modified
+            if (current_agb->left != NULL) {
+                q_agb.push(current_agb->left);
             }
-            if (current_agb->right != NULL) { // Variable name modified
-                q_agb.push(current_agb->right); // Variable name modified
+            if (current_agb->right != NULL) {
+                q_agb.push(current_agb->right);
             }
         }
         cout << endl;
     }
 
-    // Count total nodes (Non-recursive using queue)
-    int countNodesIterative_agb() { // Method name modified
+    int countNodesIterative_agb() {
         if (root == NULL) {
             return 0;
         }
 
-        queue<Node*> q_agb; // Variable name modified
-        q_agb.push(root); // Variable name modified
-        int count_agb = 0; // Variable name modified
+        queue<Node*> q_agb;
+        q_agb.push(root);
+        int count_agb = 0;
 
-        while (!q_agb.empty()) { // Variable name modified
-            Node* current_agb = q_agb.front(); // Variable name modified
-            q_agb.pop(); // Variable name modified
-            count_agb++; // Variable name modified
+        while (!q_agb.empty()) {
+            Node* current_agb = q_agb.front();
+            q_agb.pop();
+            count_agb++;
 
-            if (current_agb->left != NULL) { // Variable name modified
-                q_agb.push(current_agb->left); // Variable name modified
+            if (current_agb->left != NULL) {
+                q_agb.push(current_agb->left);
             }
-            if (current_agb->right != NULL) { // Variable name modified
-                q_agb.push(current_agb->right); // Variable name modified
+            if (current_agb->right != NULL) {
+                q_agb.push(current_agb->right);
             }
         }
 
-        return count_agb; // Variable name modified
+        return count_agb;
     }
 
-    // Display tree structure
-    void displayTree_agb() { // Method name modified
+    void displayTree_agb() {
         if (root == NULL) {
             cout << "Tree is empty!" << endl;
             return;
         }
 
         cout << "\nBST Structure:" << endl;
-        displayTreeHelper_agb(root, "", false); // Calling postfixed method
+        displayTreeHelper_agb(root, "", false);
     }
 
-    void displayTreeHelper_agb(Node* node, string prefix, bool isLeft) { // Method name modified
+    void displayTreeHelper_agb(Node* node, string prefix, bool isLeft) {
         if (node == NULL) return;
 
         cout << prefix;
@@ -349,13 +332,13 @@ public:
 
         if (node->left != NULL || node->right != NULL) {
             if (node->left != NULL) {
-                displayTreeHelper_agb(node->left, prefix + (isLeft ? "│   " : "    "), true); // Calling postfixed method
+                displayTreeHelper_agb(node->left, prefix + (isLeft ? "│   " : "    "), true);
             } else if (node->right != NULL) {
                 cout << prefix << (isLeft ? "│   " : "    ") << "├──NULL" << endl;
             }
 
             if (node->right != NULL) {
-                displayTreeHelper_agb(node->right, prefix + (isLeft ? "│   " : "    "), false); // Calling postfixed method
+                displayTreeHelper_agb(node->right, prefix + (isLeft ? "│   " : "    "), false);
             } else if (node->left != NULL) {
                 cout << prefix << (isLeft ? "│   " : "    ") << "└──NULL" << endl;
             }
@@ -363,8 +346,8 @@ public:
     }
 };
 
-int main_agb() { // Function name modified
-    BST_agb tree_agb; // Variable name and constructor call modified
+int main_agb() {
+    BST_agb tree_agb;
     int choice, value;
 
     do {
@@ -386,47 +369,47 @@ int main_agb() { // Function name modified
             case 1:
                 cout << "Enter value to insert: ";
                 cin >> value;
-                tree_agb.insert_agb(value); // Calling postfixed method
+                tree_agb.insert_agb(value);
                 break;
 
             case 2:
-                tree_agb.inorderIterative_agb(); // Calling postfixed method
+                tree_agb.inorderIterative_agb();
                 break;
 
             case 3:
-                tree_agb.preorderIterative_agb(); // Calling postfixed method
+                tree_agb.preorderIterative_agb();
                 break;
 
             case 4:
-                tree_agb.levelOrderIterative_agb(); // Calling postfixed method
+                tree_agb.levelOrderIterative_agb();
                 break;
 
             case 5:
-                cout << "\nNumber of leaf nodes: " << tree_agb.countLeafNodesIterative_agb() << endl; // Calling postfixed method
+                cout << "\nNumber of leaf nodes: " << tree_agb.countLeafNodesIterative_agb() << endl;
                 break;
 
             case 6:
-                cout << "\nTotal number of nodes: " << tree_agb.countNodesIterative_agb() << endl; // Calling postfixed method
+                cout << "\nTotal number of nodes: " << tree_agb.countNodesIterative_agb() << endl;
                 break;
 
             case 7:
-                tree_agb.mirrorIterative_agb(); // Calling postfixed method
+                tree_agb.mirrorIterative_agb();
                 break;
 
             case 8:
-                tree_agb.displayTree_agb(); // Calling postfixed method
+                tree_agb.displayTree_agb();
                 break;
 
             case 9: {
-                int values_agb[] = {50, 30, 70, 20, 40, 60, 80, 10, 25, 35, 45}; // Variable name modified
+                int values_agb[] = {50, 30, 70, 20, 40, 60, 80, 10, 25, 35, 45};
                 cout << "Creating sample tree with values: ";
                 for (int i = 0; i < 11; i++) {
-                    cout << values_agb[i] << " "; // Variable name modified
+                    cout << values_agb[i] << " ";
                 }
                 cout << endl;
 
                 for (int i = 0; i < 11; i++) {
-                    tree_agb.insert_agb(values_agb[i]); // Variable name and postfixed method call modified
+                    tree_agb.insert_agb(values_agb[i]);
                 }
                 break;
             }
