@@ -97,28 +97,28 @@ MAIN:
 #include <iomanip>
 using namespace std;
 
-class Order { // Class name is NOT modified
+class Order {
 public:
     int orderID;
     string customerName;
     string pizzaType;
     int quantity;
 
-    Order_agb() { // Constructor name modified
+    Order_agb() {
         orderID = 0;
         customerName = "";
         pizzaType = "";
         quantity = 0;
     }
 
-    Order_agb(int id, string name, string type, int qty) { // Constructor name modified
+    Order_agb(int id, string name, string type, int qty) {
         orderID = id;
         customerName = name;
         pizzaType = type;
         quantity = qty;
     }
 
-    void display_agb() { // Method name is modified
+    void display_agb() {
         cout << setw(8) << orderID
              << setw(20) << customerName
              << setw(20) << pizzaType
@@ -126,7 +126,7 @@ public:
     }
 };
 
-class CircularQueue { // Class name is NOT modified
+class CircularQueue {
 private:
     Order* queue;
     int front;
@@ -135,7 +135,7 @@ private:
     int count;
 
 public:
-    CircularQueue_agb(int size) { // Constructor name modified
+    CircularQueue_agb(int size) {
         MAX_SIZE = size;
         queue = new Order[MAX_SIZE];
         front = -1;
@@ -144,19 +144,16 @@ public:
         cout << "Pizza Parlour initialized with capacity: " << MAX_SIZE << " orders" << endl;
     }
 
-    // Check if queue is full
-    bool isFull_agb() { // Method name is modified
+    bool isFull_agb() {
         return count == MAX_SIZE;
     }
 
-    // Check if queue is empty
-    bool isEmpty_agb() { // Method name is modified
+    bool isEmpty_agb() {
         return count == 0;
     }
 
-    // Place new order (enqueue)
-    bool placeOrder_agb(Order order) { // Method name is modified
-        if (isFull_agb()) { // Calling postfixed method
+    bool placeOrder_agb(Order order) {
+        if (isFull_agb()) {
             cout << "\n✗ Sorry! Order queue is FULL." << endl;
             cout << "Cannot accept more orders at the moment." << endl;
             cout << "Please wait for current orders to be served." << endl;
@@ -178,17 +175,15 @@ public:
         return true;
     }
 
-    // Serve order (dequeue)
-    Order serveOrder_agb() { // Method name is modified
-        if (isEmpty_agb()) { // Calling postfixed method
+    Order serveOrder_agb() {
+        if (isEmpty_agb()) {
             cout << "\n✗ No pending orders to serve!" << endl;
-            return Order_agb(); // Calling postfixed constructor
+            return Order_agb();
         }
 
         Order order = queue[front];
 
         if (front == rear) {
-            // Only one element, reset queue
             front = rear = -1;
         } else {
             front = (front + 1) % MAX_SIZE;
@@ -204,9 +199,8 @@ public:
         return order;
     }
 
-    // Display all pending orders
-    void displayOrders_agb() { // Method name is modified
-        if (isEmpty_agb()) { // Calling postfixed method
+    void displayOrders_agb() {
+        if (isEmpty_agb()) {
             cout << "\n✓ No pending orders! Queue is empty." << endl;
             return;
         }
@@ -223,7 +217,7 @@ public:
 
         while (displayCount < count) {
             cout << "Order " << (displayCount + 1) << ": ";
-            queue[i].display_agb(); // Calling postfixed method
+            queue[i].display_agb();
             i = (i + 1) % MAX_SIZE;
             displayCount++;
         }
@@ -233,8 +227,7 @@ public:
         cout << "Available slots: " << (MAX_SIZE - count) << endl;
     }
 
-    // Display queue status
-    void displayStatus_agb() { // Method name is modified
+    void displayStatus_agb() {
         cout << "\n--- Queue Status ---" << endl;
         cout << "Capacity: " << MAX_SIZE << endl;
         cout << "Current orders: " << count << endl;
@@ -242,32 +235,31 @@ public:
         cout << "Front index: " << front << endl;
         cout << "Rear index: " << rear << endl;
 
-        if (isFull_agb()) { // Calling postfixed method
+        if (isFull_agb()) {
             cout << "Status: FULL ⚠" << endl;
-        } else if (isEmpty_agb()) { // Calling postfixed method
+        } else if (isEmpty_agb()) {
             cout << "Status: EMPTY ✓" << endl;
         } else {
             cout << "Status: ACTIVE" << endl;
         }
     }
 
-    // Destructor
-    ~CircularQueue_agb() { // Destructor name modified (though technically not a function, it follows the modification pattern)
+    ~CircularQueue_agb() {
         delete[] queue;
     }
 };
 
-int main_agb() { // Function name is modified
+int main_agb() {
     int capacity;
 
     cout << "===== Pizza Parlour Order Management System =====" << endl;
     cout << "Enter maximum order capacity: ";
     cin >> capacity;
 
-    CircularQueue_agb parlour_agb(capacity); // Variable name and constructor call modified
+    CircularQueue_agb parlour_agb(capacity);
 
     int choice;
-    int orderCounter_agb = 1; // Variable name modified
+    int orderCounter_agb = 1;
 
     do {
         cout << "\n===== Main Menu =====" << endl;
@@ -294,22 +286,22 @@ int main_agb() { // Function name is modified
                 cin >> qty;
 
                 Order order(orderCounter_agb, name, type, qty);
-                if (parlour_agb.placeOrder_agb(order)) { // Calling postfixed method
-                    orderCounter_agb++; // Variable name modified
+                if (parlour_agb.placeOrder_agb(order)) {
+                    orderCounter_agb++;
                 }
                 break;
             }
 
             case 2:
-                parlour_agb.serveOrder_agb(); // Calling postfixed method
+                parlour_agb.serveOrder_agb();
                 break;
 
             case 3:
-                parlour_agb.displayOrders_agb(); // Calling postfixed method
+                parlour_agb.displayOrders_agb();
                 break;
 
             case 4:
-                parlour_agb.displayStatus_agb(); // Calling postfixed method
+                parlour_agb.displayStatus_agb();
                 break;
 
             case 5:
