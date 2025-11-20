@@ -104,7 +104,7 @@ MAIN:
 #include <iomanip>
 using namespace std;
 
-class Patient { // Class name is NOT modified
+class Patient {
 public:
     string name;
     int patientID;
@@ -112,7 +112,7 @@ public:
     int age;
     string priority;
 
-    Patient() {
+    Patient_agb() {
         name = "";
         patientID = 0;
         ailment = "";
@@ -120,7 +120,7 @@ public:
         priority = "Normal";
     }
 
-    Patient(string n, int id, string a, int ag, string p = "Normal") {
+    Patient_agb(string n, int id, string a, int ag, string p = "Normal") {
         name = n;
         patientID = id;
         ailment = a;
@@ -128,7 +128,7 @@ public:
         priority = p;
     }
 
-    void display_agb() { // Method name is modified
+    void display_agb() {
         cout << setw(10) << patientID
              << setw(20) << name
              << setw(6) << age
@@ -137,40 +137,38 @@ public:
     }
 };
 
-class Node { // Class name is NOT modified
+class Node {
 public:
     Patient data;
     Node* next;
 
-    Node(Patient p) {
+    Node_agb(Patient p) {
         data = p;
         next = NULL;
     }
 };
 
-class PatientQueue { // Class name is NOT modified
+class PatientQueue {
 private:
     Node* front;
     Node* rear;
     int count;
 
 public:
-    PatientQueue() {
+    PatientQueue_agb() {
         front = NULL;
         rear = NULL;
         count = 0;
     }
 
-    // Check if queue is empty
-    bool isEmpty_agb() { // Method name is modified
+    bool isEmpty_agb() {
         return front == NULL;
     }
 
-    // Add patient to queue
-    void enqueue_agb(Patient patient) { // Method name is modified
-        Node* newNode = new Node(patient);
+    void enqueue_agb(Patient patient) {
+        Node* newNode = new Node_agb(patient);
 
-        if (isEmpty_agb()) { // Calling postfixed method
+        if (isEmpty_agb()) {
             front = rear = newNode;
         } else {
             rear->next = newNode;
@@ -183,11 +181,10 @@ public:
         cout << "Position in queue: " << count << endl;
     }
 
-    // Remove and assign next patient to doctor
-    Patient dequeue_agb() { // Method name is modified
-        if (isEmpty_agb()) { // Calling postfixed method
+    Patient dequeue_agb() {
+        if (isEmpty_agb()) {
             cout << "Queue is empty! No patients waiting." << endl;
-            return Patient();
+            return Patient_agb();
         }
 
         Node* temp = front;
@@ -206,18 +203,16 @@ public:
         return patient;
     }
 
-    // Peek at front patient without removing
-    Patient peek_agb() { // Method name is modified
-        if (isEmpty_agb()) { // Calling postfixed method
+    Patient peek_agb() {
+        if (isEmpty_agb()) {
             cout << "No patients in queue!" << endl;
-            return Patient();
+            return Patient_agb();
         }
         return front->data;
     }
 
-    // Display all waiting patients
-    void display_agb() { // Method name is modified
-        if (isEmpty_agb()) { // Calling postfixed method
+    void display_agb() {
+        if (isEmpty_agb()) {
             cout << "\nNo patients waiting in queue!" << endl;
             return;
         }
@@ -234,28 +229,29 @@ public:
         int position = 1;
         while (current != NULL) {
             cout << "Queue #" << position++ << ": ";
-            current->data.display_agb(); // Calling postfixed method on Patient object
+            current->data.display_agb();
             current = current->next;
         }
         cout << string(68, '=') << endl;
         cout << "Total patients waiting: " << count << endl;
     }
 
-    // Get count of waiting patients
-    int getCount_agb() { // Method name is modified
+    int getCount_agb() {
         return count;
     }
 
-    // Destructor
-    ~PatientQueue() {
-        while (!isEmpty_agb()) { // Calling postfixed method
-            dequeue_agb(); // Calling postfixed method
+    ~PatientQueue_agb() {
+        while (!isEmpty_agb()) {
+            Node* temp = front;
+            front = front->next;
+            delete temp;
         }
+        rear = NULL;
     }
 };
 
-int main_agb() { // Function name is modified
-    PatientQueue clinic_agb; // Variable name is modified
+int main_agb() {
+    PatientQueue clinic_agb;
     int choice;
 
     do {
@@ -290,20 +286,20 @@ int main_agb() { // Function name is modified
                 getline(cin, priority);
 
                 Patient p(name, id, ailment, age, priority);
-                clinic_agb.enqueue_agb(p); // Calling postfixed method
+                clinic_agb.enqueue_agb(p);
                 break;
             }
 
             case 2: {
-                Patient p = clinic_agb.dequeue_agb(); // Calling postfixed method
+                Patient p = clinic_agb.dequeue_agb();
                 if (p.patientID != 0) {
-                    cout << "Patients remaining in queue: " << clinic_agb.getCount_agb() << endl; // Calling postfixed method
+                    cout << "Patients remaining in queue: " << clinic_agb.getCount_agb() << endl;
                 }
                 break;
             }
 
             case 3: {
-                Patient p = clinic_agb.peek_agb(); // Calling postfixed method
+                Patient p = clinic_agb.peek_agb();
                 if (p.patientID != 0) {
                     cout << "\n--- Next Patient ---" << endl;
                     cout << "ID: " << p.patientID << endl;
@@ -316,11 +312,11 @@ int main_agb() { // Function name is modified
             }
 
             case 4:
-                clinic_agb.display_agb(); // Calling postfixed method
+                clinic_agb.display_agb();
                 break;
 
             case 5:
-                cout << "\nTotal patients waiting: " << clinic_agb.getCount_agb() << endl; // Calling postfixed method
+                cout << "\nTotal patients waiting: " << clinic_agb.getCount_agb() << endl;
                 break;
 
             case 6:
