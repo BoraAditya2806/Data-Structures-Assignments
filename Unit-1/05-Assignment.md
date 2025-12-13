@@ -116,8 +116,8 @@ Sparse_agb *fastTranspose_agb(Sparse_agb *s) {
     t->data[0][1] = s->rows;
     t->data[0][2] = s->nonZero;
 
-    int *row_terms = (int *)calloc(s->cols, sizeof(int));
-    int *starting_pos = (int *)calloc(s->cols, sizeof(int));
+    int *row_terms = (int *)malloc(s->cols, sizeof(int));
+    int *starting_pos = (int *)malloc(s->cols, sizeof(int));
 
     if (row_terms == NULL || starting_pos == NULL) {
         cout << "Memory allocation failed for helper arrays! Exiting program." << endl;
