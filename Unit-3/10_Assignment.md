@@ -299,7 +299,7 @@ public:
     }
 };
 
-int main_agb() {
+int main() {
     CallCenterQueue_agb callCenter_agb;
     int choice;
     int callIDCounter_agb = 1001;
