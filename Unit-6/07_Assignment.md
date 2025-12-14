@@ -101,10 +101,10 @@ MAIN:
 #include <iostream>
 #include <iomanip>
 #include <string>
-#include <stdexcept> // For better error handling
+#include <stdexcept> 
 using namespace std;
 
-// Faculty Node Structure 🧑‍🏫 (Used as a node in the Linked List chain)
+
 class Faculty_agb {
 public:
     int id_agb;
@@ -112,7 +112,7 @@ public:
     string department_agb;
     string designation_agb;
     int experience_agb;
-    Faculty_agb* next_agb; // Pointer to the next node in the chain
+    Faculty_agb* next_agb; 
 
     Faculty_agb(int fid_agb, string fname_agb, string fdept_agb, string fdesig_agb, int fexp_agb) {
         id_agb = fid_agb;
@@ -120,18 +120,16 @@ public:
         department_agb = fdept_agb;
         designation_agb = fdesig_agb;
         experience_agb = fexp_agb;
-        next_agb = NULL; // Initialize next pointer
+        next_agb = NULL; 
     }
 };
 
-// Hash Table Class for Faculty Records using Chaining With Replacement (CWR)
 class FacultyHashTable_agb {
 private:
-    Faculty_agb** table_agb; // Array of pointers (heads of linked lists/slots)
+    Faculty_agb** table_agb; 
     int size_agb;
     int totalFaculty_agb;
 
-    // Hash function: ID modulo Table Size (Modulo Division Method)
     int hashFunction_agb(int id_agb) const {
         return id_agb % size_agb;
     }
@@ -145,64 +143,53 @@ public:
         totalFaculty_agb = 0;
         table_agb = new Faculty_agb*[size_agb];
 
-        // Initialize all array slots (chains) as empty (NULL)
-        for (int i_agb = 0; i_agb < size_agb; i_agb++) {
+       for (int i_agb = 0; i_agb < size_agb; i_agb++) {
             table_agb[i_agb] = NULL;
         }
 
         cout << "Faculty Hash Table created with size: " << size_agb << endl;
     }
 
-    // Insert faculty record using Chaining With Replacement (CWR)
     void insert_agb(int id_agb, string name_agb, string department_agb, string designation_agb, int experience_agb) {
         int index_agb = hashFunction_agb(id_agb);
 
         cout << "\nInserting Faculty ID " << id_agb << "..." << endl;
         cout << "Hash index: " << index_agb << endl;
 
-        // Check for duplicate ID in the chain at the hash index
         Faculty_agb* current_agb = table_agb[index_agb];
         while (current_agb != NULL) {
             if (current_agb->id_agb == id_agb) {
-                cout << "✗ Duplicate faculty ID " << id_agb << " already exists at index " << index_agb << "." << endl;
+                cout << "Duplicate faculty ID " << id_agb << " already exists at index " << index_agb << "." << endl;
                 return;
             }
             current_agb = current_agb->next_agb;
         }
 
-        // Create the new faculty node
+      
         Faculty_agb* newFaculty_agb = new Faculty_agb(id_agb, name_agb, department_agb, designation_agb, experience_agb);
 
-        // --- CWR Logic ---
-        
-        // Case 1: Slot is empty
+       
         if (table_agb[index_agb] == NULL) {
             table_agb[index_agb] = newFaculty_agb;
-            cout << "✓ Faculty **" << name_agb << "** inserted at index " << index_agb << " (empty slot)." << endl;
+            cout << " Faculty **" << name_agb << "** inserted at index " << index_agb << " (empty slot)." << endl;
         }
-        // Case 2: Slot is occupied
+       
         else {
             int occupantHash_agb = hashFunction_agb(table_agb[index_agb]->id_agb);
 
-            // Subcase 2a: Occupant belongs there (Occupant Hash == Index) -> Insert Without Replacement
             if (occupantHash_agb == index_agb) {
-                // Insert the new node at the head of the existing chain
                 newFaculty_agb->next_agb = table_agb[index_agb];
                 table_agb[index_agb] = newFaculty_agb;
-                cout << "✓ Faculty **" << name_agb << "** added to the existing chain at index " << index_agb << "." << endl;
+                cout << "Faculty **" << name_agb << "** added to the existing chain at index " << index_agb << "." << endl;
             }
-            // Subcase 2b: Occupant does *not* belong there (Occupant Hash != Index) -> Insert With Replacement
             else {
-                // Replace the occupant with the new element
                 cout << "Replacing element with ID " << table_agb[index_agb]->id_agb << " (hash=" << occupantHash_agb << ") at index " << index_agb << endl;
 
                 Faculty_agb* displaced_agb = table_agb[index_agb];
-                table_agb[index_agb] = newFaculty_agb; // New element takes the primary slot
-
-                // The displaced element is added to the new element's chain
+                table_agb[index_agb] = newFaculty_agb;
                 newFaculty_agb->next_agb = displaced_agb; 
 
-                cout << "✓ Faculty **" << name_agb << "** inserted at index " << index_agb << " (replaced occupant)." << endl;
+                cout << "Faculty **" << name_agb << "** inserted at index " << index_agb << " (replaced occupant)." << endl;
                 cout << "  Displaced element ID " << displaced_agb->id_agb << " moved to the new element's chain." << endl;
             }
         }
@@ -210,8 +197,7 @@ public:
         totalFaculty_agb++;
     }
 
-    // Search for a faculty record
-    Faculty_agb* search_agb(int id_agb) const {
+   Faculty_agb* search_agb(int id_agb) const {
         int index_agb = hashFunction_agb(id_agb);
         Faculty_agb* current_agb = table_agb[index_agb];
         int steps_agb = 0;
@@ -222,18 +208,17 @@ public:
         while (current_agb != NULL) {
             steps_agb++;
             if (current_agb->id_agb == id_agb) {
-                cout << "✓ Faculty found after " << steps_agb << " step(s) in the chain!" << endl;
+                cout << " Faculty found after " << steps_agb << " step(s) in the chain!" << endl;
                 return current_agb;
             }
             current_agb = current_agb->next_agb;
         }
 
-        cout << "✗ Faculty with ID " << id_agb << " not found!" << endl;
+        cout << " Faculty with ID " << id_agb << " not found!" << endl;
         return NULL;
     }
 
-    // Display all faculty records
-    void display_agb() const {
+     void display_agb() const {
         cout << "\n========== Faculty Database (Chaining With Replacement) ==========" << endl;
         
         cout << setw(5) << "Index" << setw(10) << "ID" << setw(18) << "Name" << setw(14) << "Dept" << setw(10) << "Hash";
@@ -245,21 +230,18 @@ public:
         for (int i_agb = 0; i_agb < size_agb; i_agb++) {
             Faculty_agb* current_agb = table_agb[i_agb];
             
-            // Print Index and Primary Slot details
             cout << setw(5) << i_agb;
             if (current_agb != NULL) {
                 isEmpty_agb = false;
                 int actualHash_agb = hashFunction_agb(current_agb->id_agb);
 
-                // Print primary slot details
-                cout << setw(10) << current_agb->id_agb
+               cout << setw(10) << current_agb->id_agb
                      << setw(18) << current_agb->name_agb.substr(0, 15)
                      << setw(14) << current_agb->department_agb.substr(0, 10)
                      << setw(10) << actualHash_agb;
 
                 cout << " | ";
                 
-                // Print Chain details
                 Faculty_agb* chain_agb = current_agb;
                 int position_agb = 0;
                 while (chain_agb != NULL) {
@@ -294,8 +276,7 @@ public:
         cout << "**Load factor ($\lambda$):** " << fixed << setprecision(2) << (float)totalFaculty_agb / size_agb << endl;
     }
 
-    // Destructor to free memory
-    ~FacultyHashTable_agb() {
+     ~FacultyHashTable_agb() {
         for (int i_agb = 0; i_agb < size_agb; i_agb++) {
             Faculty_agb* current_agb = table_agb[i_agb];
             while (current_agb != NULL) {
@@ -309,7 +290,7 @@ public:
     }
 };
 
-int main_agb() {
+int main() {
     int size_agb;
     cout << "===== Faculty Database using Hash Table (Chaining With Replacement) =====" << endl;
     cout << "Enter hash table size: ";
@@ -373,51 +354,14 @@ int main_agb() {
 
                 case 4: {
                     cout << "Inserting sample faculty records (Collision and Replacement cases are based on Table Size)..." << endl;
-                    // Note: This sample data is designed to test collisions and replacement based on the table size.
-                    // For example, if size=5, 101%5=1, 106%5=1, 111%5=1, 116%5=1, 121%5=1.
-                    // If size=10, 101%10=1, 106%10=6, 111%10=1, 116%10=6, 121%10=1.
-
-                    // Test Case 1: Replacement (New element should replace element displaced from its home index)
-                    // Insert E1 at index I1
+                   
                     ht_agb.insert_agb(101, "Dr. Smith (E1)", "CS", "Prof", 15); // Hash: 101 % size = I1
-                    // Insert E2 at index I2, where I2 != I1, but probe to I1. No, CWR doesn't use probing.
-                    // Let E1.hash != I1, E2.hash = I1. E2 replaces E1.
-                    
-                    // Assuming size=10:
-                    // ID 106, Hash 6. ID 111, Hash 1. ID 121, Hash 1. ID 126, Hash 6.
-                    
-                    // Insert ID 101 (Hash 1). Slot 1 is now [101]. (Home)
                     ht_agb.insert_agb(101, "Dr. Smith", "CS", "Professor", 15);
-
-                    // Insert ID 106 (Hash 6). Slot 6 is now [106]. (Home)
                     ht_agb.insert_agb(106, "Dr. Miller", "Electronics", "Professor", 20);
-                    
-                    // Insert ID 111 (Hash 1). Slot 1 is occupied by [101] (Hash 1). 111 is added to chain. Slot 1 is now [111]->[101].
                     ht_agb.insert_agb(111, "Dr. Davis", "Mechanical", "Assistant Professor", 5);
-                    
-                    // Insert ID 116 (Hash 6). Slot 6 is occupied by [106] (Hash 6). 116 is added to chain. Slot 6 is now [116]->[106].
                     ht_agb.insert_agb(116, "Dr. Wilson", "Civil", "Associate Professor", 12);
-                    
-                    // Now, insert an element that gets displaced and then insert an element to replace it.
-                    // To force displacement: we need an element E_D stored at index I_S where E_D.hash != I_S.
-                    // This setup is generally achieved with a complex linear/quadratic probing step before CWR or by pre-populating displaced elements.
-                    
-                    // Assuming size = 10.
-                    // Let's insert ID 121 (Hash 1). Slot 1 is [111]->[101]. 121 added to chain: [121]->[111]->[101].
                     ht_agb.insert_agb(121, "Dr. Brown", "Computer Science", "Assistant Professor", 3);
-                    
-                    // Let's insert ID 126 (Hash 6). Slot 6 is [116]->[106]. 126 added to chain: [126]->[116]->[106].
                     ht_agb.insert_agb(126, "Dr. Johnson", "Electronics", "Associate Professor", 10);
-                    
-                    // If table size is 5, ID 104 (Hash 4) and ID 109 (Hash 4).
-                    // If size=5: ID 104 (Hash 4). Slot 4 is [104].
-                    // Next, ID 109 (Hash 4). Slot 4 is [104]. 109 added to chain: [109]->[104].
-                    // Now, insert ID 114 (Hash 4). Slot 4 is [109]->[104]. 114 added to chain: [114]->[109]->[104].
-                    
-                    // Since a proper CWR setup requires a non-home element to be at the slot, which is hard to guarantee 
-                    // without a delete function or forced collision sequence, we rely on the implementation logic.
-                    // The core CWR logic is demonstrated by the `insert_agb` function's if/else block.
-
                     break;
                 }
 
@@ -457,35 +401,35 @@ Inserting sample faculty records...
 
 Inserting Faculty ID 101...
 Hash value: 3
-✓ Faculty Dr. Smith inserted at index 3 (empty slot)
+Faculty Dr. Smith inserted at index 3 (empty slot)
 
 Inserting Faculty ID 106...
 Hash value: 1
-✓ Faculty Dr. Miller inserted at index 1 (empty slot)
+Faculty Dr. Miller inserted at index 1 (empty slot)
 
 Inserting Faculty ID 111...
 Hash value: 6
-✓ Faculty Dr. Davis inserted at index 6 (empty slot)
+Faculty Dr. Davis inserted at index 6 (empty slot)
 
 Inserting Faculty ID 116...
 Hash value: 4
-✓ Faculty Dr. Wilson inserted at index 4 (empty slot)
+Faculty Dr. Wilson inserted at index 4 (empty slot)
 
 Inserting Faculty ID 121...
 Hash value: 2
-✓ Faculty Dr. Brown inserted at index 2 (empty slot)
+Faculty Dr. Brown inserted at index 2 (empty slot)
 
 Inserting Faculty ID 126...
 Hash value: 0
-✓ Faculty Dr. Johnson inserted at index 0 (empty slot)
+Faculty Dr. Johnson inserted at index 0 (empty slot)
 
 Inserting Faculty ID 131...
 Hash value: 5
-✓ Faculty Dr. Williams inserted at index 5 (empty slot)
+Faculty Dr. Williams inserted at index 5 (empty slot)
 
 Inserting Faculty ID 136...
 Hash value: 3
-✓ Faculty Dr. Moore inserted at index 3 (empty slot)
+Faculty Dr. Moore inserted at index 3 (empty slot)
 
 ===== Faculty Database Menu =====
 3. Display all faculty records
@@ -522,7 +466,7 @@ Enter your choice: 2
 Enter Faculty ID to search: 101
 
 Searching for Faculty ID 101 at index 3
-✓ Faculty found!
+Faculty found!
 
 --- Faculty Details ---
 ID: 101
@@ -537,7 +481,7 @@ Enter your choice: 2
 Enter Faculty ID to search: 126
 
 Searching for Faculty ID 126 at index 0
-✓ Faculty found!
+Faculty found!
 
 --- Faculty Details ---
 ID: 126
@@ -629,7 +573,7 @@ Chain: [126]->NULL [106]->NULL [121]->NULL [136]->[101]->NULL [116]->NULL [131]-
 Hash(101) = 101 % 7 = 3
 Chain at index 3: 136 -> 101
 Check first node: 136 ≠ 101
-Check second node: 101 = 101 ✓ FOUND
+Check second node: 101 = 101  FOUND
 ```
 
 ---
@@ -644,44 +588,12 @@ This program successfully implements a **Faculty Database using Hash Table with 
    - The displaced element is moved to the chain
    - Elements that belong at the index are added to the chain
 
-2. **Key Features**:
 
-   - Faculty records with ID, name, department, designation, and experience
-   - Dynamic memory allocation for linked lists
-   - Efficient search, insert, and display operations
-   - No limit on number of elements (unlike open addressing)
-
-3. **Advantages**:
-
-   - **Simple Implementation**: Easy to understand and implement
-   - **No Clustering**: Each chain is independent
-   - **Unlimited Capacity**: Can store more elements than table size
-   - **Efficient Deletion**: Simple removal from linked list
-
-4. **Time Complexity**:
+2. **Time Complexity**:
 
    - **Best Case**: O(1) - No collisions
    - **Average Case**: O(1 + α) where α is load factor
    - **Worst Case**: O(n) - All elements in one chain
 
-5. **Space Complexity**: O(n + m) where n is elements and m is table size
+3. **Space Complexity**: O(n + m) where n is elements and m is table size
 
-6. **Comparison with Linear Probing**:
-   - **Clustering**: Chaining has no clustering, linear probing has primary clustering
-   - **Deletion**: Chaining is simpler, linear probing requires markers
-   - **Memory**: Chaining needs extra memory for pointers, linear probing doesn't
-   - **Cache Performance**: Linear probing is better, chaining is poorer
-
-**Applications**:
-
-- Database indexing
-- Symbol tables in compilers
-- Caching systems
-- Dictionary implementations
-- Faculty/Employee databases
-
-**Best Practices**:
-
-- Keep load factor reasonable (α < 1.0 for good performance)
-- Use prime number for table size
-- Choose good hash function for uniform distribution
