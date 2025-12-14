@@ -280,12 +280,12 @@ public:
 
             string currentDate_agb = "2025-11-20";
             if (isExpired_agb(prod_agb->expirationDate, currentDate_agb)) {
-                cout << "⚠️ WARNING: This product is EXPIRED!" << endl;
+                cout << "WARNING: This product is EXPIRED!" << endl;
             } else {
-                cout << "✅ This product is still valid." << endl;
+                cout << " This product is still valid." << endl;
             }
         } else {
-            cout << "✗ Product '" << name_agb << "' not found in inventory!" << endl;
+            cout << " Product '" << name_agb << "' not found in inventory!" << endl;
         }
     }
 
@@ -317,10 +317,10 @@ public:
         if (prod_agb != NULL) {
             int oldQuantity_agb = prod_agb->quantity;
             prod_agb->quantity = newQuantity_agb;
-            cout << "✓ Updated quantity for '" << name_agb << "': "
+            cout << "Updated quantity for '" << name_agb << "': "
                  << oldQuantity_agb << " → " << newQuantity_agb << " units" << endl;
         } else {
-            cout << "✗ Product '" << name_agb << "' not found!" << endl;
+            cout << " Product '" << name_agb << "' not found!" << endl;
         }
     }
 };
@@ -446,14 +446,14 @@ int main_agb() {
 Enter your choice: 7
 
 Adding sample products:
-✓ Product 'Apple Juice' added to inventory successfully!
-✓ Product 'Banana Chips' added to inventory successfully!
-✓ Product 'Chocolate Bar' added to inventory successfully!
-✓ Product 'Dairy Milk' added to inventory successfully!
-✓ Product 'Eggs' added to inventory successfully!
-✓ Product 'Flour' added to inventory successfully!
-✓ Product 'Grapes' added to inventory successfully!
-✓ Product 'Honey' added to inventory successfully!
+ Product 'Apple Juice' added to inventory successfully!
+ Product 'Banana Chips' added to inventory successfully!
+ Product 'Chocolate Bar' added to inventory successfully!
+ Product 'Dairy Milk' added to inventory successfully!
+ Product 'Eggs' added to inventory successfully!
+ Product 'Flour' added to inventory successfully!
+ Product 'Grapes' added to inventory successfully!
+ Product 'Honey' added to inventory successfully!
 
 Enter your choice: 2
 
@@ -494,13 +494,13 @@ Price: $5.50
 Quantity: 15 units
 Date Received: 2025-11-05
 Expiration Date: 2026-11-05
-✅ This product is still valid.
+This product is still valid.
 
 Enter your choice: 5
 
 Enter product name: Apple Juice
 Enter new quantity: 45
-✓ Updated quantity for 'Apple Juice': 50 → 45 units
+Updated quantity for 'Apple Juice': 50 → 45 units
 
 Enter your choice: 6
 
@@ -587,67 +587,7 @@ Dairy Milk
 ...
 ```
 
-### List Expired Items (Current Date: 2025-11-20)
 
-```
-Preorder traversal checking expiration:
-1. Apple Juice: Expiry 2025-12-01 > 2025-11-20 → Not expired
-2. Banana Chips: Expiry 2025-11-05 < 2025-11-20 → EXPIRED
-3. Chocolate Bar: Expiry 2026-04-10 > 2025-11-20 → Not expired
-4. Dairy Milk: Expiry 2026-01-15 > 2025-11-20 → Not expired
-5. Eggs: Expiry 2025-11-25 > 2025-11-20 → Not expired (but close!)
-6. Flour: Expiry 2026-10-25 > 2025-11-20 → Not expired
-7. Grapes: Expiry 2025-11-30 > 2025-11-20 → Not expired (but close!)
-8. Honey: Expiry 2026-11-05 > 2025-11-20 → Not expired
-
-Actually, from sample data:
-- Banana Chips: 2025-11-05 < 2025-11-20 → EXPIRED
-- Eggs: 2025-11-25 > 2025-11-20 → Not expired yet
-
-Wait, let me recheck:
-Current date: 2025-11-20
-- Banana Chips expiry: 2025-11-05 → Expired (5 Nov < 20 Nov)
-- Eggs expiry: 2025-11-25 → Not expired (25 Nov > 20 Nov)
-
-So only Banana Chips is expired in this example.
-But in the output, Eggs was also listed. Let me check:
-Eggs expiry: 2025-11-25
-Current: 2025-11-20
-2025-11-25 > 2025-11-20, so Eggs should NOT be expired.
-
-Looking at the output again, there's an error in my analysis.
-Let me check the sample data:
-Eggs expiry: 2025-11-25
-Current date: 2025-11-20
-2025-11-25 is after 2025-11-20, so Eggs should NOT be expired.
-
-But the output shows Eggs as expired. This suggests there might be an error in the sample data or my understanding.
-
-Actually, looking more carefully at the sample data:
-string expiry[] = {"2025-12-01", "2025-11-05", "2026-04-10", "2026-01-15",
-                   "2025-11-25", "2026-10-25", "2025-11-30", "2026-11-05"};
-
-So:
-- Banana Chips (index 1): 2025-11-05 < 2025-11-20 → Expired
-- Eggs (index 4): 2025-11-25 > 2025-11-20 → Not expired
-
-But the output shows Eggs as expired. This indicates either:
-1. My date comparison logic is wrong, or
-2. There's an error in the sample output
-
-Let me check the date comparison logic:
-isExpired("2025-11-25", "2025-11-20")
-This should return false since 2025-11-25 > 2025-11-20
-
-But if it's returning true, there might be an issue with string comparison.
-String comparison works lexicographically:
-"2025-11-25" vs "2025-11-20"
-Character by character: 2=2, 0=0, 2=2, 5=5, -=-, 1=1, 1=1, -=-, 2=2, 5>2
-So "2025-11-25" > "2025-11-20" should be true
-Therefore isExpired should return false.
-
-There seems to be a discrepancy in the example output. Let me trust the code logic.
-```
 
 ### Search Product ("Honey")
 
@@ -718,61 +658,11 @@ This program implements a **Product Inventory Management System using BST** with
    - **List Expired Items**: O(n) with date checking
    - **Search**: O(log n) average case
 
-4. **Key Features**:
-
-   - Alphabetical product organization
-   - Expiration date tracking
-   - Inventory value calculation
-   - Quantity management
-   - Product search functionality
-   - Statistics reporting
-
-5. **Time Complexity**:
+4. **Time Complexity**:
 
    - Insert: O(log n) average, O(n) worst case
    - Search: O(log n) average, O(n) worst case
    - Display: O(n)
    - Expired items check: O(n)
 
-6. **Space Complexity**: O(n) for storing product records
-
-**BST Advantages for Inventory Management**:
-
-- **Fast Search**: Quick product lookup by name
-- **Automatic Sorting**: Products displayed alphabetically
-- **Efficient Range Queries**: Easy to find products in name ranges
-- **Memory Efficient**: Dynamic allocation
-- **Scalable**: Handles growing inventory
-
-**Inventory Management Features**:
-
-- **Expiration Tracking**: Identifies expired products
-- **Value Calculation**: Total inventory worth
-- **Quantity Updates**: Stock level management
-- **Product Details**: Complete information storage
-- **Statistics**: Overview of inventory status
-
-**Applications**:
-
-- Retail store inventory systems
-- Warehouse management
-- Supermarket stock control
-- Pharmacy inventory tracking
-- Food service supply management
-
-**Real-world Benefits**:
-
-- Reduced waste through expiration tracking
-- Efficient inventory organization
-- Quick product location
-- Automated stock level monitoring
-- Data-driven inventory decisions
-
-**Future Enhancements**:
-
-- Multiple search criteria (code, category, price range)
-- Automatic reorder alerts
-- Supplier information tracking
-- Sales history integration
-- Barcode scanning interface
-- Cloud-based synchronization
+5. **Space Complexity**: O(n) for storing product records
