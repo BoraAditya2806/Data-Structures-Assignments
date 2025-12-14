@@ -101,7 +101,7 @@ MAIN:
 #include <stdexcept>
 using namespace std;
 
-// Define constant markers for clarity
+
 const int EMPTY_agb = -1;
 const int DELETED_agb = -2;
 
@@ -109,18 +109,15 @@ class HashTable_agb {
 private:
     int* table_agb;
     int size_agb;
-    int occupied_agb; // Count of actual keys present
-    int filled_agb;   // Count of slots with actual keys or deleted markers
+    int occupied_agb; 
+    int filled_agb;   
 
-    // Hash function using modulo
-    // h(key) = key mod size
+    
+   
     int hashFunction_agb(int key_agb) const {
-        // Ensure non-negative result for all keys if not using a modulus operator that handles negative numbers as expected
         return (key_agb % size_agb + size_agb) % size_agb;
     }
 
-    // Probing function for Linear Probing
-    // probe(i) = i
     int probeFunction_agb(int initialIndex_agb, int probeCount_agb) const {
         return (initialIndex_agb + probeCount_agb) % size_agb;
     }
@@ -133,9 +130,9 @@ public:
         size_agb = s_agb;
         table_agb = new int[size_agb];
         occupied_agb = 0;
-        filled_agb = 0; // The total count of slots that are not EMPTY
+        filled_agb = 0; 
 
-        // Initialize table with EMPTY marker
+       
         for (int i_agb = 0; i_agb < size_agb; i_agb++) {
             table_agb[i_agb] = EMPTY_agb;
         }
@@ -143,14 +140,13 @@ public:
         cout << "Hash table created with size: " << size_agb << endl;
     }
 
-    // Insert key using linear probing
     bool insert_agb(int key_agb) {
         if (occupied_agb >= size_agb) {
-            cout << "✗ Hash table is FULL! Cannot insert " << key_agb << endl;
+            cout << " Hash table is FULL! Cannot insert " << key_agb << endl;
             return false;
         }
         if (key_agb == EMPTY_agb || key_agb == DELETED_agb) {
-             cout << "✗ Cannot insert key " << key_agb << " because it conflicts with internal markers." << endl;
+             cout << " Cannot insert key " << key_agb << " because it conflicts with internal markers." << endl;
              return false;
         }
 
@@ -161,33 +157,31 @@ public:
         cout << "\nInserting " << key_agb << "..." << endl;
         cout << "Initial Hash index: " << initialIndex_agb << endl;
 
-        // Linear probing (search for the first EMPTY or DELETED slot, or find a duplicate)
         while (table_agb[index_agb] != EMPTY_agb) {
             if (table_agb[index_agb] == key_agb) {
-                cout << "✗ Duplicate key! " << key_agb << " already exists at index " << index_agb << "." << endl;
+                cout << " Duplicate key! " << key_agb << " already exists at index " << index_agb << "." << endl;
                 return false;
             }
 
             probeCount_agb++;
             index_agb = probeFunction_agb(initialIndex_agb, probeCount_agb);
 
-            // Check if we've cycled through all slots (shouldn't happen if occupied_agb < size_agb, but good safety)
+          
             if (probeCount_agb >= size_agb) {
-                // This means the table is logically full but occupied_agb was wrong, or something went wrong.
-                cout << "✗ Hash table is logically FULL! Cannot insert " << key_agb << endl;
+               
+                cout << " Hash table is logically FULL! Cannot insert " << key_agb << endl;
                 return false;
             }
         }
-        // At this point, index_agb is either EMPTY_agb or DELETED_agb
 
         if (table_agb[index_agb] == EMPTY_agb) {
-             filled_agb++; // Only increment filled count if slot was previously EMPTY
+             filled_agb++;
         }
         
         table_agb[index_agb] = key_agb;
         occupied_agb++;
 
-        cout << "✓ Inserted " << key_agb << " at index " << index_agb;
+        cout << " Inserted " << key_agb << " at index " << index_agb;
         if (probeCount_agb > 0) {
             cout << " (after " << probeCount_agb << " probes)";
         }
@@ -196,38 +190,33 @@ public:
         return true;
     }
 
-    /**
-     * @brief Searches for a key and returns its index.
-     * @param key_agb The key to search for.
-     * @param probeCount_agb Reference to store the number of probes performed.
-     * @return The index of the key if found, or -1 if not found.
-     */
+
     int search_agb(int key_agb, int& probeCount_agb) const {
         int initialIndex_agb = hashFunction_agb(key_agb);
         int index_agb = initialIndex_agb;
         probeCount_agb = 0;
 
-        // Search loop continues as long as the slot is not EMPTY
-        // We must check DELETED slots because the target key might be further down the probe sequence.
+       
+       
         while (table_agb[index_agb] != EMPTY_agb) {
             
             if (table_agb[index_agb] == key_agb) {
-                return index_agb; // Key found
+                return index_agb; 
             }
 
             probeCount_agb++;
             index_agb = probeFunction_agb(initialIndex_agb, probeCount_agb);
             
-            // Safety break: if we've checked every slot
+
             if (probeCount_agb >= size_agb) {
                 break;
             }
         }
 
-        return -1; // Not found
+        return -1; 
     }
 
-    // Search with display
+    
     void searchKey_agb(int key_agb) const {
         int probeCount_agb = 0;
         int index_agb = search_agb(key_agb, probeCount_agb);
@@ -236,32 +225,32 @@ public:
         cout << "Initial Hash index: " << hashFunction_agb(key_agb) << endl;
 
         if (index_agb != -1) {
-            cout << "✓ Key " << key_agb << " found at index " << index_agb;
+            cout << " Key " << key_agb << " found at index " << index_agb;
             if (probeCount_agb > 0) {
                 cout << " (after " << probeCount_agb << " probes)";
             }
             cout << endl;
         } else {
-            cout << "✗ Key " << key_agb << " not found (checked "
+            cout << " Key " << key_agb << " not found (checked "
                  << probeCount_agb + 1 << " positions before hitting EMPTY or cycling)" << endl;
         }
     }
 
-    // Delete key
+
     bool deleteKey_agb(int key_agb) {
         cout << "\nDeleting " << key_agb << "..." << endl;
         int probeCount_agb = 0;
         int index_agb = search_agb(key_agb, probeCount_agb);
 
         if (index_agb == -1) {
-            cout << "✗ Key " << key_agb << " not found! Cannot delete." << endl;
+            cout << " Key " << key_agb << " not found! Cannot delete." << endl;
             return false;
         }
 
-        table_agb[index_agb] = DELETED_agb; // Mark as deleted (tombstone)
+        table_agb[index_agb] = DELETED_agb; 
         occupied_agb--;
 
-        cout << "✓ Key " << key_agb << " deleted from index " << index_agb << endl;
+        cout << " Key " << key_agb << " deleted from index " << index_agb << endl;
         return true;
     }
 
@@ -291,7 +280,6 @@ public:
              << (float)occupied_agb / size_agb << endl;
     }
 
-    // Calculate and display statistics
     void displayStats_agb() const {
         int emptyCount_agb = 0;
         int deletedCount_agb = 0;
@@ -414,40 +402,40 @@ Inserting sample keys: 23 43 13 27 33 17 37
 
 Inserting 23...
 Hash value: 3
-✓ Inserted 23 at index 3
+Inserted 23 at index 3
 
 Inserting 43...
 Hash value: 3
 Collision at index 3 (contains 23), probing...
-✓ Inserted 43 at index 4 (after 1 probes)
+Inserted 43 at index 4 (after 1 probes)
 
 Inserting 13...
 Hash value: 3
 Collision at index 3 (contains 23), probing...
 Collision at index 4 (contains 43), probing...
-✓ Inserted 13 at index 5 (after 2 probes)
+Inserted 13 at index 5 (after 2 probes)
 
 Inserting 27...
 Hash value: 7
-✓ Inserted 27 at index 7
+Inserted 27 at index 7
 
 Inserting 33...
 Hash value: 3
 Collision at index 3 (contains 23), probing...
 Collision at index 4 (contains 43), probing...
 Collision at index 5 (contains 13), probing...
-✓ Inserted 33 at index 6 (after 3 probes)
+Inserted 33 at index 6 (after 3 probes)
 
 Inserting 17...
 Hash value: 7
 Collision at index 7 (contains 27), probing...
-✓ Inserted 17 at index 8 (after 1 probes)
+Inserted 17 at index 8 (after 1 probes)
 
 Inserting 37...
 Hash value: 7
 Collision at index 7 (contains 27), probing...
 Collision at index 8 (contains 17), probing...
-✓ Inserted 37 at index 9 (after 2 probes)
+Inserted 37 at index 9 (after 2 probes)
 
 Enter your choice: 4
 
@@ -473,11 +461,11 @@ Enter key to search: 33
 
 Searching for 33...
 Hash value: 3
-✓ Key 33 found at index 6 (after 4 probes)
+Key 33 found at index 6 (after 4 probes)
 
 Enter your choice: 3
 Enter key to delete: 23
-✓ Key 23 deleted from index 3
+Key 23 deleted from index 3
 
 Enter your choice: 4
 
@@ -562,8 +550,7 @@ Insert at index 5
 
 Index:  0   1   2   3   4   5   6   7   8   9
 Value:  -1  -1  -1  23  43  13  -1  -1  -1  -1
-                    ^^  ^^  ^^
-                    collisions
+                   
 ```
 
 ### Insert 27:
@@ -590,8 +577,6 @@ Insert at index 6
 
 Index:  0   1   2   3   4   5   6   7   8   9
 Value:  -1  -1  -1  23  43  13  33  27  -1  -1
-                    ^^  ^^  ^^  ^^
-                    clustering effect
 ```
 
 ### Search for 33:
@@ -601,7 +586,7 @@ Hash(33) = 3
 table[3] = 23 ≠ 33, continue
 table[4] = 43 ≠ 33, continue
 table[5] = 13 ≠ 33, continue
-table[6] = 33 ✓ FOUND
+table[6] = 33  FOUND
 Probes required: 4
 ```
 
@@ -613,8 +598,7 @@ Mark table[3] = -2 (DELETED)
 
 Index:  0   1   2   3   4   5   6   7   8   9
 Value:  -1  -1  -1  -2  43  13  33  27  -1  -1
-                    ^^
-                  deleted
+                   
 ```
 
 ---
@@ -665,23 +649,4 @@ This program successfully implements **Hash Table with Linear Probing** collisio
    - α = number of elements / table size
    - Recommended: α < 0.7 for good performance
    - Higher α → more collisions
-
-**Advantages**:
-
-- Simple implementation
-- Good cache locality
-- No extra pointers needed
-
-**Disadvantages**:
-
-- Primary clustering
-- Performance degrades with high load factor
-- Deletion requires special handling
-
-**Applications**:
-
-- Symbol tables in compilers
-- Database indexing
-- Caching systems
-- Dictionary implementations
 
