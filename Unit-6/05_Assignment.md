@@ -95,10 +95,9 @@ MAIN:
 #include <iostream>
 #include <iomanip>
 #include <string>
-#include <stdexcept> // For better error handling
+#include <stdexcept>
 using namespace std;
 
-// Faculty Record Structure 🧑‍🏫
 class Faculty_agb {
 public:
     int id_agb;
@@ -107,40 +106,31 @@ public:
     string designation_agb;
     int experience_agb;
     bool isEmpty_agb;
-    // NOTE: For deletion in Linear Probing, a 'DELETED' marker (tombstone) is typically
-    // required for correct searching of subsequent clustered elements.
-    // The original code only uses 'isEmpty', which is inadequate for general deletion but
-    // is kept here to match the user's base logic (as deletion is not implemented).
 
-    Faculty_agb() {
-        isEmpty_agb = true; // Default constructor marks slot as empty
+Faculty_agb() {
+        isEmpty_agb = true; 
     }
 };
 
-// Hash Table Class for Faculty Records using Linear Probing
 class FacultyHashTable_agb {
 private:
     Faculty_agb* table_agb;
     int size_agb;
     int totalFaculty_agb;
 
-    // Hash function: ID modulo Table Size (Modulo Division Method)
-    int hashFunction_agb(int id_agb) const {
-        // Simple modulo hashing
+   int hashFunction_agb(int id_agb) const {
         return id_agb % size_agb;
     }
 
 public:
     FacultyHashTable_agb(int s_agb) {
         if (s_agb <= 0) {
-            // Throw exception for invalid size to prevent runtime issues
-            throw invalid_argument("Hash table size must be positive.");
+          throw invalid_argument("Hash table size must be positive.");
         }
         size_agb = s_agb;
         totalFaculty_agb = 0;
         table_agb = new Faculty_agb[size_agb];
 
-        // Initialize all slots as empty (done by default constructor, but explicit initialization for safety)
         for (int i_agb = 0; i_agb < size_agb; i_agb++) {
             table_agb[i_agb].isEmpty_agb = true;
         }
@@ -148,10 +138,9 @@ public:
         cout << "Faculty Hash Table created with capacity: " << size_agb << endl;
     }
 
-    // Insert faculty record using Linear Probing
     bool insert_agb(int id_agb, string name_agb, string department_agb, string designation_agb, int experience_agb) {
         if (totalFaculty_agb >= size_agb) {
-            cout << "✗ Hash table is FULL! Cannot insert more faculty." << endl;
+            cout << " Hash table is FULL! Cannot insert more faculty." << endl;
             return false;
         }
 
@@ -166,28 +155,28 @@ public:
         do {
             // 1. Check for duplicate ID in the slot
             if (!table_agb[index_agb].isEmpty_agb && table_agb[index_agb].id_agb == id_agb) {
-                cout << "✗ Duplicate faculty ID! Faculty with ID " << id_agb << " already exists at index " << index_agb << "." << endl;
+                cout << " Duplicate faculty ID! Faculty with ID " << id_agb << " already exists at index " << index_agb << "." << endl;
                 return false;
             }
 
-            // 2. Check if the slot is empty (ready for insertion)
+           
             if (table_agb[index_agb].isEmpty_agb) {
-                break; // Found an empty slot
+                break; 
             }
 
-            // 3. Collision: Move to the next slot
+            
             probeCount_agb++;
             index_agb = (index_agb + 1) % size_agb;
 
-            // 4. Check for full table by checking if we have looped back
+          
             if (index_agb == originalIndex_agb) {
-                cout << "✗ Hash table is logically FULL! Cannot insert more faculty." << endl;
+                cout << " Hash table is logically FULL! Cannot insert more faculty." << endl;
                 return false;
             }
 
         } while (true);
 
-        // Insert the faculty record
+       
         table_agb[index_agb].id_agb = id_agb;
         table_agb[index_agb].name_agb = name_agb;
         table_agb[index_agb].department_agb = department_agb;
@@ -196,15 +185,13 @@ public:
         table_agb[index_agb].isEmpty_agb = false; // Mark slot as occupied
         totalFaculty_agb++;
 
-        cout << "✓ Faculty **" << name_agb << "** (ID: " << id_agb << ") inserted at index " << index_agb;
+        cout << " Faculty **" << name_agb << "** (ID: " << id_agb << ") inserted at index " << index_agb;
         if (probeCount_agb > 0) {
             cout << " (after " << probeCount_agb << " probes)";
         }
         cout << " successfully!" << endl;
         return true;
     }
-
-    // Search for a faculty record
     Faculty_agb* search_agb(int id_agb) const {
         int originalIndex_agb = hashFunction_agb(id_agb);
         int index_agb = originalIndex_agb;
@@ -213,14 +200,14 @@ public:
         cout << "\nSearching for Faculty ID " << id_agb << "..." << endl;
         cout << "Initial Hash index: " << originalIndex_agb << endl;
 
-        // Linear probing to find the faculty
+        
         do {
             if (table_agb[index_agb].isEmpty_agb) {
-                break; // Empty slot means key isn't present
+                break;
             }
 
             if (table_agb[index_agb].id_agb == id_agb) {
-                cout << "✓ Faculty found at index " << index_agb;
+                cout << " Faculty found at index " << index_agb;
                 if (probeCount_agb > 0) {
                     cout << " (after " << probeCount_agb << " probes)";
                 }
@@ -238,7 +225,7 @@ public:
             }
         } while (true);
 
-        cout << "✗ Faculty with ID " << id_agb << " not found!" << endl;
+        cout << " Faculty with ID " << id_agb << " not found!" << endl;
         return nullptr;
     }
 
@@ -277,15 +264,13 @@ public:
         cout << "**Load factor ($\lambda$):** " << fixed << setprecision(2) << (float)totalFaculty_agb / size_agb << endl;
         cout << string(34, '=') << endl;
     }
-
-    // Destructor
     ~FacultyHashTable_agb() {
         delete[] table_agb;
         cout << "Faculty Hash Table memory deallocated" << endl;
     }
 };
 
-int main_agb() {
+int main() {
     int size_agb;
 
     cout << "===== Faculty Database using Hash Table (Linear Probing) =====" << endl;
@@ -397,35 +382,35 @@ Inserting sample faculty records...
 
 Inserting Faculty ID 101...
 Hash value: 2
-✓ Faculty Dr. Smith (ID: 101) inserted successfully!
+Faculty Dr. Smith (ID: 101) inserted successfully!
 
 Inserting Faculty ID 102...
 Hash value: 3
-✓ Faculty Dr. Johnson (ID: 102) inserted successfully!
+Faculty Dr. Johnson (ID: 102) inserted successfully!
 
 Inserting Faculty ID 103...
 Hash value: 4
-✓ Faculty Dr. Williams (ID: 103) inserted successfully!
+Faculty Dr. Williams (ID: 103) inserted successfully!
 
 Inserting Faculty ID 104...
 Hash value: 5
-✓ Faculty Dr. Brown (ID: 104) inserted successfully!
+Faculty Dr. Brown (ID: 104) inserted successfully!
 
 Inserting Faculty ID 105...
 Hash value: 6
-✓ Faculty Dr. Davis (ID: 105) inserted successfully!
+Faculty Dr. Davis (ID: 105) inserted successfully!
 
 Inserting Faculty ID 106...
 Hash value: 7
-✓ Faculty Dr. Miller (ID: 106) inserted successfully!
+Faculty Dr. Miller (ID: 106) inserted successfully!
 
 Inserting Faculty ID 107...
 Hash value: 8
-✓ Faculty Dr. Wilson (ID: 107) inserted successfully!
+Faculty Dr. Wilson (ID: 107) inserted successfully!
 
 Inserting Faculty ID 108...
 Hash value: 9
-✓ Faculty Dr. Moore (ID: 108) inserted successfully!
+Faculty Dr. Moore (ID: 108) inserted successfully!
 
 ===== Faculty Database Menu =====
 3. Display all faculty records
@@ -454,7 +439,7 @@ Enter Faculty ID to search: 106
 
 Searching for Faculty ID 106...
 Hash value: 7
-✓ Faculty found!
+Faculty found!
 
 --- Faculty Details ---
 ID: 106
@@ -470,7 +455,7 @@ Enter Faculty ID to search: 112
 
 Searching for Faculty ID 112...
 Hash value: 2
-✗ Faculty with ID 112 not found!
+Faculty with ID 112 not found!
 
 ===== Faculty Database Menu =====
 5. Exit
@@ -610,28 +595,3 @@ This program successfully implements a **Faculty Database using Hash Table with 
    - **Worst Case**: O(n) - All elements form a cluster
 
 6. **Space Complexity**: O(n) where n is the table size
-
-7. **Advantages**:
-
-   - **Cache Performance**: Sequential memory access
-   - **No Extra Memory**: No need for pointers like chaining
-   - **Simple Implementation**: Easy to understand and implement
-
-8. **Disadvantages**:
-   - **Primary Clustering**: Consecutive filled slots form clusters
-   - **Deletion Complexity**: Requires special handling with markers
-   - **Load Factor Limitation**: Performance degrades with high load factor
-
-**Applications**:
-
-- Faculty/Employee database systems
-- Student record management
-- Library management systems
-- Any system requiring fast key-based lookups
-
-**Best Practices**:
-
-- Keep load factor below 0.7 for good performance
-- Use prime number for table size
-- Implement proper deletion with lazy deletion markers
-- Monitor and resize table when load factor becomes too high
