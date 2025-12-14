@@ -142,7 +142,7 @@ public:
     Call data;
     Node* next;
 
-    Node_agb(Call c) {
+    Node(Call c) {
         data = c;
         next = NULL;
     }
@@ -170,7 +170,7 @@ public:
     }
 
     void enqueueCall_agb(Call call) {
-        Node* newNode = new Node_agb(call);
+        Node* newNode = new Node(call);
 
         if (isEmpty_agb()) {
             front = rear = newNode;
@@ -181,7 +181,7 @@ public:
 
         totalCalls++;
 
-        cout << "\n✓ Incoming call from '" << call.customerName
+        cout << "\nIncoming call from '" << call.customerName
              << "' (Call ID: " << call.callID << ")" << endl;
         cout << "Issue: " << call.issue << endl;
         cout << "Priority: " << call.priority << endl;
@@ -190,7 +190,7 @@ public:
 
     Call dequeueCall_agb() {
         if (isEmpty_agb()) {
-            cout << "\n✓ No calls waiting. System is idle." << endl;
+            cout << "\n No calls waiting. System is idle." << endl;
             return Call_agb();
         }
 
@@ -205,7 +205,7 @@ public:
         delete temp;
         servedCalls++;
 
-        cout << "\n✓ Answering call from '" << call.customerName
+        cout << "\n Answering call from '" << call.customerName
              << "' (Call ID: " << call.callID << ")" << endl;
         cout << "Phone: " << call.phoneNumber << endl;
         cout << "Issue: " << call.issue << endl;
@@ -231,7 +231,7 @@ public:
 
     void displayWaitingCalls_agb() {
         if (isEmpty_agb()) {
-            cout << "\n✓ No calls waiting. All clear!" << endl;
+            cout << "\n No calls waiting. All clear!" << endl;
             return;
         }
 
@@ -396,7 +396,7 @@ Enter phone number: 555-1234
 Enter issue/query: Internet not working
 Enter priority (Low/Normal/High/Urgent): High
 
-✓ Incoming call from 'John Doe' (Call ID: 1001)
+Incoming call from 'John Doe' (Call ID: 1001)
 Issue: Internet not working
 Priority: High
 Position in queue: 1
@@ -409,7 +409,7 @@ Enter phone number: 555-5678
 Enter issue/query: Billing inquiry
 Enter priority (Low/Normal/High/Urgent): Normal
 
-✓ Incoming call from 'Sarah Smith' (Call ID: 1002)
+Incoming call from 'Sarah Smith' (Call ID: 1002)
 Issue: Billing inquiry
 Priority: Normal
 Position in queue: 2
@@ -422,7 +422,7 @@ Enter phone number: 555-9012
 Enter issue/query: Service activation
 Enter priority (Low/Normal/High/Urgent): Urgent
 
-✓ Incoming call from 'Mike Johnson' (Call ID: 1003)
+Incoming call from 'Mike Johnson' (Call ID: 1003)
 Issue: Service activation
 Priority: Urgent
 Position in queue: 3
@@ -449,7 +449,7 @@ Priority: High
 
 Enter your choice: 2
 
-✓ Answering call from 'John Doe' (Call ID: 1001)
+Answering call from 'John Doe' (Call ID: 1001)
 Phone: 555-1234
 Issue: Internet not working
 Priority: High
@@ -466,7 +466,7 @@ Status: ACTIVE (2 calls waiting)
 
 Enter your choice: 2
 
-✓ Answering call from 'Sarah Smith' (Call ID: 1002)
+Answering call from 'Sarah Smith' (Call ID: 1002)
 Phone: 555-5678
 Issue: Billing inquiry
 Priority: Normal
@@ -474,7 +474,7 @@ Remaining calls in queue: 1
 
 Enter your choice: 2
 
-✓ Answering call from 'Mike Johnson' (Call ID: 1003)
+Answering call from 'Mike Johnson' (Call ID: 1003)
 Phone: 555-9012
 Issue: Service activation
 Priority: Urgent
@@ -482,7 +482,7 @@ Remaining calls in queue: 0
 
 Enter your choice: 2
 
-✓ No calls waiting. System is idle.
+No calls waiting. System is idle.
 
 Enter your choice: 6
 
