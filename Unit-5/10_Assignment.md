@@ -62,7 +62,6 @@ MAIN:
 #include <vector>
 #include <climits>
 #include <iomanip>
-#include <queue> // For optimized implementation (Min-Heap based Dijkstra's)
 using namespace std;
 
 // Class to represent an edge for the adjacency list
