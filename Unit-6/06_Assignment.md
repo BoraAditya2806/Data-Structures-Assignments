@@ -77,10 +77,9 @@ MAIN:
 #include <iostream>
 #include <iomanip>
 #include <string>
-#include <stdexcept> // For better error handling
+#include <stdexcept> 
 using namespace std;
 
-// Faculty Node Structure  (Used as a node in the Linked List chain)
 class Faculty_agb {
 public:
     int id_agb;
@@ -88,7 +87,7 @@ public:
     string department_agb;
     string designation_agb;
     int experience_agb;
-    Faculty_agb* next_agb; // Pointer to the next node in the chain
+    Faculty_agb* next_agb; 
 
     Faculty_agb(int fid_agb, string fname_agb, string fdept_agb, string fdesig_agb, int fexp_agb) {
         id_agb = fid_agb;
@@ -96,18 +95,16 @@ public:
         department_agb = fdept_agb;
         designation_agb = fdesig_agb;
         experience_agb = fexp_agb;
-        next_agb = NULL; // Initialize next pointer
+        next_agb = NULL; 
     }
 };
 
-// Hash Table Class for Faculty Records using Separate Chaining
 class FacultyHashTable_agb {
 private:
-    Faculty_agb** table_agb; // Array of pointers (heads of linked lists)
+    Faculty_agb** table_agb;
     int size_agb;
     int totalFaculty_agb;
 
-    // Hash function: ID modulo Table Size (Modulo Division Method)
     int hashFunction_agb(int id_agb) const {
         return id_agb % size_agb;
     }
@@ -121,7 +118,6 @@ public:
         totalFaculty_agb = 0;
         table_agb = new Faculty_agb*[size_agb];
 
-        // Initialize all array slots (chains) as empty (NULL)
         for (int i_agb = 0; i_agb < size_agb; i_agb++) {
             table_agb[i_agb] = NULL;
         }
@@ -129,15 +125,13 @@ public:
         cout << "Faculty Hash Table created with size: " << size_agb << endl;
     }
 
-    // Insert faculty record using Separate Chaining (Insert at Head)
     void insert_agb(int id_agb, string name_agb, string department_agb, string designation_agb, int experience_agb) {
         int index_agb = hashFunction_agb(id_agb);
 
-        // Check for duplicate ID
         Faculty_agb* current_agb = table_agb[index_agb];
         while (current_agb != NULL) {
             if (current_agb->id_agb == id_agb) {
-                cout << "✗ Duplicate faculty ID " << id_agb << " already exists at index " << index_agb << "." << endl;
+                cout << " Duplicate faculty ID " << id_agb << " already exists at index " << index_agb << "." << endl;
                 return;
             }
             current_agb = current_agb->next_agb;
@@ -146,16 +140,15 @@ public:
         cout << "\nInserting Faculty ID " << id_agb << "..." << endl;
         cout << "Hash index: " << index_agb << endl;
 
-        // Insert at the beginning of the linked list (chain)
+        
         Faculty_agb* newFaculty_agb = new Faculty_agb(id_agb, name_agb, department_agb, designation_agb, experience_agb);
         newFaculty_agb->next_agb = table_agb[index_agb];
         table_agb[index_agb] = newFaculty_agb;
         totalFaculty_agb++;
 
-        cout << "✓ Faculty **" << name_agb << "** (ID: " << id_agb << ") inserted successfully at index " << index_agb << "!" << endl;
+        cout << " Faculty **" << name_agb << "** (ID: " << id_agb << ") inserted successfully at index " << index_agb << "!" << endl;
     }
 
-    // Search for a faculty record
     Faculty_agb* search_agb(int id_agb) const {
         int index_agb = hashFunction_agb(id_agb);
         Faculty_agb* current_agb = table_agb[index_agb];
@@ -167,17 +160,16 @@ public:
         while (current_agb != NULL) {
             steps_agb++;
             if (current_agb->id_agb == id_agb) {
-                cout << "✓ Faculty found after " << steps_agb << " step(s) in the chain!" << endl;
+                cout << " Faculty found after " << steps_agb << " step(s) in the chain!" << endl;
                 return current_agb;
             }
             current_agb = current_agb->next_agb;
         }
 
-        cout << "✗ Faculty with ID " << id_agb << " not found!" << endl;
+        cout << " Faculty with ID " << id_agb << " not found!" << endl;
         return NULL;
     }
 
-    // Display all faculty records
     void display_agb() const {
         cout << "\n========== Faculty Database (Separate Chaining) ==========" << endl;
         
@@ -190,8 +182,7 @@ public:
             if (current_agb != NULL) {
                 isEmpty_agb = false;
                 while (current_agb != NULL) {
-                    // Displaying only ID and Name in the chain for conciseness
-                    cout << current_agb->id_agb << " (" << current_agb->name_agb.substr(0, 10) << ")";
+                   cout << current_agb->id_agb << " (" << current_agb->name_agb.substr(0, 10) << ")";
                     if (current_agb->next_agb != NULL) {
                         cout << " -> ";
                     }
@@ -214,7 +205,6 @@ public:
         cout << string(70, '=') << endl;
     }
     
-    // Function to delete a faculty record
     bool deleteFaculty_agb(int id_agb) {
         int index_agb = hashFunction_agb(id_agb);
         Faculty_agb* current_agb = table_agb[index_agb];
@@ -224,31 +214,27 @@ public:
 
         while (current_agb != NULL) {
             if (current_agb->id_agb == id_agb) {
-                // Found the node, remove it from the chain
-                if (prev_agb == NULL) {
-                    // Deleting the head node
-                    table_agb[index_agb] = current_agb->next_agb;
+               if (prev_agb == NULL) {
+                   table_agb[index_agb] = current_agb->next_agb;
                 } else {
-                    // Deleting a node in the middle or end
                     prev_agb->next_agb = current_agb->next_agb;
                 }
 
                 delete current_agb;
                 totalFaculty_agb--;
-                cout << "✓ Faculty ID **" << id_agb << "** deleted successfully!" << endl;
+                cout << "Faculty ID **" << id_agb << "** deleted successfully!" << endl;
                 return true;
             }
             prev_agb = current_agb;
             current_agb = current_agb->next_agb;
         }
 
-        cout << "✗ Faculty with ID " << id_agb << " not found! Cannot delete." << endl;
+        cout << " Faculty with ID " << id_agb << " not found! Cannot delete." << endl;
         return false;
     }
 
 
-    // Destructor to free memory
-    ~FacultyHashTable_agb() {
+     ~FacultyHashTable_agb() {
         for (int i_agb = 0; i_agb < size_agb; i_agb++) {
             Faculty_agb* current_agb = table_agb[i_agb];
             while (current_agb != NULL) {
@@ -262,7 +248,7 @@ public:
     }
 };
 
-int main_agb() {
+int main() {
     int size_agb;
     cout << "===== Faculty Database using Hash Table (Separate Chaining) =====" << endl;
     cout << "Enter hash table size: ";
@@ -321,7 +307,7 @@ int main_agb() {
                     break;
                 }
                 
-                case 3: { // New case for delete
+                case 3: {
                     cout << "Enter Faculty ID to delete: ";
                     if (!(cin >> id_agb)) break;
                     ht_agb.deleteFaculty_agb(id_agb);
@@ -380,28 +366,28 @@ Enter your choice: 4
 Inserting sample faculty records...
 
 Inserting Faculty ID 101 at index 3
-✓ Faculty Dr. Smith inserted successfully!
+Faculty Dr. Smith inserted successfully!
 
 Inserting Faculty ID 102 at index 4
-✓ Faculty Dr. Johnson inserted successfully!
+Faculty Dr. Johnson inserted successfully!
 
 Inserting Faculty ID 103 at index 5
-✓ Faculty Dr. Williams inserted successfully!
+Faculty Dr. Williams inserted successfully!
 
 Inserting Faculty ID 104 at index 6
-✓ Faculty Dr. Brown inserted successfully!
+Faculty Dr. Brown inserted successfully!
 
 Inserting Faculty ID 105 at index 0
-✓ Faculty Dr. Davis inserted successfully!
+Faculty Dr. Davis inserted successfully!
 
 Inserting Faculty ID 106 at index 1
-✓ Faculty Dr. Miller inserted successfully!
+Faculty Dr. Miller inserted successfully!
 
 Inserting Faculty ID 107 at index 2
-✓ Faculty Dr. Wilson inserted successfully!
+Faculty Dr. Wilson inserted successfully!
 
 Inserting Faculty ID 108 at index 3
-✓ Faculty Dr. Moore inserted successfully!
+Faculty Dr. Moore inserted successfully!
 
 ===== Faculty Database Menu =====
 3. Display all faculty records
@@ -438,7 +424,7 @@ Enter your choice: 2
 Enter Faculty ID to search: 101
 
 Searching for Faculty ID 101 at index 3
-✓ Faculty found!
+Faculty found!
 
 --- Faculty Details ---
 ID: 101
@@ -453,7 +439,7 @@ Enter your choice: 2
 Enter Faculty ID to search: 110
 
 Searching for Faculty ID 110 at index 5
-✗ Faculty with ID 110 not found!
+Faculty with ID 110 not found!
 
 ===== Faculty Database Menu =====
 5. Exit
@@ -573,50 +559,18 @@ This program successfully implements a **Faculty Database using Hash Table with 
    - No attempt is made to find another location for the element
    - Simple and efficient collision resolution technique
 
-2. **Key Features**:
 
-   - Faculty records with ID, name, department, designation, and experience
-   - Dynamic memory allocation for linked lists
-   - Efficient search, insert, and display operations
-   - No limit on number of elements (unlike open addressing)
-
-3. **Divide Hash Function**:
+2. **Divide Hash Function**:
 
    - Uses the modulo operator for hashing: hash(key) = key % table_size
    - Simple and fast computation
    - Works well with prime table sizes
 
-4. **Advantages**:
-
-   - **Simple Implementation**: Easy to understand and implement
-   - **No Clustering**: Each chain is independent
-   - **Unlimited Capacity**: Can store more elements than table size
-   - **Efficient Deletion**: Simple removal from linked list
-
-5. **Time Complexity**:
+3. **Time Complexity**:
 
    - **Best Case**: O(1) - No collisions
    - **Average Case**: O(1 + α) where α is load factor
    - **Worst Case**: O(n) - All elements in one chain
 
-6. **Space Complexity**: O(n + m) where n is elements and m is table size
+4. **Space Complexity**: O(n + m) where n is elements and m is table size
 
-7. **Comparison with Linear Probing**:
-   - **Clustering**: Chaining has no clustering, linear probing has primary clustering
-   - **Deletion**: Chaining is simpler, linear probing requires markers
-   - **Memory**: Chaining needs extra memory for pointers, linear probing doesn't
-   - **Cache Performance**: Linear probing is better, chaining is poorer
-
-**Applications**:
-
-- Database indexing
-- Symbol tables in compilers
-- Caching systems
-- Dictionary implementations
-- Faculty/Employee databases
-
-**Best Practices**:
-
-- Keep load factor reasonable (α < 1.0 for good performance)
-- Use prime number for table size
-- Choose good hash function for uniform distribution
