@@ -97,10 +97,9 @@ MAIN:
 #include <iostream>
 #include <iomanip>
 #include <string>
-#include <stdexcept> // for std::invalid_argument
+#include <stdexcept>
 using namespace std;
 
-// Employee Record Structure 
 class Employee_agb {
 public:
     int id_agb;
@@ -111,55 +110,43 @@ public:
     bool isEmpty_agb;
 
     Employee_agb() {
-        isEmpty_agb = true; // Default constructor marks slot as empty
+        isEmpty_agb = true; 
     }
-    // NOTE: For a complete implementation of linear probing with deletion,
-    // a 'DELETED' marker (tombstone) would be needed here.
 };
 
-// Hash Table Class using Mid-Square Hashing and Linear Probing
 class EmployeeHashTable_agb {
 private:
     Employee_agb* table_agb;
     int size_agb;
     int totalEmployees_agb;
 
-    // Mid-Square Hashing Function 
     int midSquareHash_agb(int key_agb) const {
-        // 1. Square the key
         long long squared_agb = (long long)key_agb * key_agb;
 
-        // 2. Convert to string to easily extract middle digits
         string squaredStr_agb = to_string(squared_agb);
         int len_agb = squaredStr_agb.length();
 
-        // 3. Extract middle digits
         string middleDigits_agb;
         
-        // Target 4 middle digits, but adjust if the number is too short
         int targetDigits_agb = 4;
         
         if (len_agb <= targetDigits_agb) {
             middleDigits_agb = squaredStr_agb;
         } else {
-            // Calculate start and end indices for the middle portion
             int start_agb = max(0, (len_agb - targetDigits_agb) / 2);
             int length_agb = min(targetDigits_agb, len_agb - start_agb);
             
             middleDigits_agb = squaredStr_agb.substr(start_agb, length_agb);
         }
 
-        // Handle case where middleDigits might be empty or too large (unlikely given the size constraint)
         if (middleDigits_agb.empty()) {
             return 0; // Fallback hash value
         }
 
-        // 4. Convert back to integer and take modulo with table size
         try {
             int hashValue_agb = stoi(middleDigits_agb) % size_agb;
             return hashValue_agb;
         } catch (const out_of_range& e) {
-            // Handle case where extracted middleDigits might exceed int capacity (highly unlikely for typical IDs)
             return 0; 
         }
     }
@@ -173,7 +160,6 @@ public:
         totalEmployees_agb = 0;
         table_agb = new Employee_agb[size_agb];
 
-        // Initialize all slots as empty
         for (int i_agb = 0; i_agb < size_agb; i_agb++) {
             table_agb[i_agb].isEmpty_agb = true;
         }
@@ -181,7 +167,6 @@ public:
         cout << "Employee Hash Table created with capacity: " << size_agb << endl;
     }
 
-    // Insert employee record using Linear Probing
     bool insert_agb(int id_agb, string name_agb, string department_agb, string position_agb, float salary_agb) {
         int originalIndex_agb = midSquareHash_agb(id_agb);
         int index_agb = originalIndex_agb;
@@ -190,24 +175,21 @@ public:
         cout << "Key squared: " << (long long)id_agb * id_agb << endl;
         cout << "Initial Hash index: " << originalIndex_agb << endl;
 
-        // Linear probing to find an empty slot
         while (!table_agb[index_agb].isEmpty_agb && table_agb[index_agb].id_agb != id_agb) {
             index_agb = (index_agb + 1) % size_agb;
 
-            // Check if we've traversed the entire table (full check)
             if (index_agb == originalIndex_agb) {
-                cout << "✗ Hash table is FULL! Cannot insert more employees." << endl;
+                cout << "Hash table is FULL! Cannot insert more employees." << endl;
                 return false;
             }
         }
 
-        // Check for duplicate employee ID
         if (!table_agb[index_agb].isEmpty_agb && table_agb[index_agb].id_agb == id_agb) {
-            cout << "✗ Duplicate employee ID! Employee with ID " << id_agb << " already exists at index " << index_agb << "." << endl;
+            cout << "Duplicate employee ID! Employee with ID " << id_agb << " already exists at index " << index_agb << "." << endl;
             return false;
         }
 
-        // Insert the employee record
+
         table_agb[index_agb].id_agb = id_agb;
         table_agb[index_agb].name_agb = name_agb;
         table_agb[index_agb].department_agb = department_agb;
@@ -216,11 +198,10 @@ public:
         table_agb[index_agb].isEmpty_agb = false;
         totalEmployees_agb++;
 
-        cout << "✓ Employee **" << name_agb << "** (ID: " << id_agb << ") inserted successfully at index " << index_agb << "!" << endl;
+        cout << "Employee **" << name_agb << "** (ID: " << id_agb << ") inserted successfully at index " << index_agb << "!" << endl;
         return true;
     }
 
-    // Search for an employee record
     Employee_agb* search_agb(int id_agb) const {
         int originalIndex_agb = midSquareHash_agb(id_agb);
         int index_agb = originalIndex_agb;
@@ -232,8 +213,7 @@ public:
         
         
 
-        // Linear probing to find the employee
-        while (!table_agb[index_agb].isEmpty_agb) {
+       while (!table_agb[index_agb].isEmpty_agb) {
             if (table_agb[index_agb].id_agb == id_agb) {
                 cout << "✓ Employee found at index " << index_agb;
                 if (probeCount_agb > 0) {
@@ -243,22 +223,19 @@ public:
                 return &table_agb[index_agb];
             }
 
-            // Move to the next slot
-            probeCount_agb++;
+           probeCount_agb++;
             index_agb = (index_agb + 1) % size_agb;
 
-            // Check if we've traversed the entire table
             if (index_agb == originalIndex_agb) {
                 break;
             }
         }
 
-        cout << "✗ Employee with ID " << id_agb << " not found!" << endl;
+        cout << "Employee with ID " << id_agb << " not found!" << endl;
         return nullptr;
     }
 
-    // Display all employee records
-    void display_agb() const {
+   void display_agb() const {
         cout << "\n========== Employee Database (Mid-Square Hash) ==========" << endl;
         cout << setw(5) << "Index" << setw(10) << "ID" << setw(18) << "Name" << setw(14) << "Department" << setw(18) << "Position" << setw(10) << "Salary" << endl;
         cout << string(75, '-') << endl;
@@ -275,8 +252,7 @@ public:
                      << setw(18) << table_agb[i_agb].position_agb
                      << setw(10) << fixed << setprecision(2) << table_agb[i_agb].salary_agb << endl;
             } else {
-                // Displaying empty slots for clarity in the table structure
-                cout << setw(10) << "---" << setw(18) << "EMPTY" << setw(14) << "---" << setw(18) << "---" << setw(10) << "---" << endl;
+               cout << setw(10) << "---" << setw(18) << "EMPTY" << setw(14) << "---" << setw(18) << "---" << setw(10) << "---" << endl;
             }
         }
 
@@ -292,14 +268,13 @@ public:
         cout << string(34, '=') << endl;
     }
 
-    // Destructor
     ~EmployeeHashTable_agb() {
         delete[] table_agb;
         cout << "Employee Hash Table memory deallocated" << endl;
     }
 };
 
-int main_agb() {
+int main() {
     int size_agb;
 
     cout << "===== Employee Database using Mid-Square Hashing (Linear Probing) =====" << endl;
@@ -365,23 +340,13 @@ int main_agb() {
 
                 case 4: {
                     cout << "\nInserting sample employee records (Mid-Square Hash and Linear Probing in action)..." << endl;
-                    // The hash values depend on the table size!
-                    // Example with size=10:
-                    // ID 123 (123^2=15129, middle 4 digits 5129 -> 5129 % 10 = 9) -> Index 9
                     employeeDB_agb.insert_agb(123, "John Smith", "Engineering", "Software Engineer", 75000.0);
-                    // ID 456 (456^2=207936, middle 4 digits 0793 -> 793 % 10 = 3) -> Index 3
                     employeeDB_agb.insert_agb(456, "Jane Doe", "Marketing", "Marketing Manager", 68000.0);
-                    // ID 789 (789^2=622521, middle 4 digits 2252 -> 2252 % 10 = 2) -> Index 2
                     employeeDB_agb.insert_agb(789, "Bob Johnson", "Sales", "Sales Representative", 55000.0);
-                    // ID 234 (234^2=54756, middle 4 digits 5475 -> 5475 % 10 = 5) -> Index 5
                     employeeDB_agb.insert_agb(234, "Alice Brown", "HR", "HR Specialist", 62000.0);
-                    // ID 567 (567^2=321489, middle 4 digits 2148 -> 2148 % 10 = 8) -> Index 8
                     employeeDB_agb.insert_agb(567, "Charlie Wilson", "Finance", "Accountant", 65000.0);
-                    // ID 890 (890^2=792100, middle 4 digits 9210 -> 9210 % 10 = 0) -> Index 0
                     employeeDB_agb.insert_agb(890, "Diana Davis", "Engineering", "Senior Developer", 85000.0);
-                    // ID 345 (345^2=119025, middle 4 digits 1902 -> 1902 % 10 = 2) -> Index 2 (Collision with 789 at index 2, probes to index 3)
                     employeeDB_agb.insert_agb(345, "Eve Miller", "Marketing", "Content Specialist", 58000.0);
-                    // ID 678 (678^2=459684, middle 4 digits 5968 -> 5968 % 10 = 8) -> Index 8 (Collision with 567 at index 8, probes to index 9, then index 0, then index 1)
                     employeeDB_agb.insert_agb(678, "Frank Moore", "Sales", "Sales Manager", 72000.0);
                     break;
                 }
@@ -423,42 +388,42 @@ Inserting sample employee records...
 Inserting Employee ID 123...
 Key squared: 15129
 Hash value: 4
-✓ Employee John Smith (ID: 123) inserted successfully!
+Employee John Smith (ID: 123) inserted successfully!
 
 Inserting Employee ID 456...
 Key squared: 207936
 Hash value: 6
-✓ Employee Jane Doe (ID: 456) inserted successfully!
+Employee Jane Doe (ID: 456) inserted successfully!
 
 Inserting Employee ID 789...
 Key squared: 622521
 Hash value: 3
-✓ Employee Bob Johnson (ID: 789) inserted successfully!
+Employee Bob Johnson (ID: 789) inserted successfully!
 
 Inserting Employee ID 234...
 Key squared: 54756
 Hash value: 5
-✓ Employee Alice Brown (ID: 234) inserted successfully!
+Employee Alice Brown (ID: 234) inserted successfully!
 
 Inserting Employee ID 567...
 Key squared: 321489
 Hash value: 9
-✓ Employee Charlie Wilson (ID: 567) inserted successfully!
+Employee Charlie Wilson (ID: 567) inserted successfully!
 
 Inserting Employee ID 890...
 Key squared: 792100
 Hash value: 1
-✓ Employee Diana Davis (ID: 890) inserted successfully!
+Employee Diana Davis (ID: 890) inserted successfully!
 
 Inserting Employee ID 345...
 Key squared: 119025
 Hash value: 2
-✓ Employee Eve Miller (ID: 345) inserted successfully!
+Employee Eve Miller (ID: 345) inserted successfully!
 
 Inserting Employee ID 678...
 Key squared: 459684
 Hash value: 8
-✓ Employee Frank Moore (ID: 678) inserted successfully!
+Employee Frank Moore (ID: 678) inserted successfully!
 
 ===== Employee Database Menu =====
 3. Display all employee records
@@ -488,7 +453,7 @@ Enter Employee ID to search: 567
 Searching for Employee ID 567...
 Key squared: 321489
 Hash value: 9
-✓ Employee found!
+Employee found!
 
 --- Employee Details ---
 ID: 567
@@ -505,7 +470,7 @@ Enter Employee ID to search: 999
 Searching for Employee ID 999...
 Key squared: 998001
 Hash value: 9
-✗ Employee with ID 999 not found!
+Employee with ID 999 not found!
 
 ===== Employee Database Menu =====
 5. Exit
@@ -635,48 +600,11 @@ This program successfully implements an **Employee Database using Mid-Square Has
    - Takes modulo with table size to get hash index
    - Distributes keys more uniformly than simple division method
 
-2. **Key Features**:
-
-   - Employee records with ID, name, department, position, and salary
-   - Insert and search operations
-   - Load factor calculation for performance monitoring
-   - Duplicate prevention
-
-3. **Linear Probing for Collision Resolution**:
-
-   - When a collision occurs, checks the next slot sequentially
-   - Wraps around to the beginning if reaching the end
-   - Simple and cache-friendly collision resolution
-
-4. **Mid-Square Hash Function Advantages**:
-
-   - **Better Distribution**: Works well with both even and odd keys
-   - **Reduces Clustering**: More random distribution of hash values
-   - **Works with Any Table Size**: Not dependent on prime numbers like division method
-
-5. **Time Complexity**:
+2. **Time Complexity**:
 
    - **Best Case**: O(1) - No collisions
    - **Average Case**: O(1) with low load factor
    - **Worst Case**: O(n) - All elements form a cluster
 
-6. **Space Complexity**: O(n) where n is the table size
+3. **Space Complexity**: O(n) where n is the table size
 
-7. **Comparison with Division Method**:
-   - **Distribution**: Mid-square generally provides better distribution
-   - **Computation**: Division method is faster to compute
-   - **Key Sensitivity**: Mid-square is more sensitive to all digits of the key
-
-**Applications**:
-
-- Employee database systems
-- Customer record management
-- Inventory management systems
-- Any system requiring good hash distribution
-
-**Best Practices**:
-
-- Keep load factor below 0.7 for good performance
-- Use appropriate method for extracting middle digits based on key size
-- Implement proper deletion with lazy deletion markers
-- Monitor and resize table when load factor becomes too high
