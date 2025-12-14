@@ -84,10 +84,10 @@ MAIN:
 ```cpp
 #include <iostream>
 #include <iomanip>
-#include <stdexcept> // Include for exceptions like invalid_argument
+#include <stdexcept> 
 using namespace std;
 
-// Node Class for the Linked List (Chain) 🔗
+
 class Node_agb {
 public:
     int key_agb;
@@ -99,17 +99,14 @@ public:
     }
 };
 
-// Hash Table Class implementing Separate Chaining
+
 class HashTable_agb {
 private:
-    Node_agb** table_agb; // Array of pointers to linked lists (the chains)
+    Node_agb** table_agb;
     int size_agb;
     int totalElements_agb;
 
-    // Hash function (Modulo Division Method)
-    // h(key) = key mod size
     int hashFunction_agb(int key_agb) const {
-        // Use hash function from the original code: key % size
         return key_agb % size_agb;
     }
 
@@ -122,7 +119,6 @@ public:
         totalElements_agb = 0;
         table_agb = new Node_agb*[size_agb];
 
-        // Initialize all chains as empty (NULL)
         for (int i_agb = 0; i_agb < size_agb; i_agb++) {
             table_agb[i_agb] = NULL;
         }
@@ -130,15 +126,14 @@ public:
         cout << "Hash Table created with size: " << size_agb << endl;
     }
 
-    // Insert key into hash table using Separate Chaining (Insert at Head)
     void insert_agb(int key_agb) {
         int index_agb = hashFunction_agb(key_agb);
 
-        // Check for duplicates before insertion
+        
         Node_agb* checkCurrent_agb = table_agb[index_agb];
         while (checkCurrent_agb != NULL) {
             if (checkCurrent_agb->key_agb == key_agb) {
-                cout << "✗ Duplicate key " << key_agb << " already exists at index " << index_agb << "." << endl;
+                cout << " Duplicate key " << key_agb << " already exists at index " << index_agb << "." << endl;
                 return;
             }
             checkCurrent_agb = checkCurrent_agb->next_agb;
@@ -147,16 +142,14 @@ public:
         cout << "\nInserting " << key_agb << "..." << endl;
         cout << "Hash index: " << index_agb << endl;
 
-        // Insert at the beginning of the linked list (chain)
         Node_agb* newNode_agb = new Node_agb(key_agb);
         newNode_agb->next_agb = table_agb[index_agb];
         table_agb[index_agb] = newNode_agb;
         totalElements_agb++;
 
-        cout << "✓ Key **" << key_agb << "** inserted successfully at index " << index_agb << "!" << endl;
+        cout << " Key **" << key_agb << "** inserted successfully at index " << index_agb << "!" << endl;
     }
 
-    // Search for a key
     bool search_agb(int key_agb) const {
         int index_agb = hashFunction_agb(key_agb);
         Node_agb* current_agb = table_agb[index_agb];
@@ -168,17 +161,17 @@ public:
         while (current_agb != NULL) {
             steps_agb++;
             if (current_agb->key_agb == key_agb) {
-                cout << "✓ Key **" << key_agb << "** found after " << steps_agb << " step(s) in the chain!" << endl;
+                cout << " Key **" << key_agb << "** found after " << steps_agb << " step(s) in the chain!" << endl;
                 return true;
             }
             current_agb = current_agb->next_agb;
         }
 
-        cout << "✗ Key " << key_agb << " not found in the chain (searched " << steps_agb << " steps)." << endl;
+        cout << " Key " << key_agb << " not found in the chain (searched " << steps_agb << " steps)." << endl;
         return false;
     }
 
-    // Delete a key
+
     bool deleteKey_agb(int key_agb) {
         int index_agb = hashFunction_agb(key_agb);
         Node_agb* current_agb = table_agb[index_agb];
@@ -189,29 +182,25 @@ public:
 
         while (current_agb != NULL) {
             if (current_agb->key_agb == key_agb) {
-                // Remove node from chain
                 if (prev_agb == NULL) {
-                    // Deleting the first node (head)
-                    table_agb[index_agb] = current_agb->next_agb;
+                   table_agb[index_agb] = current_agb->next_agb;
                 } else {
-                    // Deleting a node in the middle or end
                     prev_agb->next_agb = current_agb->next_agb;
                 }
 
                 delete current_agb;
                 totalElements_agb--;
-                cout << "✓ Key **" << key_agb << "** deleted successfully from index " << index_agb << "!" << endl;
+                cout << " Key **" << key_agb << "** deleted successfully from index " << index_agb << "!" << endl;
                 return true;
             }
             prev_agb = current_agb;
             current_agb = current_agb->next_agb;
         }
 
-        cout << "✗ Key " << key_agb << " not found! Cannot delete." << endl;
+        cout << " Key " << key_agb << " not found! Cannot delete." << endl;
         return false;
     }
 
-    // Helper function to get chain length
     int getChainLength_agb(int index_agb) const {
         int length_agb = 0;
         Node_agb* current_agb = table_agb[index_agb];
@@ -222,7 +211,6 @@ public:
         return length_agb;
     }
 
-    // Display hash table
     void display_agb() const {
         cout << "\n========== Hash Table (Separate Chaining) ==========" << endl;
         
@@ -251,7 +239,6 @@ public:
              << (float)totalElements_agb / size_agb << endl;
     }
 
-    // Destructor to free memory
     ~HashTable_agb() {
         for (int i_agb = 0; i_agb < size_agb; i_agb++) {
             Node_agb* current_agb = table_agb[i_agb];
@@ -266,14 +253,13 @@ public:
     }
 };
 
-int main_agb() {
+int main() {
     int size_agb;
 
     cout << "===== Hash Table with Linked Lists (Separate Chaining) =====" << endl;
     cout << "Enter hash table size: ";
     cin >> size_agb;
 
-    // Use try-catch for safe allocation
     try {
         HashTable_agb ht_agb(size_agb);
         int choice_agb, key_agb;
@@ -359,19 +345,19 @@ Hash Table created with size: 7
 Enter your choice: 5
 Inserting sample keys: 10, 20, 15, 7, 12, 25, 30
 Inserting 10 at index 3
-✓ Key 10 inserted successfully!
+Key 10 inserted successfully!
 Inserting 20 at index 6
-✓ Key 20 inserted successfully!
+Key 20 inserted successfully!
 Inserting 15 at index 1
-✓ Key 15 inserted successfully!
+Key 15 inserted successfully!
 Inserting 7 at index 0
-✓ Key 7 inserted successfully!
+Key 7 inserted successfully!
 Inserting 12 at index 5
-✓ Key 12 inserted successfully!
+Key 12 inserted successfully!
 Inserting 25 at index 4
-✓ Key 25 inserted successfully!
+Key 25 inserted successfully!
 Inserting 30 at index 2
-✓ Key 30 inserted successfully!
+Key 30 inserted successfully!
 
 ===== Hash Table Menu =====
 4. Display hash table
@@ -392,14 +378,14 @@ Index  6: 20
 Enter your choice: 1
 Enter key to insert: 17
 Inserting 17 at index 3
-✓ Key 17 inserted successfully!
+Key 17 inserted successfully!
 
 ===== Hash Table Menu =====
 1. Insert key
 Enter your choice: 1
 Enter key to insert: 27
 Inserting 27 at index 6
-✓ Key 27 inserted successfully!
+Key 27 inserted successfully!
 
 ===== Hash Table Menu =====
 4. Display hash table
@@ -420,14 +406,14 @@ Index  6: 27 -> 20
 Enter your choice: 2
 Enter key to search: 17
 Searching for 17 at index 3
-✓ Key 17 found!
+Key 17 found!
 
 ===== Hash Table Menu =====
 3. Delete key
 Enter your choice: 3
 Enter key to delete: 20
 Deleting 20 from index 6
-✓ Key 20 deleted successfully!
+Key 20 deleted successfully!
 
 ===== Hash Table Menu =====
 4. Display hash table
@@ -591,16 +577,3 @@ This program successfully implements a **Hash Table with Linked Lists for Collis
 
 5. **Space Complexity**: O(n + m) where n is number of elements and m is table size
 
-6. **Applications**:
-   - Database indexing
-   - Symbol tables in compilers
-   - Caching systems
-   - Dictionary implementations
-   - Spell checkers
-
-**Best Practices**:
-
-- Keep load factor reasonable (α ≈ 0.75 - 1.0)
-- Use prime number for table size
-- Choose good hash function for uniform distribution
-- Consider resizing when load factor becomes too high
