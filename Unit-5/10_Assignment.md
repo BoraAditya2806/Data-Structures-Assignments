@@ -64,7 +64,7 @@ MAIN:
 #include <iomanip>
 using namespace std;
 
-// Class to represent an edge for the adjacency list
+
 class Edge_agb {
 public:
     int destination_agb;
@@ -84,9 +84,7 @@ private:
     int vertices_agb;
     vector<vector<Edge_agb>> adjList_agb;
 
-    // Find vertex with minimum distance (O(V) linear search)
-    // NOTE: In a more optimized version using a Min-Heap (Priority Queue),
-    // this linear search is replaced by a priority_queue.pop() (O(logV)).
+  
     int findMinDistance_agb(int distance_agb[], bool visited_agb[]) {
         int minDist_agb = INT_MAX;
         int minIndex_agb = -1;
@@ -208,7 +206,6 @@ public:
             }
         }
 
-        // Display results
         cout << "\n===== Results =====" << endl;
 
         if (distance_agb[destination_agb] == INT_MAX) {
@@ -222,7 +219,6 @@ public:
             cout << endl;
         }
 
-        // Display all distances from source
         cout << "\n--- All Shortest Distances from Source " << source_agb << " ---" << endl;
         cout << setw(10) << "Vertex" << setw(15) << "Distance" << endl;
         cout << string(25, '-') << endl;
@@ -241,7 +237,6 @@ public:
         delete[] parent_agb;
     }
 
-    // Display adjacency list
     void displayAdjList_agb() {
         cout << "\n--- Adjacency List ---" << endl;
 
@@ -267,14 +262,10 @@ public:
 
         for (int i_agb = 0; i_agb < vertices_agb; i_agb++) {
             for (int j_agb = 0; j_agb < adjList_agb[i_agb].size(); j_agb++) {
-                // Determine if edge is undirected or directed for display
                 int dest_agb = adjList_agb[i_agb][j_agb].destination_agb;
                 int weight_agb = adjList_agb[i_agb][j_agb].weight_agb;
                 bool isDirected_agb = true;
 
-                // A simple check for undirected: see if the reverse edge exists in adjList.
-                // This is imperfect but works for the menu's addEdge logic.
-                // A better approach would be to track edge types explicitly.
                 for (const auto& reverse_edge_agb : adjList_agb[dest_agb]) {
                     if (reverse_edge_agb.destination_agb == i_agb && reverse_edge_agb.weight_agb == weight_agb) {
                         isDirected_agb = false;
@@ -302,7 +293,7 @@ public:
     }
 };
 
-int main_agb() {
+int main() {
     int vertices_agb, choice_agb;
 
     cout << "===== Dijkstra's Shortest Path Algorithm (Adjacency List) =====" << endl;
@@ -369,14 +360,6 @@ int main_agb() {
             case 6: {
                 cout << "Creating sample graph (Undirected, 5 vertices: 0-4)..." << endl;
                 cout << "Graph structure:" << endl;
-                cout << "      4      " << endl;
-                cout << "   0-----1   " << endl;
-                cout << "   |\\    |\\  " << endl;
-                cout << " 4 | \\2  |3\\ " << endl;
-                cout << "   |  \\  |  2" << endl;
-                cout << "   |   \\ | /3" << endl;
-                cout << "   2----3    " << endl;
-                cout << "      1      " << endl;
 
                 if (vertices_agb >= 5) {
                     graph_agb.addEdge_agb(0, 1, 4);
@@ -418,23 +401,14 @@ Enter number of vertices: 5
 ===== Menu =====
 Enter your choice: 6
 Creating sample graph...
-Graph structure:
-     4
-  0-----1
-  |\    |\
- 4| \2  |3\
-  |  \  |  2
-  |   \ | /3
-  2----3
-     1
 
-✓ Edge added: 0 -- 1 (weight: 4)
-✓ Edge added: 0 -- 2 (weight: 4)
-✓ Edge added: 0 -- 3 (weight: 2)
-✓ Edge added: 1 -- 3 (weight: 3)
-✓ Edge added: 1 -- 4 (weight: 2)
-✓ Edge added: 2 -- 3 (weight: 1)
-✓ Edge added: 3 -- 4 (weight: 3)
+ Edge added: 0 -- 1 (weight: 4)
+ Edge added: 0 -- 2 (weight: 4)
+ Edge added: 0 -- 3 (weight: 2)
+ Edge added: 1 -- 3 (weight: 3)
+ Edge added: 1 -- 4 (weight: 2)
+ Edge added: 2 -- 3 (weight: 1)
+ Edge added: 3 -- 4 (weight: 3)
 
 Enter your choice: 3
 
@@ -506,14 +480,7 @@ Exiting... Thank you!
 ### Graph Structure:
 
 ```
-     4
-  0-----1
-  |\    |\
- 4| \2  |3\
-  |  \  |  2
-  |   \ | /3
-  2----3
-     1
+ 
 
 Vertices: 0, 1, 2, 3, 4
 Adjacency List:
@@ -650,26 +617,6 @@ This program successfully implements **Dijkstra's Shortest Path Algorithm** usin
    - Adjacency list: O(V + E)
    - Distance, visited, parent arrays: O(V)
    - Total: O(V + E)
-
-6. **Advantages**:
-
-   - Efficient for sparse graphs
-   - Guaranteed optimal solution for non-negative weights
-   - Finds shortest paths to all vertices from source
-   - Enables path reconstruction
-
-7. **Limitations**:
-
-   - Cannot handle negative weights
-   - For negative weights, use Bellman-Ford algorithm
-   - Requires additional data structures
-
-8. **Applications**:
-   - GPS navigation systems
-   - Network routing protocols
-   - Social network analysis
-   - Game AI pathfinding
-   - Telecommunication networks
 
 **Comparison with Other Algorithms**:
 | Algorithm | Time Complexity | Space | Handles Negative | Use Case |
