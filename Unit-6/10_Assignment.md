@@ -124,10 +124,7 @@ MAIN:
 
 ```cpp
 #include <iostream>
-#include <iomanip>
 #include <string>
-#include <algorithm> // Required for std::min
-
 using namespace std;
 
 class PlacementRecord {
@@ -156,19 +153,17 @@ private:
     PlacementRecord** table;
     int size;
     int totalRecords;
-    float threshold;  // Load factor threshold for resizing
+    float threshold; 
 
-    // Function names modified: hashFunction -> hashFunction_agb
+  
     int hashFunction_agb(int rollNo) {
         return rollNo % size;
     }
 
-    // Function names modified: loadFactor -> loadFactor_agb
     float loadFactor_agb() {
         return (float)totalRecords / size;
     }
 
-    // Function names modified: resize -> resize_agb
     void resize_agb() {
         cout << "\n[INFO] Resizing hash table from " << size << " to " << (size * 2) << " slots..." << endl;
 
@@ -201,25 +196,21 @@ private:
 
                 PlacementRecord* temp = current;
                 current = current->next;
-                // Note: We don't delete temp here as we're copying the data
             }
         }
-
-        // Clean up old table
         for (int i = 0; i < oldSize; i++) {
             PlacementRecord* current = oldTable[i];
             while (current != NULL) {
                 PlacementRecord* temp = current;
                 current = current->next;
-                delete temp; // Fix memory leak from the original code
+                delete temp;
             }
         }
         delete[] oldTable;
         
-        cout << "[INFO] Resizing completed. New load factor: " << fixed << setprecision(2) << loadFactor_agb() << endl; // Called with _agb
+        cout << "[INFO] Resizing completed. New load factor: " << fixed << setprecision(2) << loadFactor_agb() << endl; 
     }
     
-    // Helper search function to avoid printing "not found" during insert check
     PlacementRecord* internal_search(int rollNo) {
         int index = hashFunction_agb(rollNo);
         PlacementRecord* current = table[index];
@@ -234,30 +225,27 @@ private:
     }
 
 public:
-    // Function names modified: insert -> insert_agb
     bool insert_agb(int rollNo, string name, string branch, float cgpa, string companyName, float package) {
-        // Check if student already exists using internal_search
         if (internal_search(rollNo) != NULL) {
-            cout << "✗ Duplicate roll number! Student with roll no " << rollNo << " already exists." << endl;
+            cout << " Duplicate roll number! Student with roll no " << rollNo << " already exists." << endl;
             return false;
         }
 
-        // Check if resize is needed
-        if (loadFactor_agb() > threshold) { // Called with _agb
-            resize_agb(); // Called with _agb
+        if (loadFactor_agb() > threshold) { 
+            resize_agb(); 
         }
 
         int index = hashFunction_agb(rollNo); // Called with _agb
 
         cout << "\nInserting Placement Record for Roll No " << rollNo << " at index " << index << endl;
-        cout << "Current load factor: " << fixed << setprecision(2) << loadFactor_agb() << endl; // Called with _agb
+        cout << "Current load factor: " << fixed << setprecision(2) << loadFactor_agb() << endl;
 
         PlacementRecord* newRecord = new PlacementRecord(rollNo, name, branch, cgpa, companyName, package);
         newRecord->next = table[index];
         table[index] = newRecord;
         totalRecords++;
 
-        cout << "✓ Student " << name << " placed at " << companyName << " with package ₹"
+        cout << " Student " << name << " placed at " << companyName << " with package ₹"
              << fixed << setprecision(2) << package << " LPA" << endl;
         return true;
     }
@@ -271,13 +259,13 @@ public:
 
         while (current != NULL) {
             if (current->rollNo == rollNo) {
-                cout << "✓ Placement record found!" << endl;
+                cout << " Placement record found!" << endl;
                 return current;
             }
             current = current->next;
         }
 
-        cout << "✗ Placement record for Roll No " << rollNo << " not found!" << endl;
+        cout << " Placement record for Roll No " << rollNo << " not found!" << endl;
         return NULL;
     }
 
@@ -301,14 +289,14 @@ public:
 
                 delete current;
                 totalRecords--;
-                cout << "✓ Placement record for Roll No " << rollNo << " deleted successfully!" << endl;
+                cout << " Placement record for Roll No " << rollNo << " deleted successfully!" << endl;
                 return true;
             }
             prev = current;
             current = current->next;
         }
 
-        cout << "✗ Placement record for Roll No " << rollNo << " not found! Cannot delete." << endl;
+        cout << " Placement record for Roll No " << rollNo << " not found! Cannot delete." << endl;
         return false;
     }
 
@@ -509,13 +497,13 @@ int main() {
                 getline(cin, companyName);
                 cout << "Enter Package (LPA): ₹";
                 cin >> package;
-                portal.insert_agb(rollNo, name, branch, cgpa, companyName, package); // Called with _agb
+                portal.insert_agb(rollNo, name, branch, cgpa, companyName, package); 
                 break;
 
             case 2: {
                 cout << "Enter Roll Number to search: ";
                 cin >> rollNo;
-                PlacementRecord* record = portal.search_agb(rollNo); // Called with _agb
+                PlacementRecord* record = portal.search_agb(rollNo);
                 if (record != NULL) {
                     cout << "\n--- Placement Details ---" << endl;
                     cout << "Roll No: " << record->rollNo << endl;
@@ -531,19 +519,19 @@ int main() {
             case 3: {
                 cout << "Enter Roll Number to delete: ";
                 cin >> rollNo;
-                portal.deleteRecord_agb(rollNo); // Called with _agb
+                portal.deleteRecord_agb(rollNo); 
                 break;
             }
 
             case 4:
-                portal.display_agb(); // Called with _agb
+                portal.display_agb(); 
                 break;
 
             case 5: {
                 cout << "Enter Branch: ";
                 cin.ignore();
                 getline(cin, branch);
-                portal.displayBranchWise_agb(branch); // Called with _agb
+                portal.displayBranchWise_agb(branch); 
                 break;
             }
 
@@ -551,28 +539,28 @@ int main() {
                 int n;
                 cout << "Enter number of top packages to display: ";
                 cin >> n;
-                portal.displayTopPackages_agb(n); // Called with _agb
+                portal.displayTopPackages_agb(n); 
                 break;
             }
 
             case 7:
-                portal.displayStatistics_agb(); // Called with _agb
+                portal.displayStatistics_agb(); 
                 break;
 
             case 8: {
                 cout << "Inserting sample placement records..." << endl;
-                portal.insert_agb(101, "Alice Johnson", "Computer Science", 8.75, "Google", 18.5); // Called with _agb
-                portal.insert_agb(102, "Bob Smith", "Electronics", 7.90, "Microsoft", 15.0); // Called with _agb
-                portal.insert_agb(103, "Charlie Brown", "Mechanical", 8.25, "Tesla", 12.5); // Called with _agb
-                portal.insert_agb(104, "Diana Wilson", "Civil", 9.10, "Amazon", 16.0); // Called with _agb
-                portal.insert_agb(105, "Eve Davis", "Computer Science", 8.85, "Apple", 20.0); // Called with _agb
-                portal.insert_agb(106, "Frank Miller", "Electronics", 7.65, "Intel", 14.0); // Called with _agb
-                portal.insert_agb(107, "Grace Lee", "Mechanical", 8.40, "Boeing", 13.5); // Called with _agb
-                portal.insert_agb(108, "Henry Moore", "Civil", 9.25, "Samsung", 17.0); // Called with _agb
-                portal.insert_agb(109, "Ivy Taylor", "Computer Science", 9.05, "Meta", 19.5); // Called with _agb
-                portal.insert_agb(110, "Jack Anderson", "Electronics", 7.85, "NVIDIA", 15.5); // Called with _agb
-                portal.insert_agb(111, "Kate White", "Mechanical", 8.60, "Siemens", 14.5); // Called with _agb
-                portal.insert_agb(112, "Leo Harris", "Civil", 8.90, "Larsen & Toubro", 12.0); // Called with _agb
+                portal.insert_agb(101, "Alice Johnson", "Computer Science", 8.75, "Google", 18.5); 
+                portal.insert_agb(102, "Bob Smith", "Electronics", 7.90, "Microsoft", 15.0);
+                portal.insert_agb(103, "Charlie Brown", "Mechanical", 8.25, "Tesla", 12.5);
+                portal.insert_agb(104, "Diana Wilson", "Civil", 9.10, "Amazon", 16.0); 
+                portal.insert_agb(105, "Eve Davis", "Computer Science", 8.85, "Apple", 20.0);
+                portal.insert_agb(106, "Frank Miller", "Electronics", 7.65, "Intel", 14.0);
+                portal.insert_agb(107, "Grace Lee", "Mechanical", 8.40, "Boeing", 13.5); 
+                portal.insert_agb(108, "Henry Moore", "Civil", 9.25, "Samsung", 17.0); 
+                portal.insert_agb(109, "Ivy Taylor", "Computer Science", 9.05, "Meta", 19.5); 
+                portal.insert_agb(110, "Jack Anderson", "Electronics", 7.85, "NVIDIA", 15.5); 
+                portal.insert_agb(111, "Kate White", "Mechanical", 8.60, "Siemens", 14.5); 
+                portal.insert_agb(112, "Leo Harris", "Civil", 8.90, "Larsen & Toubro", 12.0); 
                 break;
             }
 
@@ -608,57 +596,57 @@ Inserting sample placement records...
 
 Inserting Placement Record for Roll No 101 at index 1
 Current load factor: 0.20
-✓ Student Alice Johnson placed at Google with package ₹18.50 LPA
+ Student Alice Johnson placed at Google with package ₹18.50 LPA
 
 Inserting Placement Record for Roll No 102 at index 2
 Current load factor: 0.40
-✓ Student Bob Smith placed at Microsoft with package ₹15.00 LPA
+Student Bob Smith placed at Microsoft with package ₹15.00 LPA
 
 Inserting Placement Record for Roll No 103 at index 3
 Current load factor: 0.60
-✓ Student Charlie Brown placed at Tesla with package ₹12.50 LPA
+Student Charlie Brown placed at Tesla with package ₹12.50 LPA
 
 Inserting Placement Record for Roll No 104 at index 4
 Current load factor: 0.80
-✓ Student Diana Wilson placed at Amazon with package ₹16.00 LPA
+Student Diana Wilson placed at Amazon with package ₹16.00 LPA
 
 Inserting Placement Record for Roll No 105 at index 0
 Current load factor: 1.00
-✓ Student Eve Davis placed at Apple with package ₹20.00 LPA
+Student Eve Davis placed at Apple with package ₹20.00 LPA
 
 [INFO] Resizing hash table from 5 to 10 slots...
 [INFO] Resizing completed. New load factor: 0.50
 
 Inserting Placement Record for Roll No 106 at index 6
 Current load factor: 0.57
-✓ Student Frank Miller placed at Intel with package ₹14.00 LPA
+Student Frank Miller placed at Intel with package ₹14.00 LPA
 
 Inserting Placement Record for Roll No 107 at index 7
 Current load factor: 0.64
-✓ Student Grace Lee placed at Boeing with package ₹13.50 LPA
+Student Grace Lee placed at Boeing with package ₹13.50 LPA
 
 Inserting Placement Record for Roll No 108 at index 8
 Current load factor: 0.71
-✓ Student Henry Moore placed at Samsung with package ₹17.00 LPA
+Student Henry Moore placed at Samsung with package ₹17.00 LPA
 
 Inserting Placement Record for Roll No 109 at index 9
 Current load factor: 0.79
-✓ Student Ivy Taylor placed at Meta with package ₹19.50 LPA
+Student Ivy Taylor placed at Meta with package ₹19.50 LPA
 
 [INFO] Resizing hash table from 10 to 20 slots...
 [INFO] Resizing completed. New load factor: 0.45
 
 Inserting Placement Record for Roll No 110 at index 10
 Current load factor: 0.50
-✓ Student Jack Anderson placed at NVIDIA with package ₹15.50 LPA
+Student Jack Anderson placed at NVIDIA with package ₹15.50 LPA
 
 Inserting Placement Record for Roll No 111 at index 11
 Current load factor: 0.55
-✓ Student Kate White placed at Siemens with package ₹14.50 LPA
+Student Kate White placed at Siemens with package ₹14.50 LPA
 
 Inserting Placement Record for Roll No 112 at index 12
 Current load factor: 0.60
-✓ Student Leo Harris placed at Larsen & Toubro with package ₹12.00 LPA
+Student Leo Harris placed at Larsen & Toubro with package ₹12.00 LPA
 
 ===== Placement Portal Menu =====
 4. Display all placement records
@@ -728,7 +716,7 @@ Enter your choice: 2
 Enter Roll Number to search: 108
 
 Searching for Student Roll No 108 at index 8
-✓ Placement record found!
+Placement record found!
 
 --- Placement Details ---
 Roll No: 108
@@ -835,26 +823,11 @@ This program successfully implements a **Smart College Placement Portal using Ad
 
 5. **Space Complexity**: O(n) where n is the number of elements
 
-6. **Advantages of Advanced Hashing**:
 
-   - **Automatic Optimization**: Resizes based on load factor
-   - **Consistent Performance**: Maintains low collision probability
-   - **Scalability**: Handles dynamic data growth efficiently
-   - **Memory Efficiency**: Only allocates needed memory
-
-7. **Real-World Applications**:
+6. **Real-World Applications**:
    - College placement portals
    - Job recruitment platforms
    - Employee management systems
    - Database indexing systems
    - Caching mechanisms
 
-**Best Practices Implemented**:
-
-- Automatic load factor monitoring and resizing
-- Proper memory management with destructors
-- Efficient collision resolution with separate chaining
-- Comprehensive performance statistics
-- User-friendly interface with multiple query options
-
-This implementation demonstrates how advanced hashing techniques can be used to build scalable, high-performance systems that automatically optimize themselves based on data growth patterns.
