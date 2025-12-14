@@ -97,12 +97,10 @@ MAIN:
 #include <iostream>
 #include <iomanip>
 #include <string>
-#include <algorithm> // for std::min, std::sort
-#include <vector>    // to hold student pointers for sorting
-#include <stdexcept> // for std::invalid_argument
+#include <vector> 
+#include <stdexcept> 
 using namespace std;
 
-// Student Record Structure (Node for Linked List) 🧑‍🎓
 class Student_agb {
 public:
     int rollNo_agb;
@@ -110,26 +108,23 @@ public:
     string branch_agb;
     int year_agb;
     float cgpa_agb;
-    Student_agb* next_agb; // Pointer for chaining
-
+    Student_agb* next_agb; 
     Student_agb(int rno_agb, string n_agb, string b_agb, int y_agb, float c_agb) {
         rollNo_agb = rno_agb;
         name_agb = n_agb;
         branch_agb = b_agb;
         year_agb = y_agb;
         cgpa_agb = c_agb;
-        next_agb = NULL; // Initialize next pointer
+        next_agb = NULL; 
     }
 };
 
-// Hash Table Class using Chaining (Linked List for Collision Resolution)
 class StudentHashTable_agb {
 private:
-    Student_agb** table_agb; // Array of pointers (heads of linked lists/chains)
+    Student_agb** table_agb;
     int size_agb;
     int totalStudents_agb;
 
-    // Hash function: Roll Number modulo Table Size (Modulo Division Method)
     int hashFunction_agb(int rollNo_agb) const {
         return rollNo_agb % size_agb;
     }
@@ -143,7 +138,6 @@ public:
         totalStudents_agb = 0;
         table_agb = new Student_agb*[size_agb];
 
-        // Initialize all array slots (chains) as empty (NULL)
         for (int i_agb = 0; i_agb < size_agb; i_agb++) {
             table_agb[i_agb] = NULL;
         }
@@ -151,34 +145,30 @@ public:
         cout << "Student Hash Table created with size: " << size_agb << endl;
     }
 
-    // Insert student record
     bool insert_agb(int rollNo_agb, string name_agb, string branch_agb, int year_agb, float cgpa_agb) {
         int index_agb = hashFunction_agb(rollNo_agb);
 
         cout << "\nInserting Student Roll No " << rollNo_agb << "..." << endl;
         cout << "Hash index: " << index_agb << endl;
         
-        // Check for duplicate roll number in the chain at the calculated index
         Student_agb* current_agb = table_agb[index_agb];
         while (current_agb != NULL) {
             if (current_agb->rollNo_agb == rollNo_agb) {
-                cout << "✗ Duplicate roll number! Student with roll no " << rollNo_agb << " already exists at index " << index_agb << "." << endl;
+                cout << "Duplicate roll number! Student with roll no " << rollNo_agb << " already exists at index " << index_agb << "." << endl;
                 return false;
             }
             current_agb = current_agb->next_agb;
         }
 
-        // Insert new node at the beginning of the linked list (chain)
         Student_agb* newStudent_agb = new Student_agb(rollNo_agb, name_agb, branch_agb, year_agb, cgpa_agb);
         newStudent_agb->next_agb = table_agb[index_agb];
         table_agb[index_agb] = newStudent_agb;
         totalStudents_agb++;
 
-        cout << "✓ Student **" << name_agb << "** inserted successfully at index " << index_agb << "!" << endl;
+        cout << "Student **" << name_agb << "** inserted successfully at index " << index_agb << "!" << endl;
         return true;
     }
 
-    // Search for a student record
     Student_agb* search_agb(int rollNo_agb) const {
         int index_agb = hashFunction_agb(rollNo_agb);
         Student_agb* current_agb = table_agb[index_agb];
@@ -190,17 +180,16 @@ public:
         while (current_agb != NULL) {
             steps_agb++;
             if (current_agb->rollNo_agb == rollNo_agb) {
-                cout << "✓ Student found in " << steps_agb << " step(s) in the chain!" << endl;
+                cout << "Student found in " << steps_agb << " step(s) in the chain!" << endl;
                 return current_agb;
             }
             current_agb = current_agb->next_agb;
         }
 
-        cout << "✗ Student with Roll No " << rollNo_agb << " not found!" << endl;
+        cout << "Student with Roll No " << rollNo_agb << " not found!" << endl;
         return NULL;
     }
 
-    // Delete a student record
     bool deleteStudent_agb(int rollNo_agb) {
         int index_agb = hashFunction_agb(rollNo_agb);
         Student_agb* current_agb = table_agb[index_agb];
@@ -210,29 +199,25 @@ public:
 
         while (current_agb != NULL) {
             if (current_agb->rollNo_agb == rollNo_agb) {
-                // Remove node from chain
                 if (prev_agb == NULL) {
-                    // Deleting first node in the chain
-                    table_agb[index_agb] = current_agb->next_agb;
+                   table_agb[index_agb] = current_agb->next_agb;
                 } else {
-                    // Deleting a node in the middle or end of the chain
                     prev_agb->next_agb = current_agb->next_agb;
                 }
 
                 delete current_agb;
                 totalStudents_agb--;
-                cout << "✓ Student with Roll No **" << rollNo_agb << "** deleted successfully!" << endl;
+                cout << "Student with Roll No **" << rollNo_agb << "** deleted successfully!" << endl;
                 return true;
             }
             prev_agb = current_agb;
             current_agb = current_agb->next_agb;
         }
 
-        cout << "✗ Student with Roll No " << rollNo_agb << " not found! Cannot delete." << endl;
+        cout << "Student with Roll No " << rollNo_agb << " not found! Cannot delete." << endl;
         return false;
     }
 
-    // Display all student records
     void display_agb() const {
         cout << "\n========== Student Database (Chaining) ==========" << endl;
         cout << setw(5) << "Index" << setw(10) << "Roll No" << setw(18) << "Name" << setw(14) << "Branch" << setw(8) << "Year" << setw(8) << "CGPA" << endl;
@@ -250,7 +235,7 @@ public:
                 bool first_agb = true;
                 while (current_agb != NULL) {
                     if (!first_agb) {
-                        cout << setw(5) << "" ; // Alignment for chained elements
+                        cout << setw(5) << "" ;
                     }
 
                     cout << setw(10) << current_agb->rollNo_agb
@@ -284,18 +269,15 @@ public:
         cout << string(32, '=') << endl;
     }
 
-    // Display students filtered by branch
     void displayBranchWise_agb(string branch_agb) const {
         cout << "\n========== Students in **" << branch_agb << "** Branch ==========" << endl;
         cout << setw(10) << "Roll No" << setw(18) << "Name" << setw(8) << "Year" << setw(8) << "CGPA" << endl;
         cout << string(44, '-') << endl;
         bool found_agb = false;
 
-        // Iterating through all hash table buckets
-        for (int i_agb = 0; i_agb < size_agb; i_agb++) {
+       for (int i_agb = 0; i_agb < size_agb; i_agb++) {
             Student_agb* current_agb = table_agb[i_agb];
-            // Iterating through the linked list in the bucket
-            while (current_agb != NULL) {
+           while (current_agb != NULL) {
                 if (current_agb->branch_agb == branch_agb) {
                     found_agb = true;
                     cout << setw(10) << current_agb->rollNo_agb
@@ -313,7 +295,6 @@ public:
         cout << string(45, '=') << endl;
     }
 
-    // Display top n students based on CGPA
     void displayTopPerformers_agb(int n_agb) const {
         cout << "\n========== Top " << n_agb << " Performers ==========" << endl;
 
@@ -322,8 +303,7 @@ public:
             return;
         }
         
-        // 1. Collect all students into a vector for easy sorting
-        vector<Student_agb*> students_agb;
+       vector<Student_agb*> students_agb;
         students_agb.reserve(totalStudents_agb);
 
         for (int i_agb = 0; i_agb < size_agb; i_agb++) {
@@ -339,12 +319,10 @@ public:
             return;
         }
         
-        // 2. Sort by CGPA in descending order
         sort(students_agb.begin(), students_agb.end(), [](const Student_agb* a, const Student_agb* b) {
             return a->cgpa_agb > b->cgpa_agb;
         });
 
-        // 3. Display top n students
         int displayCount_agb = min((int)students_agb.size(), n_agb);
         cout << setw(5) << "Rank" << setw(10) << "Roll No" << setw(18) << "Name" << setw(14) << "Branch" << setw(8) << "CGPA" << endl;
         cout << string(55, '-') << endl;
@@ -360,7 +338,6 @@ public:
         cout << string(36, '=') << endl;
     }
 
-    // Destructor to free memory
     ~StudentHashTable_agb() {
         for (int i_agb = 0; i_agb < size_agb; i_agb++) {
             Student_agb* current_agb = table_agb[i_agb];
@@ -375,7 +352,7 @@ public:
     }
 };
 
-int main_agb() {
+int main() {
     int size_agb;
 
     cout << "===== Student Database Management System (Hashing with Chaining) =====" << endl;
@@ -467,17 +444,16 @@ int main_agb() {
 
                 case 7: {
                     cout << "Inserting sample student records (Roll No % size determines collision):" << endl;
-                    // Note: If size = 10, then 101, 111, 121, etc., will all map to index 1.
-                    studentDB_agb.insert_agb(101, "Alice Johnson", "Computer Science", 3, 8.75); // Hash: 1
-                    studentDB_agb.insert_agb(102, "Bob Smith", "Electronics", 2, 7.90);        // Hash: 2
-                    studentDB_agb.insert_agb(103, "Charlie Brown", "Mechanical", 4, 8.25);     // Hash: 3
-                    studentDB_agb.insert_agb(104, "Diana Wilson", "Civil", 3, 9.10);          // Hash: 4
-                    studentDB_agb.insert_agb(111, "Eve Davis", "Computer Science", 2, 8.85);   // Hash: 1 (Collision with 101)
-                    studentDB_agb.insert_agb(121, "Frank Miller", "Electronics", 4, 7.65);     // Hash: 1 (Collision with 101, 111)
-                    studentDB_agb.insert_agb(133, "Grace Lee", "Mechanical", 3, 8.40);         // Hash: 3 (Collision with 103)
-                    studentDB_agb.insert_agb(108, "Henry Moore", "Civil", 2, 9.25);          // Hash: 8
-                    studentDB_agb.insert_agb(118, "Ivy Taylor", "Computer Science", 4, 9.05);  // Hash: 8 (Collision with 108)
-                    studentDB_agb.insert_agb(128, "Jack Anderson", "Electronics", 3, 7.85);    // Hash: 8 (Collision with 108, 118)
+                    studentDB_agb.insert_agb(101, "Alice Johnson", "Computer Science", 3, 8.75);
+                    studentDB_agb.insert_agb(102, "Bob Smith", "Electronics", 2, 7.90);       
+                    studentDB_agb.insert_agb(103, "Charlie Brown", "Mechanical", 4, 8.25);     
+                    studentDB_agb.insert_agb(104, "Diana Wilson", "Civil", 3, 9.10);         
+                    studentDB_agb.insert_agb(111, "Eve Davis", "Computer Science", 2, 8.85);  
+                    studentDB_agb.insert_agb(121, "Frank Miller", "Electronics", 4, 7.65);     
+                    studentDB_agb.insert_agb(133, "Grace Lee", "Mechanical", 3, 8.40);         
+                    studentDB_agb.insert_agb(108, "Henry Moore", "Civil", 2, 9.25);         
+                    studentDB_agb.insert_agb(118, "Ivy Taylor", "Computer Science", 4, 9.05);  
+                    studentDB_agb.insert_agb(128, "Jack Anderson", "Electronics", 3, 7.85);   
                     break;
                 }
 
@@ -516,34 +492,34 @@ Enter your choice: 7
 Inserting sample student records...
 
 Inserting Student Roll No 101 at index 3
-✓ Student Alice Johnson inserted successfully!
+Student Alice Johnson inserted successfully!
 
 Inserting Student Roll No 102 at index 4
-✓ Student Bob Smith inserted successfully!
+Student Bob Smith inserted successfully!
 
 Inserting Student Roll No 103 at index 5
-✓ Student Charlie Brown inserted successfully!
+Student Charlie Brown inserted successfully!
 
 Inserting Student Roll No 104 at index 6
-✓ Student Diana Wilson inserted successfully!
+Student Diana Wilson inserted successfully!
 
 Inserting Student Roll No 105 at index 0
-✓ Student Eve Davis inserted successfully!
+Student Eve Davis inserted successfully!
 
 Inserting Student Roll No 106 at index 1
-✓ Student Frank Miller inserted successfully!
+Student Frank Miller inserted successfully!
 
 Inserting Student Roll No 107 at index 2
-✓ Student Grace Lee inserted successfully!
+Student Grace Lee inserted successfully!
 
 Inserting Student Roll No 108 at index 3
-✓ Student Henry Moore inserted successfully!
+Student Henry Moore inserted successfully!
 
 Inserting Student Roll No 109 at index 4
-✓ Student Ivy Taylor inserted successfully!
+Student Ivy Taylor inserted successfully!
 
 Inserting Student Roll No 110 at index 5
-✓ Student Jack Anderson inserted successfully!
+Student Jack Anderson inserted successfully!
 
 ===== Student Database Menu =====
 4. Display all student records
@@ -586,7 +562,7 @@ Enter your choice: 2
 Enter Roll Number to search: 109
 
 Searching for Student Roll No 109 at index 4
-✓ Student found!
+Student found!
 
 --- Student Details ---
 Roll No: 109
@@ -623,7 +599,7 @@ Enter your choice: 3
 Enter Roll Number to delete: 102
 
 Deleting Student Roll No 102 from index 4
-✓ Student with Roll No 102 deleted successfully!
+Student with Roll No 102 deleted successfully!
 
 ===== Student Database Menu =====
 4. Display all student records
@@ -802,46 +778,11 @@ This program successfully implements a **Student Database Management System usin
    - Multiple keys that hash to the same index are stored in the same chain
    - No limit on the number of elements that can be stored
 
-2. **Key Features**:
-
-   - Student records with roll number, name, branch, year, and CGPA
-   - Insert, search, delete, and display operations
-   - Branch-wise student display
-   - Top performers display based on CGPA
-   - Load factor calculation for performance monitoring
-
-3. **Advanced Features**:
-
-   - **Branch-wise Filtering**: Display students from a specific branch
-   - **Top Performers**: Show students with highest CGPA
-   - **Duplicate Prevention**: Check for existing roll numbers before insertion
-
-4. **Time Complexity**:
+2. **Time Complexity**:
 
    - **Best Case**: O(1) - No collisions
    - **Average Case**: O(1 + α) where α is load factor
    - **Worst Case**: O(n) - All elements in one chain
 
-5. **Space Complexity**: O(n + m) where n is number of elements and m is table size
+3. **Space Complexity**: O(n + m) where n is number of elements and m is table size
 
-6. **Advantages of Separate Chaining**:
-
-   - **No Clustering**: Each chain is independent
-   - **Simple Deletion**: Just remove from linked list
-   - **Unlimited Capacity**: Can store more elements than table size
-   - **Performance**: Less affected by high load factors
-
-7. **Applications**:
-   - Student database systems
-   - Employee record management
-   - Library management systems
-   - Inventory management
-   - Any system requiring fast key-based lookups
-
-**Best Practices**:
-
-- Keep load factor reasonable (α ≈ 0.75 - 1.0)
-- Use prime number for table size
-- Choose good hash function for uniform distribution
-- Implement proper memory management with destructors
-- Consider resizing when load factor becomes too high
