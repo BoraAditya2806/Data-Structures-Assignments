@@ -93,7 +93,6 @@ MAIN:
 #include <stdexcept>
 using namespace std;
 
-// Class for the nodes in the linked lists (chains)
 class Node_agb {
 public:
     int key_agb;
@@ -111,11 +110,8 @@ private:
     int size_agb;
     int totalElements_agb;
 
-    // Hash function (Modulo Division Method)
-    // h(key) = key mod size
     int hashFunction_agb(int key_agb) const {
-        // Ensure non-negative result
-        return (key_agb % size_agb + size_agb) % size_agb;
+       return (key_agb % size_agb + size_agb) % size_agb;
     }
 
 public:
@@ -127,26 +123,23 @@ public:
         totalElements_agb = 0;
         table_agb = new Node_agb*[size_agb];
 
-        // Initialize all chains as empty (NULL)
-        for (int i_agb = 0; i_agb < size_agb; i_agb++) {
+       for (int i_agb = 0; i_agb < size_agb; i_agb++) {
             table_agb[i_agb] = NULL;
         }
 
         cout << "Hash table created with size: " << size_agb << endl;
     }
 
-    // Insert key using separate chaining
     bool insert_agb(int key_agb) {
         int index_agb = hashFunction_agb(key_agb);
 
         cout << "\nInserting " << key_agb << "..." << endl;
         cout << "Hash value: " << index_agb << endl;
 
-        // Check if key already exists in chain
-        Node_agb* current_agb = table_agb[index_agb];
+       Node_agb* current_agb = table_agb[index_agb];
         while (current_agb != NULL) {
             if (current_agb->key_agb == key_agb) {
-                cout << "✗ Duplicate key! " << key_agb << " already exists at index " << index_agb << "." << endl;
+                cout << " Duplicate key! " << key_agb << " already exists at index " << index_agb << "." << endl;
                 return false;
             }
             current_agb = current_agb->next_agb;
@@ -159,27 +152,21 @@ public:
         totalElements_agb++;
 
         if (newNode_agb->next_agb == NULL) {
-            cout << "✓ Inserted " << key_agb << " at index " << index_agb
+            cout << "Inserted " << key_agb << " at index " << index_agb
                  << " (new chain)" << endl;
         } else {
-            cout << "✓ Inserted " << key_agb << " at index " << index_agb
+            cout << "Inserted " << key_agb << " at index " << index_agb
                  << " (added to existing chain, now first element)" << endl;
         }
 
         return true;
     }
 
-    /**
-     * @brief Searches for a key.
-     * @param key_agb The key to search for.
-     * @param chainPosition_agb Reference to store the position in the chain (1-based).
-     * @return True if key is found, false otherwise.
-     */
+
     bool search_agb(int key_agb, int& chainPosition_agb) const {
         int index_agb = hashFunction_agb(key_agb);
         Node_agb* current_agb = table_agb[index_agb];
-        chainPosition_agb = 0; // Initialize position counter
-
+        chainPosition_agb = 0;
         while (current_agb != NULL) {
             chainPosition_agb++;
             if (current_agb->key_agb == key_agb) {
@@ -191,7 +178,6 @@ public:
         return false;
     }
 
-    // Search with display
     void searchKey_agb(int key_agb) const {
         int chainPosition_agb = 0;
         int index_agb = hashFunction_agb(key_agb);
@@ -201,10 +187,10 @@ public:
         cout << "Hash value: " << index_agb << endl;
 
         if (found_agb) {
-            cout << "✓ Key **" << key_agb << "** found at index " << index_agb
+            cout << " Key **" << key_agb << "** found at index " << index_agb
                  << " (position " << chainPosition_agb << " in chain)" << endl;
         } else {
-            cout << "✗ Key " << key_agb << " not found" << endl;
+            cout << " Key " << key_agb << " not found" << endl;
             if (chainPosition_agb > 0) {
                 cout << "  Searched through " << chainPosition_agb
                      << " elements in chain before reaching end" << endl;
@@ -212,8 +198,7 @@ public:
         }
     }
 
-    // Delete key
-    bool deleteKey_agb(int key_agb) {
+    b(int key_agb) {
         int index_agb = hashFunction_agb(key_agb);
         Node_agb* current_agb = table_agb[index_agb];
         Node_agb* prev_agb = NULL;
@@ -223,29 +208,25 @@ public:
 
         while (current_agb != NULL) {
             if (current_agb->key_agb == key_agb) {
-                // Remove node from chain
                 if (prev_agb == NULL) {
-                    // Deleting the first node (head of the list)
-                    table_agb[index_agb] = current_agb->next_agb;
+                   table_agb[index_agb] = current_agb->next_agb;
                 } else {
-                    // Deleting a node in the middle or end
                     prev_agb->next_agb = current_agb->next_agb;
                 }
 
                 delete current_agb;
                 totalElements_agb--;
-                cout << "✓ Key **" << key_agb << "** deleted from index " << index_agb << endl;
+                cout << " Key **" << key_agb << "** deleted from index " << index_agb << endl;
                 return true;
             }
             prev_agb = current_agb;
             current_agb = current_agb->next_agb;
         }
 
-        cout << "✗ Key " << key_agb << " not found! Cannot delete." << endl;
+        cout << " Key " << key_agb << " not found! Cannot delete." << endl;
         return false;
     }
 
-    // Display hash table
     void display_agb() const {
         cout << "\n========== Hash Table (Separate Chaining) ==========" << endl;
         
@@ -274,7 +255,6 @@ public:
              << (float)totalElements_agb / size_agb << endl;
     }
 
-    // Display statistics
     void displayStats_agb() const {
         int emptyChains_agb = 0;
         int maxChainLength_agb = 0;
@@ -316,7 +296,6 @@ public:
              << (float)totalElements_agb / size_agb << endl;
     }
 
-    // Destructor (Frees all allocated memory)
     ~HashTable_agb() {
         cout << "\nStarting memory cleanup..." << endl;
         for (int i_agb = 0; i_agb < size_agb; i_agb++) {
@@ -425,43 +404,43 @@ Inserting sample keys: 10 20 15 7 12 25 30 17 27 37
 
 Inserting 10...
 Hash value: 3
-✓ Inserted 10 at index 3 (new chain)
+Inserted 10 at index 3 (new chain)
 
 Inserting 20...
 Hash value: 6
-✓ Inserted 20 at index 6 (new chain)
+Inserted 20 at index 6 (new chain)
 
 Inserting 15...
 Hash value: 1
-✓ Inserted 15 at index 1 (new chain)
+Inserted 15 at index 1 (new chain)
 
 Inserting 7...
 Hash value: 0
-✓ Inserted 7 at index 0 (new chain)
+Inserted 7 at index 0 (new chain)
 
 Inserting 12...
 Hash value: 5
-✓ Inserted 12 at index 5 (new chain)
+Inserted 12 at index 5 (new chain)
 
 Inserting 25...
 Hash value: 4
-✓ Inserted 25 at index 4 (new chain)
+Inserted 25 at index 4 (new chain)
 
 Inserting 30...
 Hash value: 2
-✓ Inserted 30 at index 2 (new chain)
+Inserted 30 at index 2 (new chain)
 
 Inserting 17...
 Hash value: 3
-✓ Inserted 17 at index 3 (added to existing chain)
+Inserted 17 at index 3 (added to existing chain)
 
 Inserting 27...
 Hash value: 6
-✓ Inserted 27 at index 6 (added to existing chain)
+Inserted 27 at index 6 (added to existing chain)
 
 Inserting 37...
 Hash value: 2
-✓ Inserted 37 at index 2 (added to existing chain)
+Inserted 37 at index 2 (added to existing chain)
 
 Enter your choice: 4
 
@@ -482,18 +461,18 @@ Enter key to search: 17
 
 Searching for 17...
 Hash value: 3
-✓ Key 17 found at index 3 (position 1 in chain)
+Key 17 found at index 3 (position 1 in chain)
 
 Enter your choice: 2
 Enter key to search: 10
 
 Searching for 10...
 Hash value: 3
-✓ Key 10 found at index 3 (position 2 in chain)
+Key 10 found at index 3 (position 2 in chain)
 
 Enter your choice: 3
 Enter key to delete: 30
-✓ Key 30 deleted from index 2
+Key 30 deleted from index 2
 
 Enter your choice: 4
 
@@ -686,17 +665,3 @@ This program successfully implements **Hash Table with Separate Chaining** colli
    | Load factor | Can exceed 1.0 | Must be < 1.0 |
    | Cache performance | Poor (scattered) | Good (sequential) |
 
-**Applications**:
-
-- Database indexing
-- Symbol tables
-- Compiler implementations
-- Dictionary ADT
-- Spell checkers
-
-**Best Practices**:
-
-- Keep load factor reasonable (α ≈ 0.75 - 1.0)
-- Use prime number for table size
-- Choose good hash function
-- Consider resizing when α too high
