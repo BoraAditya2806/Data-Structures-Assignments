@@ -170,22 +170,18 @@ private:
         int oldSize = size;
         PlacementRecord** oldTable = table;
 
-        // Double the size
         size *= 2;
         totalRecords = 0;
 
-        // Create new table
         table = new PlacementRecord*[size];
         for (int i = 0; i < size; i++) {
             table[i] = NULL;
         }
 
-        // Rehash all existing records
         for (int i = 0; i < oldSize; i++) {
             PlacementRecord* current = oldTable[i];
             while (current != NULL) {
-                // Insert into new table
-                int index = hashFunction_agb(current->rollNo); // Called with _agb
+                int index = hashFunction_agb(current->rollNo); 
                 PlacementRecord* newRecord = new PlacementRecord(
                     current->rollNo, current->name, current->branch,
                     current->cgpa, current->companyName, current->package
@@ -235,7 +231,7 @@ public:
             resize_agb(); 
         }
 
-        int index = hashFunction_agb(rollNo); // Called with _agb
+        int index = hashFunction_agb(rollNo);
 
         cout << "\nInserting Placement Record for Roll No " << rollNo << " at index " << index << endl;
         cout << "Current load factor: " << fixed << setprecision(2) << loadFactor_agb() << endl;
@@ -250,7 +246,6 @@ public:
         return true;
     }
 
-    // Function names modified: search -> search_agb
     PlacementRecord* search_agb(int rollNo) {
         int index = hashFunction_agb(rollNo); // Called with _agb
         PlacementRecord* current = table[index];
@@ -269,7 +264,6 @@ public:
         return NULL;
     }
 
-    // Function names modified: deleteRecord -> deleteRecord_agb
     bool deleteRecord_agb(int rollNo) {
         int index = hashFunction_agb(rollNo); // Called with _agb
         PlacementRecord* current = table[index];
@@ -300,7 +294,6 @@ public:
         return false;
     }
 
-    // Function names modified: display -> display_agb
     void display_agb() {
         cout << "\n========== Smart Placement Portal ==========" << endl;
         bool isEmpty = true;
@@ -331,7 +324,6 @@ public:
         displayStatistics_agb(); // Called with _agb
     }
 
-    // Function names modified: displayStatistics -> displayStatistics_agb
     void displayStatistics_agb() {
         cout << "--- Portal Statistics ---" << endl;
         cout << "Total placement records: " << totalRecords << endl;
@@ -339,7 +331,7 @@ public:
         cout << "Current load factor: " << fixed << setprecision(2) << loadFactor_agb() << endl; // Called with _agb
         cout << "Resize threshold: " << threshold << endl;
 
-        // Calculate chain lengths for collision analysis
+       
         int maxChainLength = 0;
         int totalChainLength = 0;
         int nonEmptyChains = 0;
@@ -369,8 +361,6 @@ public:
         cout << "Longest chain: " << maxChainLength << endl;
         cout << string(32, '=') << endl;
     }
-
-    // Function names modified: displayBranchWise -> displayBranchWise_agb
     void displayBranchWise_agb(string branch) {
         cout << "\n========== " << branch << " Branch Placements ==========" << endl;
         bool found = false;
@@ -395,11 +385,9 @@ public:
         cout << string(45, '=') << endl;
     }
 
-    // Function names modified: displayTopPackages -> displayTopPackages_agb
     void displayTopPackages_agb(int n) {
         cout << "\n========== Top " << n << " Placement Packages ==========" << endl;
 
-        // Collect all records
         PlacementRecord** records = new PlacementRecord*[totalRecords];
         int count = 0;
 
@@ -411,7 +399,6 @@ public:
             }
         }
 
-        // Sort by package (simple bubble sort for demonstration)
         for (int i = 0; i < count - 1; i++) {
             for (int j = 0; j < count - i - 1; j++) {
                 if (records[j]->package < records[j + 1]->package) {
@@ -422,7 +409,6 @@ public:
             }
         }
 
-        // Display top n records
         int displayCount = min(n, count);
         for (int i = 0; i < displayCount; i++) {
             cout << (i + 1) << ". Roll No: " << setw(4) << records[i]->rollNo
@@ -454,7 +440,6 @@ public:
     }
 };
 
-// Function names modified: main -> main_agb
 int main() {
     int initialSize;
 
@@ -794,40 +779,14 @@ Check index 8: Roll No 108 ✓ FOUND
 
 This program successfully implements a **Smart College Placement Portal using Advanced Hashing Techniques**:
 
-1. **Advanced Hashing Features**:
 
-   - **Dynamic Resizing**: Automatically resizes when load factor exceeds threshold
-   - **Separate Chaining**: Resolves collisions using linked lists
-   - **Load Factor Monitoring**: Continuously monitors performance
-   - **Auto-Optimization**: Maintains optimal performance under dynamic data growth
-
-2. **Key Features**:
-
-   - Student placement records with roll number, name, branch, CGPA, company, and package
-   - Insert, search, delete, and display operations
-   - Branch-wise placement display
-   - Top packages display based on salary
-   - Comprehensive statistics and performance monitoring
-
-3. **Dynamic Resizing Technique**:
-
-   - **Trigger**: Resizes when load factor > threshold (0.75)
-   - **Process**: Doubles table size and rehashes all records
-   - **Benefit**: Maintains low collision probability and high performance
-
-4. **Time Complexity**:
+1. **Time Complexity**:
 
    - **Best Case**: O(1) - No collisions, no resizing
    - **Average Case**: O(1) with dynamic resizing
    - **Worst Case**: O(n) - All elements in one chain (rare with resizing)
 
-5. **Space Complexity**: O(n) where n is the number of elements
+2. **Space Complexity**: O(n) where n is the number of elements
 
 
-6. **Real-World Applications**:
-   - College placement portals
-   - Job recruitment platforms
-   - Employee management systems
-   - Database indexing systems
-   - Caching mechanisms
 
