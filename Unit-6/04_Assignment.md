@@ -107,35 +107,28 @@ MAIN:
 #include <iostream>
 #include <iomanip>
 #include <string>
-#include <stdexcept> // For better error handling
+#include <stdexcept> 
 using namespace std;
 
-// Student Record Structure 🎓
+
 class Student_agb {
 public:
     int rollNo_agb;
     string name_agb;
     string branch_agb;
     float cgpa_agb;
-    // We use a simple boolean marker for 'empty' status.
-    // In a production-level hash table using linear probing, a separate 'DELETED' marker
-    // is essential for correct searching after deletion, which is missing here.
-    // However, following the user's logic:
     bool isEmpty_agb;
 
     Student_agb() {
-        isEmpty_agb = true; // Default constructor marks slot as empty
+        isEmpty_agb = true; 
     }
 };
-
-// Hash Table Class for Student Records using Linear Probing
 class StudentHashTable_agb {
 private:
     Student_agb* table_agb;
     int size_agb;
     int totalStudents_agb;
 
-    // Hash function: Roll Number modulo Table Size
     int hashFunction_agb(int rollNo_agb) const {
         return rollNo_agb % size_agb;
     }
@@ -151,10 +144,9 @@ public:
         cout << "Student Hash Table created with capacity: " << size_agb << endl;
     }
 
-    // Insert student record using Linear Probing
     bool insert_agb(int rollNo_agb, string name_agb, string branch_agb, float cgpa_agb) {
         if (totalStudents_agb >= size_agb) {
-            cout << "✗ Hash table is FULL! Cannot insert more students." << endl;
+            cout << " Hash table is FULL! Cannot insert more students." << endl;
             return false;
         }
 
@@ -165,41 +157,34 @@ public:
         cout << "\nInserting Student Roll No " << rollNo_agb << "..." << endl;
         cout << "Initial Hash index: " << originalIndex_agb << endl;
 
-        // Linear probing to find an empty slot (or a duplicate)
         do {
             if (table_agb[index_agb].rollNo_agb == rollNo_agb && !table_agb[index_agb].isEmpty_agb) {
-                // Check for duplicate roll number
-                cout << "✗ Duplicate roll number! Student with roll no " << rollNo_agb << " already exists at index " << index_agb << "." << endl;
+               cout << " Duplicate roll number! Student with roll no " << rollNo_agb << " already exists at index " << index_agb << "." << endl;
                 return false;
             }
 
             if (table_agb[index_agb].isEmpty_agb) {
-                // Found an empty slot, proceed to insert
                 break;
             }
 
-            // Collision occurred, move to the next slot
             probeCount_agb++;
             index_agb = (index_agb + 1) % size_agb;
 
-            // Check if we've traversed the entire table
             if (index_agb == originalIndex_agb) {
-                // This condition should have been caught by the totalStudents check, but acts as a safeguard
-                cout << "✗ Hash table is logically FULL! Cannot insert more students." << endl;
+                cout << "Hash table is logically FULL! Cannot insert more students." << endl;
                 return false;
             }
 
         } while (true);
 
-        // Insert the student record
         table_agb[index_agb].rollNo_agb = rollNo_agb;
         table_agb[index_agb].name_agb = name_agb;
         table_agb[index_agb].branch_agb = branch_agb;
         table_agb[index_agb].cgpa_agb = cgpa_agb;
-        table_agb[index_agb].isEmpty_agb = false; // Mark slot as occupied
+        table_agb[index_agb].isEmpty_agb = false; 
         totalStudents_agb++;
 
-        cout << "✓ Student **" << name_agb << "** (Roll No: " << rollNo_agb << ") inserted at index " << index_agb;
+        cout << "Student **" << name_agb << "** (Roll No: " << rollNo_agb << ") inserted at index " << index_agb;
         if (probeCount_agb > 0) {
             cout << " (after " << probeCount_agb << " probes)";
         }
@@ -207,7 +192,6 @@ public:
         return true;
     }
 
-    // Search for a student record
     Student_agb* search_agb(int rollNo_agb) const {
         int originalIndex_agb = hashFunction_agb(rollNo_agb);
         int index_agb = originalIndex_agb;
@@ -216,15 +200,13 @@ public:
         cout << "\nSearching for Student Roll No " << rollNo_agb << "..." << endl;
         cout << "Initial Hash index: " << originalIndex_agb << endl;
 
-        // Linear probing to find the student
         do {
             if (table_agb[index_agb].isEmpty_agb) {
-                // Empty slot found: search terminates (assuming no proper DELETED tombstone is used)
                 break;
             }
 
             if (table_agb[index_agb].rollNo_agb == rollNo_agb) {
-                cout << "✓ Student found at index " << index_agb;
+                cout << "Student found at index " << index_agb;
                 if (probeCount_agb > 0) {
                     cout << " (after " << probeCount_agb << " probes)";
                 }
@@ -232,61 +214,50 @@ public:
                 return &table_agb[index_agb];
             }
 
-            // Move to the next slot
             probeCount_agb++;
             index_agb = (index_agb + 1) % size_agb;
 
-            // Check if we've traversed the entire table (and looped back)
             if (index_agb == originalIndex_agb) {
                 break;
             }
         } while (true);
 
-        cout << "✗ Student with Roll No " << rollNo_agb << " not found!" << endl;
+        cout << "Student with Roll No " << rollNo_agb << " not found!" << endl;
         return nullptr;
     }
 
-    // Delete a student record
+   
     bool deleteStudent_agb(int rollNo_agb) {
-        // NOTE: The original code sets isEmpty = true, which is inadequate for linear probing
-        // because it breaks the search path for subsequent elements that probed past this deleted slot.
-        // A proper implementation requires a 'DELETED' tombstone marker.
-        // Following the original logic, but highlighting the limitation.
-
+     
         int originalIndex_agb = hashFunction_agb(rollNo_agb);
         int index_agb = originalIndex_agb;
 
         cout << "\nDeleting Student Roll No " << rollNo_agb << "..." << endl;
         cout << "Hash value: " << originalIndex_agb << endl;
 
-        // Linear probing to find the student
         do {
             if (table_agb[index_agb].isEmpty_agb) {
                 break; // Empty slot means key isn't present
             }
 
             if (table_agb[index_agb].rollNo_agb == rollNo_agb) {
-                // Delete operation: Mark as empty (should be a 'DELETED' marker for correctness)
                 table_agb[index_agb].isEmpty_agb = true;
                 totalStudents_agb--;
-                cout << "✓ Student with Roll No **" << rollNo_agb << "** deleted successfully from index " << index_agb << "!" << endl;
+                cout << " Student with Roll No **" << rollNo_agb << "** deleted successfully from index " << index_agb << "!" << endl;
                 return true;
             }
 
-            // Move to the next slot
             index_agb = (index_agb + 1) % size_agb;
 
-            // Check if we've traversed the entire table
             if (index_agb == originalIndex_agb) {
                 break;
             }
         } while (true);
 
-        cout << "✗ Student with Roll No " << rollNo_agb << " not found! Cannot delete." << endl;
+        cout << " Student with Roll No " << rollNo_agb << " not found! Cannot delete." << endl;
         return false;
     }
 
-    // Display all student records
     void display_agb() const {
         cout << "\n========== Student Records ==========" << endl;
         
@@ -304,7 +275,6 @@ public:
                      << setw(12) << table_agb[i_agb].branch_agb
                      << setw(8) << fixed << setprecision(2) << table_agb[i_agb].cgpa_agb << endl;
             } else {
-                // Displaying empty slots for clarity in the table structure
                 cout << setw(10) << "---" << setw(18) << "EMPTY" << setw(12) << "---" << setw(8) << "---" << endl;
             }
         }
@@ -321,14 +291,14 @@ public:
         cout << string(34, '=') << endl;
     }
 
-    // Destructor
+    
     ~StudentHashTable_agb() {
         delete[] table_agb;
         cout << "Student Hash Table memory deallocated" << endl;
     }
 };
 
-int main_agb() {
+int main() {
     int size_agb;
 
     cout << "===== Student Records Management System (Linear Probing) =====" << endl;
@@ -399,7 +369,6 @@ int main_agb() {
 
                 case 5: {
                     cout << "\nInserting sample student records... (RNo % Size determines index)" << endl;
-                    // Ensure size is large enough for these 8 entries without immediately filling
                     studentDB_agb.insert_agb(101, "Alice Johnson", "Computer Science", 8.75); // RNo 101
                     studentDB_agb.insert_agb(102, "Bob Smith", "Electronics", 7.90);     // RNo 102
                     studentDB_agb.insert_agb(103, "Charlie Brown", "Mechanical", 8.25);  // RNo 103
@@ -447,35 +416,35 @@ Inserting sample student records...
 
 Inserting Student Roll No 101...
 Hash value: 1
-✓ Student Alice Johnson (Roll No: 101) inserted successfully!
+Student Alice Johnson (Roll No: 101) inserted successfully!
 
 Inserting Student Roll No 102...
 Hash value: 2
-✓ Student Bob Smith (Roll No: 102) inserted successfully!
+Student Bob Smith (Roll No: 102) inserted successfully!
 
 Inserting Student Roll No 103...
 Hash value: 3
-✓ Student Charlie Brown (Roll No: 103) inserted successfully!
+Student Charlie Brown (Roll No: 103) inserted successfully!
 
 Inserting Student Roll No 104...
 Hash value: 4
-✓ Student Diana Wilson (Roll No: 104) inserted successfully!
+Student Diana Wilson (Roll No: 104) inserted successfully!
 
 Inserting Student Roll No 105...
 Hash value: 5
-✓ Student Eve Davis (Roll No: 105) inserted successfully!
+Student Eve Davis (Roll No: 105) inserted successfully!
 
 Inserting Student Roll No 106...
 Hash value: 6
-✓ Student Frank Miller (Roll No: 106) inserted successfully!
+Student Frank Miller (Roll No: 106) inserted successfully!
 
 Inserting Student Roll No 107...
 Hash value: 7
-✓ Student Grace Lee (Roll No: 107) inserted successfully!
+Student Grace Lee (Roll No: 107) inserted successfully!
 
 Inserting Student Roll No 108...
 Hash value: 8
-✓ Student Henry Moore (Roll No: 108) inserted successfully!
+Student Henry Moore (Roll No: 108) inserted successfully!
 
 ===== Student Database Menu =====
 4. Display all student records
@@ -504,7 +473,7 @@ Enter Roll Number to search: 105
 
 Searching for Student Roll No 105...
 Hash value: 5
-✓ Student found!
+Student found!
 
 --- Student Details ---
 Roll No: 105
@@ -519,7 +488,7 @@ Enter Roll Number to delete: 103
 
 Deleting Student Roll No 103...
 Hash value: 3
-✓ Student with Roll No 103 deleted successfully!
+Student with Roll No 103 deleted successfully!
 
 ===== Student Database Menu =====
 4. Display all student records
@@ -667,29 +636,3 @@ This program successfully implements a **Student Records Management System using
    - **Worst Case**: O(n) - All elements form a cluster
 
 5. **Space Complexity**: O(n) where n is the table size
-
-6. **Advantages**:
-
-   - **Cache Performance**: Sequential memory access
-   - **No Extra Memory**: No need for pointers like chaining
-   - **Simple Implementation**: Easy to understand and implement
-
-7. **Disadvantages**:
-   - **Primary Clustering**: Consecutive filled slots form clusters
-   - **Deletion Complexity**: Requires special handling with markers
-   - **Load Factor Limitation**: Performance degrades with high load factor
-
-**Applications**:
-
-- Student database systems
-- Employee record management
-- Library management systems
-- Inventory management
-- Any system requiring fast key-based lookups
-
-**Best Practices**:
-
-- Keep load factor below 0.7 for good performance
-- Use prime number for table size
-- Implement proper deletion with lazy deletion markers
-- Monitor and resize table when load factor becomes too high
